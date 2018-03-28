@@ -460,22 +460,35 @@ Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\
 \subsection{FAnToM}
 FAnToM\cite{fantomWebsite}\cite{wiebel2009fantom} (`Field Analysis using Topological Methods') ist ein Programm, dessen Entwicklung im Jahre 1999 begann. Obwohl es zu Anfang noch als Hilfsmittel f\"ur die Analyse von Vektorfeldtopologien konzipiert war, entwickelte es sich \"uber die Jahre hinweg zu einer Plattform f\"ur diverse Visualisierungen.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.5\textwidth]{pictures/-000.png}
-	\caption{Ein Beispiel f\"ur eine Visualisierung in FAnToM.}
-	\label{FAnToM}
-\end{figure}
-
 Erweiterungen von FAnToM werden in Form von sogenannten Algorithmen entwickelt. Dabei unterscheidet man 2 Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzelnen Feld mit Vektorwerten kombiniert, deren Komponenten den Skalaren entsprechen.
 Visualization Algorithms dagegen dienen dazu, Visualisierungen zu erzeugen. Interaktionen mit der den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
 
-Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithmen k\"onnen als Eingabe f\"ur andere dienen k\"onnen. Ein Beispiel daf|'ur ist in Abbildung \ref{FAnToM} dargestellt.
+Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithmen k\"onnen als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithmen mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen so mit wenig Aufwand aus bestehenden Algorithmen komplett neue Visualisierungspipelines entwickelt werden.
 
-Erweiterungen k\"onnen dabei auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (ToDo: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von Data Algorithms.
-\subsection{Direct Volume Rendering}
-\subsection{Contiuous Scatterplotting}
+Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (ToDo: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
 \subsection{OpenGL}
+OpenGL\cite{openglWebsite} ist eine Spezifikation die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm am Ende laufen soll, entwickeln k\"onnen. 
+
+Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Rendepipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Benutzern von OpenGL erm\"oglicht, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen zwei Arten von Eingabedaten. Zum einen die Ausgabe des vorherigen Schrittes in der Renderpipeline, zum anderen Parameter, die direkt aus dem Programm, das OpenGl verwendet, gesetzt werden k\"onnen, sogenannten Uniforms.  In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind folgend kurz erkl\"art.
+
+\paragraph{Vertex Shader}
+Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist beispielsweise \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive 
+
+
+daten zwischen shadern erwaehnen
+\paragraph{Geometry Shader}
+asdf
+\paragraph{Fragment Shader}
+asdf
+
+Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen, und so den Prozessor zu entlasten.
+
+\subsection{Direct Volume Rendering}
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"ache der Objekte approximiert werden. Dies entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dazu ist jedoch eine genaue Kenntnis der Datens\"atze n\"otig.
+
+Eine Alternative bietet das Volume Rendering\cite{drebin1988volume}. Als Eingabe wird ein Feld verwendet, das Punkten im Raum skalare Werte zuordnet. Die Interpretation dieser Werte ist abh\"angig vom Einsatzgebiet: 
+\subsection{Contiuous Scatterplotting}
+
 \section{Umsetzung}
 \label{sec:Umsetzung}
 \subsection{Datenaufbereitung}
