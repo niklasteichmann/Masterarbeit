@@ -34,6 +34,7 @@
 
 % title page
 \renewcommand*{\titlepagestyle}{empty}
+\addto\captionsngerman{\def\figurename{Abb.}}
 \subject{Masterarbeit}
 \title{Schematische 2D Visualisierung von RNA-Protein Interaktionen\xspace}
 \newcommand{\matrikelnummer}{2878372\xspace}
@@ -469,24 +470,59 @@ Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, d
 \subsection{OpenGL}
 OpenGL\cite{openglWebsite} ist eine Spezifikation die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm am Ende laufen soll, entwickeln k\"onnen. 
 
-Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Rendepipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Benutzern von OpenGL erm\"oglicht, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen zwei Arten von Eingabedaten. Zum einen die Ausgabe des vorherigen Schrittes in der Renderpipeline, zum anderen Parameter, die direkt aus dem Programm, das OpenGl verwendet, gesetzt werden k\"onnen, sogenannten Uniforms.  In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind folgend kurz erkl\"art.
+Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Rendepipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Benutzern von OpenGL erm\"oglicht, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
+
+\begin{enumerate}
+	\item Die Ausgabe des vorherigen Schrittes in der Renderpipeline
+	\item Parameter aus dem Programm, das OpenGL verwendet (`Uniforms')
+	\item Daten, die aus dem vorhergehenden Shader \"ubergeben wurden
+\end{enumerate}
+
+Ein wichtiger Spezialfall von Uniforms sind Texturen, die in dem OpenGL verwendenden Programm geladen, an die Shader \"ubergeben und dort verwendet werden k\"onnen.
+
+In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind folgend kurz erkl\"art.
 
 \paragraph{Vertex Shader}
-Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist beispielsweise \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive 
+Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist beispielsweise \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
 
-
-daten zwischen shadern erwaehnen
 \paragraph{Geometry Shader}
-asdf
-\paragraph{Fragment Shader}
-asdf
+Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der dazugeh\"orenden Punkte, zum Beispiel eine Liste von 3 Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern, und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen. Zus\"atzlich kann er pro Punkt Uniforms definieren, die an sp\"ater ausgef\"uhrte Shader (Vertex Shader) weitergegeben werden. Pro Primitv wird der Geometry Shader einmal ausgef\"uhrt.
 
-Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen, und so den Prozessor zu entlasten.
+\paragraph{Fragment Shader}
+Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen (z.B. Supersampling). Die Eingaben sind der Mittelpunkt des Fragments und die f\"ur diesen Punkt interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch Werte ausgegeben werden, zum Beispiel ein Tiefenattribut, das korrekte \"Uberlappung von Primitiven erm\"oglicht.
+
+Weitere im Folgenden verwendete Funktionen von OpenGL sind `Blending', eine Funktion durch die Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist sowie die M\"oglichkeit, gerenderte Bilder in einer Textur zu speichern.
+
+Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
 
 \subsection{Direct Volume Rendering}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"ache der Objekte approximiert werden. Dies entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dazu ist jedoch eine genaue Kenntnis der Datens\"atze n\"otig.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"ache der Objekte approximiert werden. Dies entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
 
-Eine Alternative bietet das Volume Rendering\cite{drebin1988volume}. Als Eingabe wird ein Feld verwendet, das Punkten im Raum skalare Werte zuordnet. Die Interpretation dieser Werte ist abh\"angig vom Einsatzgebiet: 
+
+\begin{figure}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{pictures/Colormap.png}
+		\caption{Eine Implementierung einer interaktiven Transferfunktion in FAnToM. }
+		\label{Colormap}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.47\textwidth]{pictures/Zahn.png}
+		\caption{Ein Direct Volume Rendering eines Zahns. Entnommen aus \cite[S.~6]{drebin1988volume}}
+		\label{Zahn}
+	\end{minipage}
+\end{figure}
+Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werte werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet. 
+
+Eine Implementierung einer Interaktiven Transferfunktion in FAnToM ist in Abbildung \ref{Colormap} zu sehen. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu komplett intransparent am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So werden allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. 
+
+Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion transparent oder intransparent sind, und so Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abbildung \ref{Zahn} dargestellt.
+
+Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"alligkeit f\"ur Artefakte unterscheiden. 
+
+
 \subsection{Contiuous Scatterplotting}
 
 \section{Umsetzung}
@@ -510,8 +546,13 @@ Fehler reduzieren durch Berechnung der Gr\"o{\ss}e des tats\"achlich belegten Vo
 \clearpage
 \ofoot{\vspace{-0.1cm}\textbf{\large\thepage}/\textbf{\large\getpagerefnumber{LastBibPage}}}
 \pagenumbering{Roman}
+
+\defbibfilter{papers}{
+	type=article or
+	type=inproceedings
+}
 \printbibliography[type=book,title={Bücher}]
-\printbibliography[type=article,title={Artikel}]
+\printbibliography[filter=papers,title={Artikel}]
 \printbibliography[type=online,title={Internetressourcen}]
 \label{LastBibPage}
 \end{document}
