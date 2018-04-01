@@ -135,7 +135,7 @@ Das $n$-dimensionale Volumen einer Menge $Vol(A), A \subset \mathbb{R}^n$ wird \
 Falls f\"ur eine Menge $A$ gilt $Vol(A)=0$, so bezeichnet man diese als Nullmenge.
 
 \subsubsection{Jacobi Matrix}
-Die Jacobi Matrix $J_f$ einer differenzierbaren Abbildung $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ ist eine $m \times n$ Matrix, deren Komponenten die partiellen ersten Ableitungen von $f$ sind. Formal geschrieben gilt also f\"ur die Koordinaten des Urbilds $x_1, ..., x_n$ und Abbildungen $f_1, ..., f_n$ der einzelnen Komponenten
+Die Jacobi Matrix $J_f$ einer differenzierbaren Abbildung $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ ist eine $m \times n$ Matrix, deren Komponenten die partiellen ersten Ableitungen von $f$ sind. Formal geschrieben gilt also f\"ur die Koordinaten des Urbilds $x_1, \dots, x_n$ und Abbildungen $f_1, ..., f_n$ der einzelnen Komponenten
 
 \begin{equation}
 	J_f(a) := 
@@ -175,16 +175,16 @@ Sei $V$ ein Vektorraum und $K$ sein zugrundeliegender K\"orper. Dann bildet die 
 Vektoren aus $V$ werden als \textbf{kovariant} bezeichnet, Vektoren aus $V^*$ als \textbf{kontravariant}\cite[S.~205]{bowen2008introduction}.
 
 \subsubsection{Multilineare Funktionen}
-Multilineare Funktionen \"uber Vektorr\"aumen sind Funktionen der Form $\varphi: V_1 \times ... \times V_n \rightarrow K$, wobei jedes $V_i$ ein Vektorraum \"uber $K$ ist, und zus\"atzlich 
+Multilineare Funktionen \"uber Vektorr\"aumen sind Funktionen der Form $\varphi: V_1 \times \dots \times V_n \rightarrow K$, wobei jedes $V_i$ ein Vektorraum \"uber $K$ ist, und zus\"atzlich 
 
 \begin{equation}
-	\varphi(\lambda \cdot v_1 + \mu \cdot v'_1, ..., v_n) = \lambda \cdot \varphi(v_1, ..., v_n) + \mu \cdot \varphi(v'_1, v_2, ..., v_n)
+	\varphi(\lambda \cdot v_1 + \mu \cdot v'_1, \dots, v_n) = \lambda \cdot \varphi(v_1, \dots, v_n) + \mu \cdot \varphi(v'_1, v_2, \dots, v_n)
 \end{equation}
 
 mit $\lambda, \mu \in K$, $v_i, v'_i \in V_i$ gilt (f\"ur jede weitere Variable analog). Intuitiv bedeutet das, dass $\varphi$ linear in jeder Variable ist\cite[S.~204, 218]{bowen2008introduction}.
 
 \subsubsection{Tensor}
-Multilineare Funktionen der Form $T: V^*\times...\times V^*\times V \times ... \times V \rightarrow K$, wobei $V$ ein Vektorraum \"uber $K$ und $V^*$ sein Dualraum ist, werden als Tensoren bezeichnet\cite[S.~218]{bowen2008introduction}. Der Grad des Tensors ist definiert als die Anzahl an Variablen der Funktion. Die Tensoren \"uber $V$ bildet wiederum einen Vektorraum \cite[S.~220]{bowen2008introduction}. Durch diese Defintion ist ein Tensor immer invariant zur Basis des Vektorraums seiner Variablen. Egal in welche Basis er umgerechnet wird, er dr\"uckt steht dasselbe aus.
+Multilineare Funktionen der Form $T: V^*\times\dots\times V^*\times V \times \dots \times V \rightarrow K$, wobei $V$ ein Vektorraum \"uber $K$ und $V^*$ sein Dualraum ist, werden als Tensoren bezeichnet\cite[S.~218]{bowen2008introduction}. Der Grad des Tensors ist definiert als die Anzahl an Variablen der Funktion. Die Tensoren \"uber $V$ bildet wiederum einen Vektorraum \cite[S.~220]{bowen2008introduction}. Durch diese Defintion ist ein Tensor immer invariant zur Basis des Vektorraums seiner Variablen. Egal in welche Basis er umgerechnet wird, er dr\"uckt steht dasselbe aus.
 
 In der vorliegenden Arbeit werden ausschlie{\ss}lich Tensoren 2. Grades verwendet, die in kartesischen, dreidimensionalen Koordinatensystemen erzeugt wurden. Dabei ist zu beachten, dass in kartesischen Koordinaten die Basis eines Vektorraumes $V$ und seines Dualraumes $V^*$ die gleiche Darstellung hat, also $V$ und $V^*$ austauschbar sind. Wenn in einen Tensor 2. Grades $T$ die Basisvektoren $e_{1,..,d}$ des zugrundeliegenden Vektorraumes $V$ bzw $V^*$ der Dimension $d$ in jeder m\"oglichen Kombination eingesetzt werden, ergeben sich f\"ur $1\leq i,j\leq d$ folgende Komponenten:
 
@@ -514,14 +514,61 @@ In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Drei
 		\label{Zahn}
 	\end{minipage}
 \end{figure}
-Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werte werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet. 
+Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werte werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet.
 
 Eine Implementierung einer Interaktiven Transferfunktion in FAnToM ist in Abbildung \ref{Colormap} zu sehen. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu komplett intransparent am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So werden allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. 
 
-Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion transparent oder intransparent sind, und so Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abbildung \ref{Zahn} dargestellt.
+Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion Licht ausstrahlen, das von anderen Bereichen entsprechend ihrer Transparenz durchgelassen oder absorbiert wird. Dadurch ist es m\"oglich, Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abbildung \ref{Zahn} dargestellt.
 
-Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"alligkeit f\"ur Artefakte unterscheiden. 
+Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"alligkeit f\"ur Artefakte unterscheiden. In dieser Arbeit wurde Raycasting verwendet, was folgend erl\"autert wird.
 
+\subsubsection{Raycasting}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{pictures/Raycasting}
+	\caption{Eine vereinfachte Darstellung eines optimierten Raycastings. Die Bildebene entspricht der Ebene, die durch die durch die imagin\"are Position der Pixel gebildet wird. Die Roten Punkte entlang der Strahlen entsprechen den Samplepunkten.}
+	\label{Raycasting}
+\end{figure}
+Beim Raycasting wird f\"ur jedes Pixel ein Strahl durch den Mittelpunkt des Pixels und die Position der Kamera berechnet. Entlang dieses Strahls wird an, nach ihrer Entfernung von der Kamera geordneten Punkten  $s_1, \dots, s_n$ (`Samplepunkten') der interpolierte Wert des Feldes $v(s_i), 1\leq i\leq n$ berechnet. Der paarweise Abstand der Samplepunkte ist dabei kontant. Aus dem ermittelten Wert wird mithilfe der Transferfunktion die Farbe $f(v(s_i))$ und die Transparenz $t(v(s_i))$ f\"ur diesen Wert bestimmt.
+
+Dabei sei die Transparenz ein Wert im Intervall $[0,1]$ und Farbe ein Vektorraum \"uber $\mathbb{R}$, wie zum Beispiel im RGBA Farbmodell, f\"ur den die Multiplikation mit einem Skalar definiert ist. Die Farbe des Pixels $p$ wird dann f\"ur die Samplepunkte entlang des entsprechenden Strahls berechnet als
+
+\begin{equation}
+	p = \sum_{i=1}^{n} \left(f(s_i) \cdot \prod_{j=1}^{i} \frac{(1-t(s_j))}{n}\right)
+	\label{RaycastingFormula}
+\end{equation}
+
+Das hat den Effekt, dass weiter von der Kamera entfernte Samplepunkte von n\"aheren Punkten entsprechend ihrer Transparenz verdeckt werden. Insbesondere hat es die Konsequenz, dass, sobald gen\"ugend Punkte verarbeitet wurden, so dass die `verbleibende Transparenz' einen Grenzwert unterschreitet, sich die Farbe des Pixels nicht mehr stark ver\"andert, und die Berechnung fr\"uhzeitig beendet werden kann. Die verbleibende Transparenz wird durch die Gesamtzahl der Samplepunkte $n$ geteilt, damit eine h\"ohere Anzahl an Samplepunkten nicht zu einem schnelleren Verlust von Transparenz f\"uhrt.
+
+Eine weitere Optimierung besteht darin, die Samplepunkte erst nach dem Eintreten des Strahls in das Feld beginnen zu lassen und die Berechnung zu beenden, sobald alle verbleibenden Samplepunkte ausserhalb des Feldes liegen. Eine vereinfachte Darstellung dieses optimierten Verfahrens ist in \ref{Raycasting} dargestellt.
+ 
+\begin{figure}
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/DVR1.png}
+		\subcaption{}
+		\label{SamplingPoints1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/DVR2.png}
+		\subcaption{}
+		\label{SamplingPoints2}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/DVR3.png}
+		\subcaption{}
+		\label{SamplingPoints3}
+	\end{subfigure}
+	\caption{Drei Raycastings des Felds $f:\mathbb{R}^3\rightarrow\mathbb{R}, f\left(\protect\begin{array}{c}x\\y\\z\protect\end{array}\right)=cos(x\cdot y\cdot z)$.}
+	\label{SamplingPoints}
+\end{figure}
+
+Die Qualit\"at eines Raycastings ist stark abh\"angig von der Anzahl an Samplepunkten pro Strahl und somit vom Abstand zwischen den Samplepunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Benutzer die Anzahl von Samplepunkten selbst ausw\"ahlt, kann er seinen optimalen Tradeoff zwischen Rechenzeit und Bildqualit\"at finden. In Abbildung \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Samplepunkten erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Samplepunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Samplepunkten in \ref{SamplingPoints2} verschwinden diese Artefakte.
+
+Eine weitere wichtige Einstellung ist, welche Zahl in Formel \ref{RaycastingFormula} f\"ur Variable $n$ verwendet wird. Wenn $n$ die Anzahl der Samplepunkte pro Strahl ist, kann dies, wenn die Blickrichtung der Kamera nicht senkrecht auf einer der Seitenfl\"achen steht, dazu f\"uhren, dass Bereiche am Rand des Feldes transparenter dargestellt werden als in der Mitte. Das liegt daran, dass der Strahl am Rand weniger Samplepunkte produziert die innerhalb des Feldes liegen. Ein Beispiel daf\"ur ist in \ref{SamplingPoints3} mit 200 Samplepunkten dargestellt. 
+
+Alternativ kann f\"ur $n$ die Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, gew\"ahlt werden. Dies wurde in Abbildung \ref{SamplingPoints2} getan. Wenn man nun \ref{SamplingPoints2} und \ref{SamplingPoints3} miteinander vergleicht, f\"allt auf, dass die Pixel in der mitte der Darstellung etwa die gleichen Farben erhalten haben, \ref{SamplingPoints3} in Richtung Rand jedoch erheblich transparenter wird. Welche von beiden Varianten bevorzugt wird, h\"angt von der Art des Datensatzes ab sowie davon, wie wichtig es ist, korrekte Werte ablesen und vergleichen zu k\"onnen.
 
 \subsection{Contiuous Scatterplotting}
 
