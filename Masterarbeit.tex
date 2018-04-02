@@ -394,7 +394,7 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 	\centering
 	\label{cylinderCoords}
 	\includegraphics[width=0.5\textwidth]{pictures/cylinder}
-	\caption{In dieser Abbildung werden zylindrische Koordinaten innerhalb eines kartesischen Koordinatensystems dargestellt. $x$,$y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der $x$-Achse. }
+	\caption{In dieser Abbildung werden zylindrische Koordinaten innerhalb eines kartesischen Koordinatensystems dargestellt. $x,y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der $x$-Achse. }
 \end{figure}
 
 Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"r den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$
@@ -421,12 +421,15 @@ Dabei f\"allt auf, dass $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invaria
 
 Sowohl K als auch R beschreiben die Verteilung, die Gr\"o{\ss}e und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abbildung \ref{KRInvariants} dargestellt. 
 
-
 \subsection{Mechanische Grundlagen}
 \subsubsection{Physikalisches Feld}
 Ein physikalisches Feld ist eine physikalische Gr\"o{\ss}e, die an verschiedenen Positionen im Raum unterschiedliche Werte annimmt\cite[1–2 Electric and magnetic fields]{feynman2011feynman}. Abstrahiert kann es als Funktion $\mathbb{R}^n \rightarrow V$ beschrieben werden, wobei $V$ eine beliebige Menge ist. H\"aufig wird f\"ur $V$ jedoch $\mathbb{R}$ (z.B. bei Temperaturen), $\mathbb{R}^n$ (z.B. bei Str\"omungen) oder $\mathbb{R}^{m\times n}$ (z.B. bei Verformungen) eingesetzt. Andere Beispiele f\"ur physikalische Felder sind elektromagnetische Felder oder Gravitationsfelder. Felder werden meist abh\"angig von ihrem Bild klassifiziert, so z.B. in Skalar-, Vektor- oder Tensorfelder.
 
+Wenn Felder nicht in Form einer kontinuierlichen Funktion beschrieben werden k\"onnen, zum Beispiel weil nur f\"ur endlich viele Punkte Messwerte vorhanden sind, kann ein Feld auf einem Gitter, das aus diesen Messpunkten besteht, definiert werden. Die Werte innerhalb der Zellen lassen sich dann durch Interpolation der Werte an den Eckpunkten berechnen.
+
+
 Innerhalb der vorliegenden Arbeit werden Spannung und Verformung an Punkten von Objekten als Felder $\mathbb{R} \rightarrow \mathbb{R}^{m\times n}$ beschrieben.
+
 
 \subsubsection{Mechanische Spannung}
 In der Mechanik beschreibt Spannung (engl. stress) die Kraft, die Partikel innerhalb eines Objektes aufeinander auswirken. Um die Spannung an einem Punkt zu bestimmen, wird die Kraft, die auf infinitesimal kleine Fl\"achenteile von Schnitten durch das Objekt wirkt, berechnet. Die Kraft ist dabei als Vektor formulierbar. Wenn die Schnitte entlang von 3 zueinander orthogonalen Ebenen durchgef\"uhrt werden, erh\"alt man so drei Vektoren, die zusammen die Matrixdarstellung des Cauchy Tensors $\sigma$ bilden:
@@ -571,10 +574,67 @@ Eine weitere wichtige Einstellung ist, welche Zahl in Formel \ref{RaycastingForm
 Alternativ kann f\"ur $n$ die Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, gew\"ahlt werden. Dies wurde in Abbildung \ref{SamplingPoints2} getan. Wenn man nun \ref{SamplingPoints2} und \ref{SamplingPoints3} miteinander vergleicht, f\"allt auf, dass die Pixel in der mitte der Darstellung etwa die gleichen Farben erhalten haben, \ref{SamplingPoints3} in Richtung Rand jedoch erheblich transparenter wird. Welche von beiden Varianten bevorzugt wird, h\"angt von der Art des Datensatzes ab sowie davon, wie wichtig es ist, korrekte Werte ablesen und vergleichen zu k\"onnen.
 
 \subsection{Contiuous Scatterplotting}
+\subsubsection{Scatterplotting}
+\begin{figure}
+	\hspace{2cm}
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Scatterplot3D}
+		\caption{}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Scatterplot2D}
+		\caption{}
+	\end{subfigure}
+	\hspace{2cm}
+	\caption{Zwei Beispiele f\"ur Scatterplottings. In (a) wird ein Objekt mit den Attributwerten $a_1, a_2, a_3$ als roter Punkt in einem dreidimensionalen Scatterplot dargestellt. Um die Attribute besser ablesen zu k\"onnen, wurden gestrichelte Linien eingezeichnet. In (b) wurden mehrere Objekte mit unterschiedlichen Attributen im selben, zweidimensionalen Scatterplot als schwarze Punkte eingezeichnet.}
+	\label{Scatterplots}
+\end{figure}
+
+Scatterplotting ist ein weiter verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es bildet eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird pro Objekt ein Punkt in ein in zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abbildung \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal 3 Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
+
+Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen sind leicht erkennbar. 
+
+Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ die Projektion auf eine Teilmenge der Attribute notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen. 
+
+Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ bei physikalischen Feldern. Dort sind an jedem der unendlich vielen Punkte Werte definiert. Ein Scatterplot dieser unendlich vielen Elemente ist nun weder in endlicher Laufzeit m\"oglich, noch w\"aren einzelne Punkte in der entstehenden Darstellung erkennbar. Eine Alternative besteht darin, nur den Scatterplot der Eckpunkte der Zellen zu erzeugen, doch damit gehen Informationen \"uber die Punkte innerhalb der Zellen verloren.
+
+
+\subsubsection{Erl\"auterung des Continuous Scatterplottings}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{pictures/ContinuousScatterplot}
+	\caption{Darstellung der Dichteverteilung im Urbild und Bild von $\tau$. Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. }
+	\label{ContinuousScatterplot}
+\end{figure}
+Das Continuous Scatterplotting\cite{bachthaler2008continuous} stellt eine Erweiterung des Scatterplottings dar, so dass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Dabei verwendet es einen Ansatz, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. In Abbildung \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden 2 Annahmen getroffen:
+
+Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird h\"aufig eine uniforme Dichte im gesamten Urbild angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
+
+\begin{equation}
+	M = \int_{V}s(x)d^nx
+	\label{Dichtefunktion}
+\end{equation}
+
+Die zweite Annahme sagt aus, dass die Masse einer Teilmenge $V\subset\mathbb{R}^n$ gleich der Masse ihres Bildes ist, also $\tau$ die Gesamtdichte eines Bereichs nicht beeinflusst. F\"ur $\xi \in \mathbb{R}^m$ f\"uhren diese beiden Aussagen zu der Gleichung
+
+\begin{equation}
+M = \int_{V}s(x)d^nx = \int_{\phi = \tau(V)}\sigma(\xi)d^m\xi
+\end{equation}
+
+wodurch $\sigma$ eindeutig definiert ist.
+
+
+
+
+
+
+
 
 \section{Umsetzung}
 \label{sec:Umsetzung}
 \subsection{Datenaufbereitung}
+\subsection{Die Rasterisierung}
 \subsection{Funktionen}
 \subsection{Handbuch}
 \subsection{Muss noch \"uberarbeitet werden}
