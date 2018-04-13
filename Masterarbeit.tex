@@ -500,6 +500,7 @@ Die aktuelle FAnToM-Session, also die momentan benutzten Algorithmen mit ihren O
 
 Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (ToDo: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
 \subsection{OpenGL}
+\label{sec:OpenGL}
 OpenGL\cite{openglWebsite} ist eine Spezifikation die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm am Ende laufen soll, entwickeln k\"onnen. 
 
 Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Rendepipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Benutzern von OpenGL erm\"oglicht, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
@@ -702,7 +703,7 @@ Da die Integranden des ersten und letzten Integrals gleich sein m\"ussen, ergibt
 	\label{DensitySum}
 \end{equation}
 
-Eine intuitive Interpretation von \ref{DensitySum} ist, dass gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
+Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
 
 Die Berechnung von $\sigma$ h\"angt vom Verh\"altnis von $m$ und $n$ zueinander ab. Da in der vorliegenden Arbeit nur der Fall $m=n=3$ auftritt, beschr\"ankt sich die weitere Er\"auterung auf diesen Fall. F\"ur $m=n$ unterscheiden Bachthaler und Weiskopf folgende F\"alle f\"ur $V \subseteq \mathbb{R}^n$\cite[S.~1430]{bachthaler2008continuous}:
 
@@ -718,6 +719,7 @@ bilden, wobei $J_\tau$ die Jacobimatrix von $\tau$ ist. Da der Wert der Determin
 
 \begin{equation}
 	\sigma(\xi) = \frac{s(\tau^{-1}(\xi))}{|\det(J_\tau)(\tau^-1(\xi))|}
+	\label{Case1Formula}
 \end{equation}
 
 Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt entspricht der Betrag der Determinanten der Jacobimatrix der Expandieren oder Schrumpfen der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt also die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
@@ -804,13 +806,13 @@ Als n\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atz
 
 Durch den Algorithmus `Cylindric Coordinates' werden die Werte des Vektorfeldes als Koordinaten von Punkten in einem zylindrischen Koordinatensystems aufgefasst. Ein Punkt ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Aus diesen neuen Punkten werden Tetraederzellen \"aquivalent zum Eingabefeld definiert. Die Ausgabe entspricht also der Zellstruktur der Eingabe, in der alle Punkte auf die neuen Koordinaten `verschoben' wurden.
 
-Im n\"achsten Schritt wird das Volumen der Zellen des urspr\"unglichen Feldes und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\tau|_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
+Im n\"achsten Schritt wird das Volumen der Zellen des urspr\"unglichen Feldes und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
 
 Zum Schluss wird das Quotientenfeld auf die verschobene Zellstruktur zellenweise \"ubertragen und das Ergebnis abgespeichert, um als zweite Eingabe der Visualisierung zu dienen.
 
 \subsection{Voxelisierung}
 
-Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefeldes als dreidimensionale Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine zweidimensionale Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. Dreidimensionale Texturen setzen sich aus vielen zweidimensionalen Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der dreidimensionalen Textur beschreiben. 
+Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefeldes als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
 
 \begin{figure}
 	\centering
@@ -830,30 +832,157 @@ Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{Raycastin
 		\caption{}
 	\end{subfigure}
 	\hspace{0.5cm}
-	\caption{Darstellungen von m\"oglichen Schnitten durch einen Tetraeder. (a) Der Tetraeder ohne Schnitte. (b) Ein Schnitt, der durch ein einzelnes Dreieck dargestellt werden kann. (b) Ein Schnitt, der durch zwei Dreiecke dargestellt werden kann.}
+	\caption{Darstellungen von m\"oglichen Schnitten durch einen Tetraeder. (a) Der Tetraeder ohne Schnitte. (b) Ein Schnitt, der durch ein einzelnes Dreieck dargestellt werden kann. (b) Ein Schnitt, der ein Viereck bildet. Die gestrichelte Linie deutet eine m\"ogliche Unterteilung in Dreiecke an.}
 	\label{TetraCuts}
 \end{figure}
 
 OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speicherbedarf und Pr\"azision eingestellt werden k\"onnen. F\"ur die vorliegende Arbeit wurde `GL\_RGBA16' gew\"ahlt, die 4 Werte mit jeweils 16 Bit Pr\"azision zur Verf\"ugung stellt. \"Ublicherweise wird in einem Feld der Tabelle die Werte f\"ur den roten, gr\"unen und blauen Anteil der Farbe sowie die Transparenz (`Alpha') an dieser Stelle codiert. Das DVR Verfahren interpretiert diese Werte jedoch anders: Der Alphawert entspricht der Dichte und die restlichen drei Farbwerte den interpolierten Invarianten der Zelle, in der das Voxel liegt. Die Invarianten spielen allerdings nur bei der Visualisierung des urspr\"unglichen Feldes eine Rolle, weshalb diese Werte ansonsten leer gelassen werden.
 
-Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen, und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringengenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der dreidimensionalen Texturen zu implementieren. 
+Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen, und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringengenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der 3D Texturen zu implementieren. 
 
-Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der dreidimensionalen Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen berechnet. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann es als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe Abb. \ref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird.
+Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der 3D Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen berechnet. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann es als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe Abb. \ref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird. Falls der Shader nicht-triviale Algorithmen enth\"alt, ist zus\"atzlich Pseudocode angegeben.
 
-\subsubsection{Shaderimplementierung}
+Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zeite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau 4 Punkte pro Primitiv sind, eignet es sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
+
+Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, ist ein Verfahren implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"r keinem der verwendeten Datens\"atze n\"otig.
+
+Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in eine Textur zu speichern. Dazu wird ein `Framebuffer' verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
+
+Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Benutzer selbst festgelegt werden. Falls in Richtung der X-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale maximale Ausdehung einer 3D Textur in jede Richtung.
 
 \paragraph{Vertex Shader}
+Der Vertex Shader bekommt als Eingabe die Eckpunkte der Tetraeder, codiert in Form von Liniensegmenten mit Nachbarschaft. Falls das Feld in mehrere Texturen voxelisiert werden soll, wird eine Verschiebung und Skalierung durchgef\"uhrt, um nur die korrekten Tetraeder zu voxelisieren. Dichten und Invarianten werden als Variablen an den n\"achsten Teil der Shaderpipeline weitergegeben.
 
 \paragraph{Geometry Shader}
-\paragraph{Fragment Shader}
+Die von FAnToM unterst\"utzte OpenGL Version unterst\"utzt standardm\"a{\ss}ig keine Geometry Shader. Mithilfe einer Erweiterung kann das jedoch umgangen werden.
 
+Der Geometry Shader bekommt als Eingabe alle Punkte eines Primitivs und die vom Vertex Shader \"ubergebenen Variablen f\"ur diese Punkte. Ziel des Geometry Shaders ist es, die Tetraeder mit Ebenen, die parallel zur XY-Ebene verlaufen, zu schneiden und die Schnittfl\"achen als Dreiecke zur\"uck in die Renderpipeline zu \"ubergeben.
+
+Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkanten mit der Ebene. Wenn mindestens drei Schnittpunkte existieren, werden  daraus Dreiecke konstruiert und weitergegeben. Wenn vier Schnittpunkte gefunden wurden, m\"ussen sie zuvor noch nach ihrer Position im Raum geordnet werden, um leicht zwei \"uberlappungsfreie Dreiecke konstruieren zu k\"onnen. In Pseudocode \ref{PseudoGeometry} wird das Verfahren dargestellt.
+
+\begin{algorithm}[H]
+	\KwData{$p_i$ Eckpunkte des Tetraeders, $z$ Parameter der Schnittebene}
+	\KwResult{Schnittfl\"ache zwischen Tetraeder und Schnittebene}
+	$schnittZahl \gets 0$\;
+	$schnittPunkte \gets []$\;
+	
+	\For{$\forall (p_m,p_n), n < m$\tcp*{F\"ur jede Kante des Tetraeders}}{
+		$p \gets schnittpunktBerechnen(z,p_m,p_n)$\;
+		\If{p liegt zwischen $p_m, p_n$}{
+			schnittPunkte[schnittZahl] $\gets$ p\;
+			schnittZahl++\;
+		}
+	}
+	\If{schnittZahl == 4}{
+		sortieren(schnittPunkte);
+	}
+	erzeugeDreiecke(schnittPunkte)\;
+	\vspace{0.5cm}
+	\caption{Die Berechnung der Tetraederschnittfl\"achen im Geometry Shader.}
+	\label{PseudoGeometry}
+\end{algorithm}
+
+\paragraph{Fragment Shader}
+Der Fragment Shader normalisiert die Invarianten auf das Intervall $[0,\dots,1]$, wobei 0 dem niedrigsten und 1 dem h\"ochsten vorkommenden Wert entspricht. Damit wird sichergestellt, dass die Invarianten mit maximal m\"oglicher Pr\"azision in der Textur gespeichert werden.
+
+Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Benutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise mehr als 10 Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter an die 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt das auch kein Problem dar. 
+
+Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch eine von OpenGL bereitgestellten Funktion, dem `Blending'. Im urspr\"unglichen Feld kann dies nicht vorkommen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
 
 \subsection{Umsetzung des Continuous Scatterplottings}
 \label{CSPImplementation}
+Die beiden beschriebenen Verfahren implementieren gemeinsam ein vollst\"andiges Continuous Scatterplotting. Dies wird in diesem Abschnitt genauer begr\"undet.
+
+Der erste Teil, das Berechnen des Dichtebeitrags $\sigma_{V_i}$ der Tetraeder $V_i$, efolgt bereits in der Vorverarbeitung der Daten. Dabei wird die f\"ur Fall 1 angegebene Formel \ref{Case1Formula} verwendet. Die anderen F\"alle k\"onnen zwar theoretisch vorkommen, sind jedoch extrem unwahrscheinlich. Durch unvermeidbare Rundungsfehler werden Bereiche konstanter Invarianten (Fall 2), Nullmengen (Fall 3) und Abbildungen auf Teilr\"aume mit geringerer Dimension (Fall 5) zerst\"ort. Das Erkennen von diesen Rundungsfehlern wird dadurch erschwert, dass in den verwendeten Datens\"atzen tats\"achlich Bereiche mit sehr geringen Ver\"anderungen der Invarianten oder Abbildungen auf sehr flache Tetraeder vorkommen. Die Unterscheidung solcher extremen Formen von Fall 1 zu den anderen F\"allen ist nicht ohne weiteres m\"oglich. Fall 4 kommt nicht vor, da die verwendeten Felder \"uberall differenzierbar sind.
+
+Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich Formel \ref{DensitySum} anwenden. Die $\sigma_V$ entsprechen den berechneten Dichtewerten pro Tetraeder, die f\"ur jedes Voxel durch das Blending aufaddiert werden.
+
+\subsection{Berechnung der maximalen Dichte}
+
+Da Texturen nur Werte im Intervall $[0,\dots,1]$ enthalten k\"onnen, aber vor der fertiggestellten Voxelisierung die maximale Dichte in der 3D Textur nicht bestimmt werden kann, muss ein Verfahren implementiert werden, um das korrekte Maximum zu berechnen.
+
+Zun\"achst wird die h\"ochste, \"uberhaupt m\"ogliche Dichte in einem Voxel berechnet. Diese kommt genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden. Somit entspricht sie der Summe der Dichten aller Tetraeder. Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die gr\"o{\ss}te m\"ogliche Dichte geteilt und somit auf das Intervall $[0,\dots,1]$ normalisiert wird. 
+
+Als n\"achstes wird das Maximum der entstandenen 3D Textur gesucht. Da die 3D Textur relativ gro{\ss} werden kann (bis zu mehreren Gigabyte), die \"Ubertragung von Daten von der Grafikkarte zum Arbeitsspeicher relativ langsam ist und das Finden des Maximums gut parallelisiert werden kann, wurde auch dieses Problem durch eine Shaderpipeline gel\"ost.
+
+Indem das Maximum (ein Wert zwischen 0 und 1) mit dem gr\"o{\ss}ten m\"oglichen Wert multipliziert wird, erh\"alt man das korrekte Maximum. Dies kann verwendet werden, um die Werte einer weiteren Voxelisierung zu normalisieren. Dadurch wird die Pr\"azision in der 3D Textur erh\"oht.
+
+Die Eingabe der Shaderpipeline ist die 3D Textur sowie eine Linie zwischen den Punkten (-1.0, 0.0, 0.0) und (1.0, 0.0, 0.0). Berechnet wird eine Darstellung der Linie aus $Z$ Pixeln, wobei $Z$ die Anzahl an Schichten der 3D Textur ist. Der Wert jedes Pixels entspricht dem Maximum der jeweiligen Schicht. Durch Verwendung eines Framebuffers wird das Ergebnis in eine Textur gerendert, die erheblich wenige Speicherplatz verbraucht als die 3D Textur. Diese wird zur\"uck in den Arbeitsspeicher geladen und das Maximum durch linearen Durchlauf gefunden.
+
+\paragraph{Vertex Shader}
+Der Vertex Shader ordnet (-1.0, 0.0, 0.0) den Wert 0 und (1.0, 0.0, 0.0) den Wert 1 zu und gibt diese Werte an den Fragment Shader weiter.
+
+\paragraph{Fragment Shader}
+F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert, und das Maximum der Schicht zur\"uckgegeben. Der Algorithmus ist in \ref{MaximumAlgo} dargestellt.
+
+\begin{algorithm}[H]
+	\KwData{$T$ 3D Textur, $z$ interpolierte z-Koordinate der Schicht,\\
+		 $x_{max}, y_{max}$ Ausdehung der Schicht in x und y Richtung}
+	\KwResult{Maximum der Schicht}
+	
+	$max \gets 0$\;
+	\For{$x \gets 0$ \KwTo $x_{max}$}{
+		\For{$y \gets 0$ \KwTo $y_{max}$}{
+			$p \gets punktAnKoordinaten(\frac{x}{x_{max}},\frac{y}{y_{max}},z)$
+			$voxelDichte = texturwertAnPunkt(T, p)$
+			$max = maximuim(max, voxelDichte)$
+		}	
+	}
+	\Return max\;
+	\vspace{0.5cm}
+	\caption{Die Bestimmung der Maxima aller Schichten im Fragment Shader.}
+	\label{MaximumAlgo}
+\end{algorithm}
+
 \subsection{Umsetzung des Raycastings}
 \label{RaycastingImplementation}
 
-F\"ur die beiden DVR Darstellungen wird eine Variante des schon in \ref{sec:Raycasting} beschriebenen Verfahrens verwendet. 
+F\"ur die beiden DVR Darstellungen wird eine Variante des schon in \ref{sec:Raycasting} beschriebenen Verfahrens verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
+
+Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht Bildeben in Abb. \ref{Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
+
+Der Code basiert auf dem Algorithmus `Volume Renderer GLSL', erweitert diesen aber deutlich.
+
+\paragraph{Vertex Shader}
+Im Vertex Shader werden lediglich die X- und Y-Koordinaten der Punkte in einer Variable gespeichert und an den Fragment Shader \"ubergeben.
+
+\paragraph{Fragment Shader}
+Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. 
+
+Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort schwarz als Farbe des Fragments zur\"uckgegeben werden.
+
+Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. Dem Benutzer steht dabei frei, welche der beiden in Abschnitt \ref{Raycasting} beschriebenen Varianten er bevorzugt. 
+
+Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offset erzeugt werden, der die Position des ersten Samplepunkts beeinflusst.
+
+Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formel \ref{RaycastingFormula} zu einem Farbwert kombiniert. 
+
+Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand der 3D Textur, Abbruch nachdem verbleibende Transparenz Grenzwert unterschreitet) sind implementiert.
+
+Wenn die Invarianten (nur beim urspr\"unglichen Feld) oder der Punkt selbst (nur im Invariantenraum) ausserhalb des ausgew\"ahlten Bereichs liegen, wird Farbe und Dichte am Samplepunkt als 0 angenommen.
+
+Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+
+\begin{algorithm}[H]
+	\KwData{$s$ Strahlvektor der L\"ange 1, $t$ Schrittweite,\\
+		 $T$ 3D Textur, $p_0$ erster Samplepunkt}
+	\KwResult{akkumulierte Farbe entlang des Strahls}
+	$transparenz\gets 1.0$\;
+	\For{$i \gets 0$ \KwTo $n$}{
+		$texturwert \gets texturwertAnPosition(T, p)$\;
+		$invarianten \gets invarianten(texturwert)$\;
+		$dichte \gets dichte(texturwert)$\tcp*{Der }\; 
+		$color \gets transferfunktion(dichte)$\;
+	}
+	\vspace{0.5cm}
+	\caption{Die Berechnung der akkumulierten Farbe eines Strahls durch die 3D Textur.}
+	\label{RaycastingAlgorithm}
+\end{algorithm}
+
+
+
+
+
 \subsection{Funktionen}
 \subsection{Handbuch}
 \subsection{Muss noch \"uberarbeitet werden}
