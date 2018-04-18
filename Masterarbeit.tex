@@ -782,33 +782,46 @@ Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $ran
 \label{sec:Umsetzung}
 In diesem Kapitel wird beschrieben, wie die Grundlagen, Technologien und Verfahren aus den vorherigen Kapiteln eingesetzt wurden, um eine interaktive Tensorfeldvisualisierung in FAnToM zu erzeugen.
 
-Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Die Dichte in den Zellen der neuen Zellstruktur werden durch Methoden des Contiuous Scatterplottings berechnet.
+Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichte in den Zellen der neuen Zellstruktur werden durch Methoden des Contiuous Scatterplottings berechnet.
 
 In die Darstellung des zylindrischen Invarianten DVRs werden ausserdem noch Interaktionsfl\"achen in Form von Kreissektoren eingezeichnet. Durch Interaktion mit der Maus k\"onnen die Fl\"achen verschoben sowie ihr Radius und die Winkel der beiden Kreisradient zur XY Ebene ver\"andert werden.
-Mithilfe der Interaktionsfl\"achen kann der Benutzer Bereiche von Invarianten ausw\"ahlen. Alles, was ausserhalb des ausgew\"ahlten Bereichs liegt, wird im zylindrischen DVR ausgeblendet. Auch in der Darstellung des urspr\"unglichen Feldes werden alle Bereiche ausgeblendet, deren Invarianten ausserhalb des gew\"ahlten Bereichs liegen. 
+Mithilfe der Interaktionsfl\"achen kann der Benutzer Bereiche von Invarianten ausw\"ahlen. Alles, was ausserhalb des ausgew\"ahlten Bereichs liegt, wird im zylindrischen DVR ausgeblendet. Auch in der Darstellung des Objekts werden alle Bereiche ausgeblendet, deren Invarianten ausserhalb des gew\"ahlten Bereichs liegen. 
 
 Zus\"atzlich existieren weitere Optionen, durch die der Benutzer die Darstellungen an seine Problemstellung anpassen kann.
 
 Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden n\"aher erl\"autert.
 
-\subsection{Datenaufbereitung}
+\subsection{Datenvorbereitung}
 \begin{figure}
 	\centering
 	\includegraphics[width=0.95\textwidth]{pictures/BigSession.png}
 	\caption{Der Flowgraph der FAnToM Session, die zur Vorbereitung der Daten verwendet wird.}
 	\label{BigSession}
 \end{figure}
-Bevor die Visualisierung beginnen kann, m\"ussen die Daten aufbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt, und die Ergebnisse abgespeichert. Die Aufbereitung geschieht durch eine Reihe von FAnToM Algorithmen, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Aufbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithmen der Session werden im Folgenden erkl\"art.
+\subsubsection{Die Vorbereitungssession}
+Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt, und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithmen, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithmen der Session werden im Folgenden erkl\"art.
 
-Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des ursp\"runglichen Feldes werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
+Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des Objekts werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
 
 Als n\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils 3 Invarianten. Dazu werden 3 Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, die als Eingabe der eigentlichen Visualisierung verwendet wird.
 
 Durch den Algorithmus `Cylindric Coordinates' werden die Werte des Vektorfeldes als Koordinaten von Punkten in einem zylindrischen Koordinatensystems aufgefasst. Ein Punkt ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Aus diesen neuen Punkten werden Tetraederzellen \"aquivalent zum Eingabefeld definiert. Die Ausgabe entspricht also der Zellstruktur der Eingabe, in der alle Punkte auf die neuen Koordinaten `verschoben' wurden.
 
-Im n\"achsten Schritt wird das Volumen der Zellen des urspr\"unglichen Feldes und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
+Im n\"achsten Schritt wird das Volumen der Zellen des Objekts und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
 
 Zum Schluss wird das Quotientenfeld auf die verschobene Zellstruktur zellenweise \"ubertragen und das Ergebnis abgespeichert, um als zweite Eingabe der Visualisierung zu dienen.
+
+\subsubsection{Die Visualisierungssession}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{pictures/VisSession.png}
+	\caption{Der Flowgraph der Visualisierungssession.}
+	\label{VisualizationSession}
+\end{figure}
+
+Zwei Teile der Datenvorbereitung m\"ussen in der gleichen Session stattfinden wie die Visualisierung selbst, um dem Anwender die M\"oglichkeit der Interaktion zu geben. Das sind zum einen die Erzeugung der Transferfunktion, zum anderen die Berechnung der Dichte innerhalb der Voxel im Objekt. Die Session ist in Abb. \ref{VisualizationSession} zu sehen.
+
+Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in Abb. \ref{Colormap} beschrieben, ist diese vom Benutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt wird durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
 
 \subsection{Voxelisierung}
 
@@ -836,7 +849,7 @@ Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{Raycastin
 	\label{TetraCuts}
 \end{figure}
 
-OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speicherbedarf und Pr\"azision eingestellt werden k\"onnen. F\"ur die vorliegende Arbeit wurde `GL\_RGBA16' gew\"ahlt, die 4 Werte mit jeweils 16 Bit Pr\"azision zur Verf\"ugung stellt. \"Ublicherweise wird in einem Feld der Tabelle die Werte f\"ur den roten, gr\"unen und blauen Anteil der Farbe sowie die Transparenz (`Alpha') an dieser Stelle codiert. Das DVR Verfahren interpretiert diese Werte jedoch anders: Der Alphawert entspricht der Dichte und die restlichen drei Farbwerte den interpolierten Invarianten der Zelle, in der das Voxel liegt. Die Invarianten spielen allerdings nur bei der Visualisierung des urspr\"unglichen Feldes eine Rolle, weshalb diese Werte ansonsten leer gelassen werden.
+OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speicherbedarf und Pr\"azision eingestellt werden k\"onnen. F\"ur die vorliegende Arbeit wurde `GL\_RGBA16' gew\"ahlt, die 4 Werte mit jeweils 16 Bit Pr\"azision zur Verf\"ugung stellt. \"Ublicherweise wird in einem Feld der Tabelle die Werte f\"ur den roten, gr\"unen und blauen Anteil der Farbe sowie die Transparenz (`Alpha') an dieser Stelle codiert. Das DVR Verfahren interpretiert diese Werte jedoch anders: Der Alphawert entspricht der Dichte und die restlichen drei Farbwerte den interpolierten Invarianten der Zelle, in der das Voxel liegt. Die Invarianten spielen allerdings nur bei der Visualisierung des Objekts eine Rolle, weshalb diese Werte ansonsten leer gelassen werden.
 
 Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen, und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringengenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der 3D Texturen zu implementieren. 
 
@@ -860,7 +873,7 @@ Der Geometry Shader bekommt als Eingabe alle Punkte eines Primitivs und die vom 
 
 Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkanten mit der Ebene. Wenn mindestens drei Schnittpunkte existieren, werden  daraus Dreiecke konstruiert und weitergegeben. Wenn vier Schnittpunkte gefunden wurden, m\"ussen sie zuvor noch nach ihrer Position im Raum geordnet werden, um leicht zwei \"uberlappungsfreie Dreiecke konstruieren zu k\"onnen. In Pseudocode \ref{PseudoGeometry} wird das Verfahren dargestellt.
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\KwData{$p_i$ Eckpunkte des Tetraeders, $z$ Parameter der Schnittebene}
 	\KwResult{Schnittfl\"ache zwischen Tetraeder und Schnittebene}
 	$schnittZahl \gets 0$\;
@@ -887,7 +900,7 @@ Der Fragment Shader normalisiert die Invarianten auf das Intervall $[0,\dots,1]$
 
 Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Benutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise mehr als 10 Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter an die 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt das auch kein Problem dar. 
 
-Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch eine von OpenGL bereitgestellten Funktion, dem `Blending'. Im urspr\"unglichen Feld kann dies nicht vorkommen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
+Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch eine von OpenGL bereitgestellten Funktion, dem `Blending'. Im Objekt kann dies nicht vorkommen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
 
 \subsection{Umsetzung des Continuous Scatterplottings}
 \label{CSPImplementation}
@@ -915,7 +928,7 @@ Der Vertex Shader ordnet (-1.0, 0.0, 0.0) den Wert 0 und (1.0, 0.0, 0.0) den Wer
 \paragraph{Fragment Shader}
 F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert, und das Maximum der Schicht zur\"uckgegeben. Der Algorithmus ist in \ref{MaximumAlgo} dargestellt.
 
-\begin{algorithm}[H]
+\begin{algorithm}
 	\KwData{$T$ 3D Textur, $z$ interpolierte z-Koordinate der Schicht,\\
 		 $x_{max}, y_{max}$ Ausdehung der Schicht in x und y Richtung}
 	\KwResult{Maximum der Schicht}
@@ -959,36 +972,172 @@ Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur 
 
 Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand der 3D Textur, Abbruch nachdem verbleibende Transparenz Grenzwert unterschreitet) sind implementiert.
 
-Wenn die Invarianten (nur beim urspr\"unglichen Feld) oder der Punkt selbst (nur im Invariantenraum) ausserhalb des ausgew\"ahlten Bereichs liegen, wird Farbe und Dichte am Samplepunkt als 0 angenommen.
+\begin{figure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\textwidth]{pictures/Raycasting1.png}
+		\subcaption{}
+		\label{RaycastingExample1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[width=0.5\textwidth]{pictures/Raycasting2.png}
+		\subcaption{}
+		\label{RaycastingExample2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\caption{Ergebnisse des Raycastings auf einem quaderf\"ormigen Feld von 3x3 Matrizen. In (a) ist der gesamte Invariantenbereich ausgew\"ahlt, in (b) ist er auf hohe Werte begrenzt. Zu beachten ist, dass in (a) die Farben von Punkten n\"aher am Zentrum des Feldes dunkler und in (b) die ausgeblendeten Bereiche als stark transparent und wei{\ss} dargestellt werden.}
+	\label{RaycastingExample}
+\end{figure}
 
-Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+Wenn beim Rendering des Feldes im Invariantenraumes der ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegen, wird dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
 
-\begin{algorithm}[H]
+\begin{algorithm}[t]
 	\KwData{$s$ Strahlvektor der L\"ange 1, $t$ Schrittweite,\\
-		 $T$ 3D Textur, $p_0$ erster Samplepunkt}
+		 $T$ 3D Textur, $p_0$ erster Samplepunkt, $B$ ausgew\"ahlter Invariantenbereich}
 	\KwResult{akkumulierte Farbe entlang des Strahls}
 	$transparenz\gets 1.0$\;
+	$fragmentfarbe\gets (0, 0, 0, 0)$\;
 	\For{$i \gets 0$ \KwTo $n$}{
-		$texturwert \gets texturwertAnPosition(T, p)$\;
-		$invarianten \gets invarianten(texturwert)$\;
-		$dichte \gets dichte(texturwert)$\tcp*{Der }\; 
-		$color \gets transferfunktion(dichte)$\;
+		\If{$transparenz < grenzwert$}{$break$\;}
+		$invarianten \gets invarianten(T, p)$\;
+		$dichte \gets dichte(T, p)$\; 
+		\tcp{Nur im Objekt}
+		\If{$invarianten nicht in B$}{
+			$fragmentFarbe \gets fragmentFarbe + (1.0, 1.0, 1.0, 0.05)$\;
+			$transparenz = transparenz - 0.05$\;
+			$continue$\;
+		} 
+		\tcp{Nur im Invariantenraum}
+		\If{$p nicht in B$}{$continue$\;} 
+		$voxelFarbe \gets transferfkt(dichte)$\;
+		$fragmentFarbe \gets fragmentFarbe + voxelFarbe \cdot transparenz$\;
+		$transparenz = transparenz - voxelFarbe.transparenz$\;
 	}
 	\vspace{0.5cm}
 	\caption{Die Berechnung der akkumulierten Farbe eines Strahls durch die 3D Textur.}
 	\label{RaycastingAlgorithm}
 \end{algorithm}
 
+Um die Tiefenwahrnehmung zu verbessern werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
+\subsection{Die Interaktionsfl\"achen}
+\begin{figure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.2\textwidth}
+		\includegraphics[width=\textwidth]{pictures/InteractionPlane.png}
+		\subcaption{}
+		\label{InteractionPlaneA}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.165\textwidth}
+		\includegraphics[width=\textwidth]{pictures/InteractionPlanes2.png}
+		\subcaption{}
+		\label{InteractionPlaneB}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.165\textwidth}
+		\includegraphics[width=\textwidth]{pictures/InteractionPlanes3.png}
+		\subcaption{}
+		\label{InteractionPlaneC}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.165\textwidth}
+		\includegraphics[width=\textwidth]{pictures/InteractionPlanes4.png}
+		\subcaption{}
+		\label{InteractionPlaneD}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.15\textwidth}
+		\includegraphics[width=\textwidth]{pictures/InteractionPlanes5.png}
+		\subcaption{}
+		\label{InteractionPlaneE}
+	\end{subfigure}
+	\hspace*{\fill}
+	\caption{Die Darstellungen der Interaktionsfl\"achen. (a) Eine Interaktionsfl\"ache mit den einzelnen Bereichen. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlen die jeweiligen Invarianten aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionsfl\"achen durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
+\end{figure}
+Um in der Darstellung des Feldes im Invariantenraum Bereiche aus\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Diese haben die Form von Halbkreisen, und k\"onnen durch die Maus manipuliert werden. Durch Klicken und Halten der mittleren Maustaste k\"onnen untere und obere Schranken der Invariantenbereiche ausgew\"ahlt und durch Bewegung der Maus ihre Werte ver\"andert werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. 
 
+Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft oder nicht, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl eine Interaktionsfl\"ache trifft, wird der getroffene Bereich ausgew\"ahlt. Wenn beide Interaktionsfl\"achen getroffen werden, wird die n\"ahere von beiden bevorzugt.
 
+Wenn, nachdem ein Bereich ausgew\"ahlt wurde, die Maus bewegt wird, passen die Interaktionsfl\"achen ihre Position entsprechend an. Wenn die 1. Invariante gew\"ahlt wurde, wird die Interaktionsfl\"ache entlang der X-Achse verschoben. Abh\"angig davon welche Interaktionsfl\"ache ausgew\"ahlt wurde, wird dadurch das Minimum oder Maximum der ersten Invariante gew\"ahlt. Die Bereiche k\"onnen auf einer einzelnen Interaktionsfl\"ache eingestellt werden. Die Form der zweiten wird automatisch angepasst. Die Ver\"anderungen der Formen und Positionen sind in Abb. \ref{InteractionPlaneB}, \ref{InteractionPlaneC} und  \ref{InteractionPlaneD} dargestellt. 
 
-\subsection{Funktionen}
-\subsection{Handbuch}
-\subsection{Muss noch \"uberarbeitet werden}
+\subsection{Weitere Interaktionen}
+Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
+\paragraph{Rotation des DVR}
+Indem die linke Maustaste gedr\"uckt und gehalten wird, kann durch die Bewegung der Maus die Visualisierung um das aktuelle Rotationszentrum gedreht werden.
+\paragraph{Bewegung der Kameraposition}
+\"Ahnlich wie bei der Rotation der Szene, kann durch Dr\"ucken und Halten der rechten Maustaste die Kameraposition mittels Bewegung der Maus innerhalb der Szene verschoben werden.
+\paragraph{Setzen des Rotationszentrums}
+Das Rotationszentrum des Invariantenfeldes kann mittels doppeltem Linksklick an einen Punkt entlang der X-Achse gesetzt werden.
+\paragraph{Zur\"ucksetzen von Rotation und Kameraposition}
+Durch Dr\"ucken der `c'-Taste wird die Kameraposition und die Rotation des Feldes zur\"uckgesetzt.
+\paragraph{Zur\"ucksetzen der Invariantenbereiche}
+Die Schranken des ausgew\"ahlten Invariantenbereichs k\"onnen durch Dr\"ucken der `r'-Taste zur\"uckgesetzt werden.
+
+\subsection{Optionen des Algorithmus}
+
+Der Visualisierungsalgorithmus bietet eine Reihe von Optionen an, durch die beide DVR Darstellungen angepasst werden k\"onnen. Die Optionen gliedern sich dabei auf in solche, die f\"ur beide Darstellungen existieren und solche, die nur f\"ur eine von beiden vorhanden sind. 
+
+\subsubsection{Gemeinsame Optionen}
+
+\paragraph{Anzahl von Samplingpunkten}
+Die Anzahl der Samplepunkte pro Strahl kann f\"ur beide Darstellungen unabh\"angig voneinander mittels eines Textfeldes gew\"ahlt werden.
+
+\paragraph{Jittering}
+Um visuelle Artefakte zu verringern, kann durch eine Option ein pseudo-zuf\"alliger Offset vor dem ersten Samplepunkt gesetzt berechnet werden.
+
+\paragraph{Helligkeit}
+Ein Slider erm\"oglicht die Einstellung der Helligkeit des Volume Renderings unabh\"angig von der Transferfunktion.
+
+\paragraph{Dichte}
+Durch einen weiteren Slider kann ein Faktor festgelegt werden, mit dem die Dichte der Voxel multipliziert wird. Alternativ existiert daf\"ur auch ein Textfeld, falls exakte Werte oder Werte ausserhalb der Reichweite des Sliders ben\"otigt werden.
+
+\paragraph{Offset}
+Der dritte Slider legt einen Grenzwert f\"ur die Dichtewerte fest. Bereiche, deren Dichte unterhalb dieses Grenzwerts liegt, werden als komplett transparent angenommen.
+
+\paragraph{Lineare Interpolation}
+Standardm\"a{\ss}ig misst das Sampling die Dichtewerte der Textur an diesem Punkt. Da die Texur durch Rasterisierung enstanden ist, kann dies zu visuellen Artefakten f\"uhren, die die Darstellung `blockig' erscheinen lassen. Durch eine Option kann f\"ur lineare Interpolation verwendet werden, um die Dichte an einem Punkt zu bestimmen. Dabei wird neben der Dichte des Voxels selbst auch die Dichte der angrenzenden Voxel verwendet, und zwischen diesen der Wert f\"ur den Punkt interpoliert.
+
+\paragraph{Skalierung der Transparenz mit der Anzahl der Samplepunkte im Feld}
+Diese Option macht es m\"oglich, die im Abschnitt \ref{sec:Raycasting} und Abb. \ref{RaycastingImplementation} erl\"auterte Skalierung der Transparenz mit der Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, an- und auszuschalten.
+
+\paragraph{Anzahl der Voxel in X/Y/Z Richtung}
+Die Anzahl der Voxel, in die das Feld voxelisiert werden soll, kann f\"ur die einzelnen Dimensionen eingestellt werden. H\"ohere Werte f\"uhren zu einer besseren Darstellung kleiner Tetraeder, erh\"ohen jedoch die Rechenzeit und den ben\"otigten Speicher.
+
+\subsubsection{Optionen des Objektrenderings}
+
+\paragraph{Bounding Box}
+Um die Gr"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen wei{\ss}e Linien an den Kanten der begrenzenden Fl\"achen eingezeichnet werden, also eine `Bounding Box' dargestellt werden.
+
+\subsection{Optionen des Invariantenraumrenderings}
+\paragraph{Wireframe}
+Optional kann ein `Wireframe' angezeigt werden, ein Liniengitter das das Feld begrenzt. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Die Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
+\paragraph{Koordinatenlabels}
+Um die Invariantenbereiche mit der Maus besser einstellen zu k\"onnen, ist es optional m\"oglich, die Werte der Schranken an den Interaktionsfl\"achen anzuzeigen.
+
+\paragraph{Interaktionsfl\"achen ausblenden}
+Da die Interaktionsfl\"achen einen gro{\ss}en Teil des Objekts verdecken k\"onnen, ist es m\"oglich, diese auszublenden. W\"ahrend sie ausgeblendet sind, ist keine Interaktion mit ihnen m\"oglich, die Invariantenbereiche k\"onnen also nicht mit der Maus ver\"andert werden.
+
+\paragraph{Wurzelskalierung}
+Die im Fragment Shader der Voxelisiserung durchgef\"uhre Skalierung, indem die dritte Wurzel gezogen wird, kann an- und ausgeschaltet werden.
+
+\paragraph{Normalisierung des Feldes}
+Weil das Feld im Invariantenraum beliebige Formen annehmen kann, zum Beispiel flache Zylinder oder schmale Zylinderausschnitte, kann es sinnvoll sein, die Positionen auf einen festen Halbzylinder zu skalieren um leeren Raum zu vermeiden und sehr kleine Tetraeder besser sichtbar zu machen. Dies ist durch eine Option m\"oglich. Dabei werden die Minima und Maxima in allen drei Dimensionen berechnet und das Feld auf so skaliert, dass es die Form eines Halbzylinders mit einer feste H\"ohe von 1 annimmt.
+
+\subsection{Das Intervallfenster}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\textwidth]{pictures/IntervalWindow.png}
+	\caption{Das Intervall-Fenster.}
+	\label{IntervalWindow}
+\end{figure}
+Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0,\dots1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVRs angewendet.
+
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
-\label{Ergebnisse}
 \subsection{title}
 \section{Ausblick}
 \label{sec:Ausblick}
