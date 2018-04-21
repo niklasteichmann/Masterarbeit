@@ -20,6 +20,7 @@
 \usepackage{amsmath} 
 \usepackage{amssymb}
 \usepackage{svg}
+\usepackage{float}
 \addbibresource{Literatur.bib} % database for references
 \graphicspath{{./images/}} % sets the default path for images
 
@@ -271,6 +272,15 @@ $\tilde{A}$ wird auch als Deviator von A bezeichnet. Bei einer $3\times 3$ Matri
 
 wobei $I$ die Matrixdarstellung des Einheitstensor ist.
 
+\subsubsection{Fraktionale Anisotropie einer Matrix}
+Die fraktionale Anisotropie $FA(M)$ einer Matrix, mit $\bar{\lambda}$ als Mittelwert der Eigenwerte, ist definiert als
+
+\begin{equation}
+	FA(M) = \sqrt{\frac{3((\lambda_1 - \bar{\lambda})^2 + (\lambda_2 - \bar{\lambda})^2 + (\lambda_3 - \bar{\lambda})^2)}{2(\lambda_1^2 + \lambda_2^2 + \lambda_3^2)}}
+\end{equation}
+
+sie entspricht also der Standardabweichung der Eigenwerte, dividiert durch den Mittelwert ihrer Quadrate. Dadurch wird die Standardabweichung auf das Intervall $[0,\dots,1]$ normiert. Bei Matrizen mit hoher $FA$ (nahe 1) ist ein Eigenwert um ein Vielfaches gr\"o{\ss}er als die anderen beiden. Dies kann beispielsweise in Aufnahmen der Diffusions-MRT ein Hinweis auf die Position und Richtung von Nervenbahnen sein. Niedrige $FA$ dagegen dr\"uckt aus, dass die Eigenwerte etwa die gleichen Werte annehmen. In der Kontinuumsmechanik ist dies beispielsweise in Bereichen isotroper Verformung (also gleichm\"a{\ss}iger Ausdehnung / gleichm\"a{\ss}igem Schrumpfen in alle Richtungen) der Fall.
+
 \subsubsection{Modus einer Matrix}
 Der Verformungs-Modus \cite{criscione2000invariant} einer Matrix $A$, im Folgenden kurz Modus genannt, ist definiert als
 
@@ -294,7 +304,7 @@ Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte
 	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die Fraktionale Anisotropie nimmt mit gr\"o{\ss}erer Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
 	\label{Modus}
 \end{figure}
-Um die Intuition hinter dem Modus zu verdeutlichen, sind in Abb. \ref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere wird dadurch betont, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
+Um die Intuition hinter Modus und fraktionaler Anisotropie zu verdeutlichen, sind in Abb. \ref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere soll damit gezeigt werden, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
 
 \subsubsection{Gradient}
 Der Gradient einer skalaren Funktion $f: \mathbb{R}^n \rightarrow \mathbb{R}$  \"uber einem kartesischen Koordinatensystem ist definiert als
@@ -360,7 +370,7 @@ Eigenvektoren $v_i$, $1\leq i\leq 3$ einer 3 $\times$ 3 Matrix $M$ sind vom Null
 	M \cdot v_i = \lambda_i v_i
 \end{equation}
 
-Intuitiv bedeutet das, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet und bilden einen orthogonalen Invariantensatz. Sie sind insbesondere in der Medizin sehr beliebt, da hohe Eigenwerte Hinweise auf Diffusionsbewegung in Gewebe liefern k\"onnen.
+Intuitiv bedeutet das, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet und bilden einen orthogonalen Invariantensatz. Sie sind insbesondere in der Medizin sehr beliebt, da Eigenwerte Hinweise auf Diffusionsbewegungen in Gewebe liefern k\"onnen.
 
 \paragraph{Der I-Invariantensatz}
 Das charakteristische Polynom $\chi$ einer $3\times3$ Matrix $A$ hat die Form
@@ -389,8 +399,8 @@ I bildet jedoch keinen orthogonalen Invariantensatz.
 
 \begin{itemize}
 	\item $J_1(A) = tr(\tilde{A})$ (Spur des Deviators von $A$)
-	\item $I_2(A) = \frac{1}{2}(tr(\tilde{A})^2 - tr(\tilde{A}^2))$ (Summe der Hauptminoren des Deviators von $A$)
-\item $I_3(A) = det(\tilde{A})$ (Determinante des Deviators von $A$)
+	\item $J_2(A) = \frac{1}{2}(tr(\tilde{A})^2 - tr(\tilde{A}^2))$ (Summe der Hauptminoren des Deviators von $A$)
+\item $J_3(A) = det(\tilde{A})$ (Determinante des Deviators von $A$)
 \end{itemize}
 
 Dabei ist jedoch zu beachten, dass
@@ -405,7 +415,7 @@ Dabei ist jedoch zu beachten, dass
 	\end{split}
 \end{equation}
 
-weshalb statt $J_1$ in der Regel $I_1$ als Invariante verwendet wird. \"Ahnlich wie I ist auch J nicht orthogonal.
+weshalb statt $J_1$ in der Regel $I_1$ als Teil des Invariantensatzes verwendet wird. \"Ahnlich wie I ist auch J nicht orthogonal.
 
 \paragraph{Der K-Invariantensatz}
 Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ und $K_3$. Diese sind f\"ur eine Matrix $A$ definiert als
@@ -420,11 +430,13 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/cylinder}
-	\caption{In dieser Abbildung werden zylindrische Koordinaten innerhalb eines kartesischen Koordinatensystems dargestellt. $x,y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der $x$-Achse. }
+	\caption{Darstellung eines zylindrischen Koordinatensystems. $x,y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der $x$-Achse. }
 	\label{cylinderCoords}
 \end{figure}
 
-Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"r den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$
+Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"r den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
+
+Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der St\"arke des isotropen Anteils der Matrix, $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
 
 
@@ -445,6 +457,8 @@ Dabei f\"allt auf, dass $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invaria
 	\caption{Dargestellt sind Isofl\"achen der K und R Invarianten von diagonalisierten $3\times 3$ Matrizen (alle Werte ausserhalb der Hauptdiagonale sind 0). Die Koordinatenachsen entsprechen den drei Eigenwerten der Matrizen. Entnommen aus \cite[S.~139]{ennis2006orthogonal}}
 	\label{KRInvariants}
 \end{figure}
+
+\"Ahnlich wie der K-Invariantensatz existiert auch f\"ur den R-Satz eine Interpretation in der Kontinuumsmechanik. 
 
 Sowohl K als auch R beschreiben die Verteilung, die Gr\"o{\ss}e und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
 
@@ -476,7 +490,7 @@ Jede Spalte des Cauchy Tensors entspricht dabei einem der Vektoren. Wie aus der 
 Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\"arke der Spannung (Hookesches Gesetz). Durch einen Verformungstensor (auch Verzerrungstensor, engl. strain tensor) l\"asst sich die Verformung an einem Punkt durch Kraftanwendung angeben:
 
 \begin{equation}
-	\epsilon =  
+	\   =  
 	\begin{bmatrix}
 		\epsilon_x & \frac{1}{2}\gamma_{xy} & \frac{1}{2}\gamma_{xz}\\
 		\frac{1}{2}\gamma_{xy} & \epsilon_y & \frac{1}{2}\gamma_{yz}\\
@@ -803,7 +817,7 @@ Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. U
 
 Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des Objekts werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
 
-Als n\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils 3 Invarianten. Dazu werden 3 Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, die als Eingabe der eigentlichen Visualisierung verwendet wird.
+Als n\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils 3 Invarianten. Dazu werden 3 Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, die als Eingabe der eigentlichen Visualisierung verwendet wird.
 
 Durch den Algorithmus `Cylindric Coordinates' werden die Werte des Vektorfeldes als Koordinaten von Punkten in einem zylindrischen Koordinatensystems aufgefasst. Ein Punkt ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Aus diesen neuen Punkten werden Tetraederzellen \"aquivalent zum Eingabefeld definiert. Die Ausgabe entspricht also der Zellstruktur der Eingabe, in der alle Punkte auf die neuen Koordinaten `verschoben' wurden.
 
@@ -988,7 +1002,7 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 		\label{RaycastingExample2}
 	\end{subfigure}
 	\hspace*{\fill}
-	\caption{Ergebnisse des Raycastings auf einem quaderf\"ormigen Feld von 3x3 Matrizen. In (a) ist der gesamte Invariantenbereich ausgew\"ahlt, in (b) ist er auf hohe Werte begrenzt. Zu beachten ist, dass in (a) die Farben von Punkten n\"aher am Zentrum des Feldes dunkler und in (b) die ausgeblendeten Bereiche als stark transparent und wei{\ss} dargestellt werden.}
+	\caption{Ergebnisse des Raycastings auf einem quaderf\"ormigen Feld von $3\times3$ Matrizen. In (a) ist der gesamte Invariantenbereich ausgew\"ahlt, in (b) ist er auf hohe Werte begrenzt. Zu beachten ist, dass in (a) die Farben von Punkten n\"aher am Zentrum des Feldes dunkler und in (b) die ausgeblendeten Bereiche als stark transparent und wei{\ss} dargestellt werden.}
 	\label{RaycastingExample}
 \end{figure}
 
@@ -1138,7 +1152,441 @@ Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ei
 
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
-\subsection{title}
+Die Visualisierung wurde auf eine Reihe von Testdatens\"atzen angewendet, um die Korrektheit und Qualit\"at der Darstellung zu bewerten. In diesem Abschnitt werden die Datens\"atze vorgestellt, die Ergebnisse der Visualisierungen gezeigt und die Informationen, die daraus gezogen werden k\"onnen, bewertet. Verwendet wird dabei der K-Invariantensatz.
+
+Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Datens\"atze zu vermitteln, wurde f\"ur jeden Datensatz eine Visualisierung der Tensoren als Ellipsoide erzeugt.
+\subsection{Single Point Load}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Ellipsoids.png}
+		\subcaption{}
+		\label{SinglePointEllipsoids}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace_cropped.png}
+		\subcaption{}
+		\label{SinglePointInvariantSpace}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object_cropped.png}
+		\subcaption{}
+		\label{SinglePointObject}
+	\end{subfigure}
+	\label{SinglePoint}
+	\caption{Darstellung des Single Point Load Datensatzes.}
+	
+\end{figure}
+
+Der erste Testdatensatz ist ein von FAnToM erzeugtes Tensorfeld. Dabei wird simuliert, dass auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist im der linken H\"alfte der vorderen, quadratischen Seite. 
+
+Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoide. Die L\"angen der Halbachsen entsprechen den Eigenwerten. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
+
+In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedriger ersten Invariante ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedriger zweiter Invariante und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hoher dritter Invariante zu sehen. 
+
+Aus diesen Darstellungen l\"asst sich ein starker Zusammenhang zwischen der zweiten (Spur) und dritten (Norm des Deviators) Invariante im Datensatz herleiten. Dies beruht insbesondere darauf, dass das Ausblenden niedriger Bereiche f\"ur die erste und zweite Invariante zu sehr \"ahnlichen Effekten im DVR des Objekts f\"uhrt.  
+
+Aus der Darstellung von Bereichen mit hohem Modus (\ref{SinglePointInvariant3} und \ref{SinglePointObject3}) l\"asst sich ableiten, dass die einwirkende Kraft Tensoren mit einem einzelnen hohen Eigenwert erzeugt, die sich in einem kegelf\"ormigen Bereich ausgehend vom Auftrittspunkt der Kraft befinden.
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{SinglePointInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object1_cropped.png}
+		\subcaption{}
+		\label{SinglePointObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{SinglePointInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object2_cropped.png}
+		\subcaption{}
+		\label{SinglePointObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{SinglePointInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object3_cropped.png}
+		\subcaption{}
+		\label{SinglePointObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{SinglePointInteraction}
+\end{figure}
+
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Ellipsoids.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
+	\label{MetalDiskStress}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object1_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object2_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object3_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStressObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{MetalDiskStressInteraction}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Ellipsoids.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
+	\label{MetalDiskStrain}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object1_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object2_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object3_cropped.png}
+		\subcaption{}
+		\label{MetalDiskStrainObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{MetalDiskStrainInteraction}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_Ellipsoids.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_InvariantSpace_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_Object_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
+	\label{Bremshebel}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{BremshebelInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_Object1_cropped.png}
+		\subcaption{}
+		\label{BremshebelObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{BremshebelInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_Object2_cropped.png}
+		\subcaption{}
+		\label{BremshebelObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{BremshebelInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Bremshebel_Object3_cropped.png}
+		\subcaption{}
+		\label{BremshebelObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{BremshebelInteraction}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_Ellipsoids.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_InvariantSpace_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_Object_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
+	\label{Plate3D}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{Plate3DInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_Object1_cropped.png}
+		\subcaption{}
+		\label{Plate3DObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{Plate3DInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_Object2_cropped.png}
+		\subcaption{}
+		\label{Plate3DObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{Plate3DInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Plate3D_Object3_cropped.png}
+		\subcaption{}
+		\label{Plate3DObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{Plate3DInteraction}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Softnotch_Ellipsoids.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Softnotch_InvariantSpace_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Softnotch_Object_cropped.png}
+		\subcaption{}
+	\end{subfigure}
+	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
+	\label{Softnotch}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace1_cropped.png}
+		\subcaption{}
+		\label{SoftnotchInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_Object1_cropped.png}
+		\subcaption{}
+		\label{SoftnotchObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace2_cropped.png}
+		\subcaption{}
+		\label{SoftnotchInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_Object2_cropped.png}
+		\subcaption{}
+		\label{SoftnotchObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace3_cropped.png}
+		\subcaption{}
+		\label{SoftnotchInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=5cm]{pictures/results/Softnotch_Object3_cropped.png}
+		\subcaption{}
+		\label{SoftnotchObject3}
+	\end{subfigure}
+	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\label{SoftnotchInteraction}
+\end{figure}
+
+\subsection{Metallscheibe}
+
+\subsection{Spannung}
+\subsection{Verformung}
+\subsection{Bremshebel}
+
+
 \section{Ausblick}
 \label{sec:Ausblick}
 Fehler reduzieren durch Berechnung der Gr\"o{\ss}e des tats\"achlich belegten Volumens pro Tetraeder und Voxel -> Supersampling???
