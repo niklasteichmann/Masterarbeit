@@ -436,7 +436,7 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 
 Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"r den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
 
-Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der St\"arke des isotropen Anteils der Matrix, $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
+Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der absoluten `Gr\"o{\ss}e' der Matrix , $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
 
 
@@ -512,7 +512,7 @@ Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu ve
 
 Die aktuelle FAnToM-Session, also die momentan benutzten Algorithmen mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
 
-Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (ToDo: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
+Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
 \subsection{OpenGL}
 \label{sec:OpenGL}
 OpenGL\cite{openglWebsite} ist eine Spezifikation die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm am Ende laufen soll, entwickeln k\"onnen. 
@@ -1189,66 +1189,66 @@ Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipso
 
 In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Verwendet wurde der K-Invariantensatz. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedriger ersten Invariante ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedriger zweiter Invariante und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hoher dritter Invariante zu sehen. 
 
-Aus diesen Darstellungen l\"asst sich ein starker Zusammenhang zwischen der zweiten (Spur) und dritten (Norm des Deviators) Invariante im Datensatz herleiten. Dies beruht insbesondere darauf, dass das Ausblenden niedriger Bereiche f\"ur die erste und zweite Invariante zu sehr \"ahnlichen Effekten im DVR des Objekts f\"uhrt.  
+Aus diesen Darstellungen l\"asst sich ein starker Zusammenhang zwischen der ersten (Spur) und zweiten (Norm des Deviators) Invariante im Datensatz herleiten. Das Ausblenden niedriger Bereiche f\"ur die erste und zweite Invariante f\"uhrt zu sehr \"ahnlichen Effekten im DVR des Objekts.  
 
 Aus der Darstellung von Bereichen mit hohem Modus (\ref{SinglePointInvariant3} und \ref{SinglePointObject3}) l\"asst sich ableiten, dass die einwirkende Kraft Tensoren mit einem einzelnen Eigenwert mit hohem Betrag erzeugt, die sich in einem kegelf\"ormigen Bereich ausgehend vom Auftrittspunkt der Kraft befinden.
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace1.png}
 		\subcaption{}
 		\label{SinglePointInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object1.png}
 		\subcaption{}
 		\label{SinglePointObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace2.png}
 		\subcaption{}
 		\label{SinglePointInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object2.png}
 		\subcaption{}
 		\label{SinglePointObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace3.png}
 		\subcaption{}
 		\label{SinglePointInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/SinglePoint_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object3.png}
 		\subcaption{}
 		\label{SinglePointObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen. In (a) und (b) werden nur Bereiche mit hoher Spur dargestellt, in (c) und (d) nur Bereiche mit hoher Deviatornorm, (e) und (f) nur Bereiche mit hohem Modus.}
+	\caption{Die mechanische Spannung des Single Point Load-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$ (Spur), (c) und (d) Bereiche mit hohem $K_2$ (Deviatornorm), (e) und (f) Bereiche mit hohem $K_3$ (Modus).}
 	\label{SinglePointInteraction}
 \end{figure}
 
 
 
 \subsection{Metallscheibe}
-Als zweites Beispiel wurde das Ergebnis einer thermo-mechanischen Simulation verwendet, die auch in der Arbeit von Friztsch benutzt wurde \cite[S.15, 45 ff.]{fritzsch2016contiuousScatterplot}. Fritzsch beschreibt den Datensatz wie folgt:
+Als zweites Beispiel wurde das Ergebnis einer thermo-mechanischen Simulation, durchgef\"uhrt von Dr. Thomas Nagel, verwendet, die auch in der Arbeit von Friztsch benutzt wurde \cite[S.15, 45 ff.]{fritzsch2016contiuousScatterplot}. Fritzsch beschreibt den Datensatz wie folgt:
 
-``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''
+``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016contiuousScatterplot}
 
 Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur Z-Achse sind. Die Z-Achse selbst zeigt nach unten.
 
-Da die Metallscheibe spiegelsymmetrisch zur X- und Y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, von denen der erste die mechanische Spannung und der zweite die Verformung an den Punkten der Metallscheibe enth\"alt. F\"ur beide Datens\"atze wurden getrennt voneinander Visualisierungen erzeugt, die im Folgenden vorgestellt werden. F\"ur beide wurde der K-Invariantensatz verwendet.
+Da die Metallscheibe spiegelsymmetrisch zur X- und Y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. F\"ur beide Datens\"atze wurden getrennt voneinander Visualisierungen mit dem K-Invariantensatz erzeugt, die im Folgenden vorgestellt werden.
 
 
 \begin{figure}
@@ -1277,9 +1277,9 @@ Da die Metallscheibe spiegelsymmetrisch zur X- und Y-Achse ist, gen\"ugt es, ein
 \end{figure}
 
 \subsubsection{Spannung}
-Abb. \ref{MetalDiskStressEllipsoids} zeigt die Spannungstensoren der Metallscheibe in Form von Ellipsoiden. Es muss beachtet werden, dass zwar ein Ellipsoid pro Datenpunkt gezeichnet wurde, diese sich aber \"uberschneiden und deshalb schwer zu unterscheiden sind. Erkennbar ist jedoch, dass die Ellipsoide am Rand der Scheibe eher kugelf\"ormig sind, wogegen die am inneren Rand eher die Form von Scheiben annehmen. Das bedeutet, dass die Betr\"age der drei Eigenwerte der Tensoren am \"ausseren Rand \"ahnliche Werte annehmen, wogegen am inneren Rand der Betrag eines einzelnen Eigenwerts deutlich kleiner als der Betrag der anderen beiden ist. Zwischen diesen beiden Bereichen existiert noch ein weiteres Gebiet, in dem die Ellipsoide eine eher l\"angliche Form annehmen. Dieses Verhalten l\"asst den Schluss zu, dass die Anisotropie am \"ausseren Rand sehr gering ist ist, zur Mitte hin stark zunimmt und dann am inneren Rand wieder leicht absinkt. Gleichzeitig nimmt die Gr\"o{\ss}e der Ellipsoiden im Bild von unten links nach oben rechts zu, dort wirken also st\"arkere Spannungen als im unteren Bereich.
+Abb. \ref{MetalDiskStressEllipsoids} zeigt die Spannungstensoren der Metallscheibe in Form von Ellipsoiden. Pro Punkt wird ein Ellipsoid gezeichnet, die sich aber \"uberschneiden k\"onnen, was die Interpretation erschwert. Erkennbar ist jedoch, dass die Ellipsoide am \"au{\ss}eren Rand der Scheibe eher l\"anglich und die am inneren Rand eher scheibenf\"ormig sind. Das bedeutet, dass die Tensoren am \"ausseren Rand einen einzelnen Eigenwert mit hohem und zwei Eigenwerte mit kleinem Betrag besitzen, wogegen am inneren Rand zwei Eigenwerte hohe und nur einer einen kleinen Betrag hat. In beiden Bereichen ist hohe Anisotropie zu erwarten. Gleichzeitig nimmt die Gr\"o{\ss}e der Ellipsoiden im Bild von unten links nach oben rechts zu. Dies ist darauf zur\"uckzuf\"uhren, dass nach oben rechts hin negative Eigenwerte mit immer gr\"o{\ss}erem Betrag vorkommen.
 
-Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}) stimmen mit dieser Interpretation \"uberein. In Abb. \ref{MetalDiskStressObject1} ist zu sehen, dass die Spannung im oberen rechten Teil des Scheibenausschnitts am gr\"o{\ss}ten ist. Abb. \ref{MetalDiskStressObject2} zeigt, dass die Norm des Deviators am inneren und \"au{\ss}eren Rand der Scheibe kleiner ist als im Bereich dazwischen. Auch der Modus verh\"alt sich so wie vermutet, er ist am inneren Rand der Scheibe am gr\"o{\ss}ten (Abb. \ref{MetalDiskStressInvariant2}).
+Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}) lassen weitere Interpretationen zu. In Abb. \ref{MetalDiskStressObject1} ist zu sehen, dass die Spur im oberen rechten Teil des Scheibenausschnitts am kleinsten ist, da die negativen Eigenwerte dort den gr\"o{\ss}ten Betrag haben.  Abb. \ref{MetalDiskStressObject2} zeigt, dass die Norm des Deviators am inneren und \"au{\ss}eren Rand der Scheibe gro{\ss} und im Bereich dazwischen eher klein ist, was auf hohe Anisotropie hinweist. Der Modus ist am inneren Rand der Scheibe gro{\ss} und am inneren klein (Abb. \ref{MetalDiskStressInvariant2}).Das bedeutet, dass die Anisotropie am inneren Rand eher planar und am \"ausseren Rand eher linear ist.
 
 \begin{figure}
 	\begin{subfigure}{0.3\textwidth}
@@ -1307,386 +1307,436 @@ Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}
 \end{figure}
 
 \subsubsection{Verformung}
-Die Verformungstensoren der Metallscheibensimulation sind in Abb. \ref{MetalDiskStrainEllipsoids} dargestellt. Erkennbar ist, dass die Ellipsoide am inneren Rand erheblich gr\"o{\ss}er sind als alle anderen. Die Eigenwerte dieser Tensoren haben tats\"achlich einen relativ hohen Betrag, sind jedoch teilweise negativ. Da die Spur eines Tensors der Summe seiner Eigenwerte entspricht, ist die Spur in diesem Bereich sehr niedrig. Dies f\"allt auch in Abb. \ref{MetalDiskStrainInvariant1} auf, wo Bereiche niedriger Spur ausgeblendet werden.
-
+Die Verformungstensoren der Metallscheibensimulation sind in Abb. \ref{MetalDiskStrainEllipsoids} dargestellt. Erkennbar ist, dass die Ellipsoide am inneren Rand erheblich gr\"o{\ss}er sind als alle anderen. Die Eigenwerte dieser Tensoren haben tats\"achlich einen relativ hohen Betrag, sind jedoch teilweise negativ, was dazu f\"uhrt, dass auch die Spur dort niedrig oder sogar negativ ist. Dies f\"allt auch in Abb. \ref{MetalDiskStrainInvariant1} auf, wo Bereiche niedriger Spur ausgeblendet werden.
+Die Spur ist, \"ahnlich wie beim Spannungsdatensatz, unten links gr\"o{\ss}er als oben rechts. $K_2$, und somit auch die Anisotropie, ist in einem halbkreisf\"ormigen Bereich an der Innenseite der Scheibe am gr\"o{\ss}ten (siehe Abb. \ref{MetalDiskStrainInvariant2}). Im gleichen Bereich ist auch $K_3$ hoch (siehe Abb. \ref{MetalDiskStrainInvariant3}). Das Material wird also am inneren Rand der Scheibe in die Richtung zweier Eigenvektoren zusammengepresst und dehnt sich in entlang des dritten aus. Aus der Ellipsoidendarstellung wird auch die Richtung dieses Eigenvektors ersichtlich, n\"amlich zum Mittelpunkt der Scheibe hin. Die Scheibe dehnt sich also in diesem Bereich zur Mitte hin aus.
 
 \begin{figure}[H]
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace1.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object1.png}
 		\subcaption{}
 		\label{MetalDiskStressObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace2.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object2.png}
 		\subcaption{}
 		\label{MetalDiskStressObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace3.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStress_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object3.png}
 		\subcaption{}
 		\label{MetalDiskStressObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\caption{Die mechanische Spannung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit niedrigem $K_1$ (Spur), (c) und (d) Bereiche mit niedrigem $K_2$ (Deviatornorm), (e) und (f) Bereiche mit hohem $K_3$ (Modus).}
 	\label{MetalDiskStressInteraction}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace1.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object1.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace2.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object2.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace3.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/MetalDiskStrain_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object3.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$ (Spur), (c) und (d) Bereiche mit niedrigem $K_2$ (Deviatornorm), (e) und (f) Bereiche mit hohem $K_3$ (Modus).}
 	\label{MetalDiskStrainInteraction}
 \end{figure}
 
-
-
-
-
+\clearpage
 \subsection{Bremshebel}
+Die bisherigen Datens\"atze behandelten ausschlie{\ss}lich einfache geometrische Objekte, auf die Kraft einwirkte. Der Bremshebel-Datensatz wurde ausgew\"ahlt, um die Ergebnisse der Visualisierung auch auf einem komplexeren Objekt zeigen zu k\"onnen.
+
+Beim Bremshebel-Datensatz handelt es sich wie zuvor um Simulationsdaten. Dabei wurden die mechanischen Spannungen des Hebels einer Fahrradbremse simuliert, wenn auf den Hebelarm eine Kraft einwirkt. Der Hebel ist dabei eingespannt, um Bewegung zu verhindern. Die einwirkende Kraft sowie die Stelle, an der der Hebel eingespannt ist, sind gut in Abb. \ref{BremshebelEllipsoidsK} zu erkennen. Die scheinbare Rotf\"arbung des Hebels stammt dabei aus der gro{\ss}en Menge kleiner Ellipsoide, die an den Punkten des Hebels gemessen wurden. 
+
+Die Simulation wurde mit Abaqus [Standardversion~6.13-4]\cite{abaqusWebsite} erzeugt.
+
+Die Ellipsoid-Darstellung zeigt, dass an zwei Stellen des Objekts besonders gro{\ss}e Spannungen wirken: Am Hebelarm, an dem die Kraft einwirkt und unten links, wo der Hebel fixiert ist. Die gro{\ss}e Anzahl und deshalb notwendige geringe Gr\"o{\ss}e der anderen Ellisoide machen eine Interpretation jedoch praktisch unm\"oglich.
+
+Um den Zusammenhang zwischen den K- und R-Invariantens\"atzen zu verdeutlichen, wurde der Bremshebel f\"ur beide Varianten einmal visualisiert. 
 
 \begin{figure}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/Bremshebel_Ellipsoids.png}
 		\subcaption{}
+		\label{BremshebelEllipsoidsK}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/Bremshebel_R_Object.png}
 		\subcaption{}
+		\label{BremshebelObjectK}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=3cm]{pictures/results/Bremshebel_K_InvariantSpace.png}
 		\subcaption{}
+		\label{BremshebelInvariantSpaceK}
 	\end{subfigure}
 	\caption{Darstellung des Bremshebel-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
 	\label{BremshebelK}
 \end{figure}
 
 \subsubsection{K-Invarianten}
+Dieses Problem tritt im Rendering des Invariantenraumes nicht auf, da mehr Datenpunkte nur zu exaktere Verl\"aufen der Isofl\"achen f\"uhren. In Abb. \ref{BremshebelRInvariant1} und \ref{BremshebelRObject1} ist erkennbar, dass die Spannungstensoren am Auftrittspunkt der Kraft, entlang der linken Seite des Hebels und einigen Streben im Inneren des Hebels am gr\"o{\ss}ten sind. Der anisotrope Anteil ist am Auftrittspunkt der Kraft, an der Beuge des Hebels und an den Zusammentreffpunkten einiger Streben am st\"arksten (siehe Abb. \ref{BremshebelKInvariant2} und \ref{BremshebelKObject2}).
+
+Bereiche mit niedrigem Modus, also mit planarer Anisotropie, sind in Abb. \ref{BremshebelKInvariant3} ausgew\"ahlt. Der am deutlichsten erkennbare Bereich liegt an der Beuge des Hebels, wo das Material zusammengepresst wird. Aber auch am Auftrittspunkt der Kraft ist der Modus gering, da Kraft dort entlang der Oberfl\"ache weitergeleitet wird.
+
 
 \begin{figure}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/Bremshebel_Ellipsoids.png}
 		\subcaption{}
+		\label{BremshebelEllipsoidsR}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/Bremshebel_R_Object.png}
 		\subcaption{}
+		\label{BremshebelInvariantSpaceR}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=3cm]{pictures/results/Bremshebel_R_InvariantSpace.png}
+		\includegraphics[height=2.5cm]{pictures/results/Bremshebel_R_InvariantSpace.png}
 		\subcaption{}
+		\label{BremshebelObjectR}
 	\end{subfigure}
 	\caption{Darstellung des Bremshebel-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den R-Invarianten.}
 	\label{BremshebelR}
 \end{figure}
 
 \subsubsection{R-Invarianten}
+Trotz der sehr unterschiedlichen Form des Feldes im Invariantenraum (Abb. \ref{BremshebelInvariantSpaceR}), \"ahneln sich die Bereiche, in denen die die erste Invariante hohe Werte annimmt. Da $R_1$ und $K_1$ beide Ma{\ss}e f\"ur die Isotropie Tensoren sind, ist dieses Verhalten zu erwarten. Die Bereiche f\"ur hohe $R_2$ und $K_2$, beide Ma{\ss}e f\"ur die Anisotropie, unterscheiden sich jedoch stark, $R_2$ scheint \"uberall im Inneren des Objekts hoch zu sein, darunter Bereiche, in denen es $K_2$ eher niedrig ist. 
+
+Die Bereiche mit niedrigem Modus (Abb. \ref{BremshebelRInvariant3}) sind, da die Ausgangsdaten die gleichen sind, nat\"urlich identisch.
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace1.png}
 		\subcaption{}
-		\label{BremshebelInvariant1}
+		\label{BremshebelKInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object1.png}
 		\subcaption{}
 		\label{BremshebelKObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace2.png}
 		\subcaption{}
 		\label{BremshebelKInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object2.png}
 		\subcaption{}
 		\label{BremshebelKObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace3.png}
 		\subcaption{}
 		\label{BremshebelKInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_K_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object3.png}
 		\subcaption{}
 		\label{BremshebelKObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$ (Spur), (c) und (d) Bereiche mit hohem $K_2$ (Deviatornorm), (e) und (f) Bereiche mit niedrigem $K_3$ (Modus).}
 	\label{BremshebelKInteraction}
 \end{figure}
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace1.png}
 		\subcaption{}
 		\label{BremshebelRInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object1.png}
 		\subcaption{}
 		\label{BremshebelRObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace2.png}
 		\subcaption{}
 		\label{BremshebelRInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object2.png}
 		\subcaption{}
 		\label{BremshebelRObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace3.png}
 		\subcaption{}
 		\label{BremshebelRInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Bremshebel_R_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object3.png}
 		\subcaption{}
 		\label{BremshebelRObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
+	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $R_1$ (Frobenius Norm), (c) und (d) Bereiche mit hohem $R_2$ (fraktionale Anisotropie), (e) und (f) Bereiche mit niedrigem $R_3$ (Modus).}
 	\label{BremshebelRInteraction}
 \end{figure}
 
+\clearpage
 \begin{figure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Plate3D_Ellipsoids.png}
-		\subcaption{}
-	\end{subfigure}	
+	\begin{minipage}[c]{0.66\textwidth}
+		\begin{subfigure}{\textwidth}
+			\centering
+			\includegraphics[height=3cm]{pictures/results/Plate3D_Ellipsoids.png}
+			\subcaption{}
+			\label{Plate3DIObject}
+		\end{subfigure}	
+		\hspace*{\fill}
+		\begin{subfigure}{\textwidth}
+			\centering
+			\includegraphics[height=3cm]{pictures/results/Plate3D_I_Object.png}
+			\subcaption{}
+		\end{subfigure}
+	\end{minipage}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/Plate3D_Object.png}
-		\subcaption{}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Plate3D_InvariantSpace.png}
+		\includegraphics[height=6cm]{pictures/results/Plate3D_I_InvariantSpace.png}
 		\subcaption{}
 	\end{subfigure}
 
-	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
-	\label{Plate3D}
+	\caption{Darstellung des Metallplatten-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den I-Invarianten.}
+	\label{Plate3DI}
 \end{figure}
 
-\begin{figure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace1.png}
-		\subcaption{}
-		\label{Plate3DInvariant1}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_Object1.png}
-		\subcaption{}
-		\label{Plate3DObject1}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace2.png}
-		\subcaption{}
-		\label{Plate3DInvariant2}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_Object2.png}
-		\subcaption{}
-		\label{Plate3DObject2}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_InvariantSpace3.png}
-		\subcaption{}
-		\label{Plate3DInvariant3}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=5cm]{pictures/results/Plate3D_Object3.png}
-		\subcaption{}
-		\label{Plate3DObject3}
-	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
-	\label{Plate3DInteraction}
-\end{figure}
+\subsection{Metallplatte}
+
+Es ist m\"oglich auch mit den I und J-Invariantens\"atzen Visualisierungen zu erzeugen, obwohl die Darstellung im zylindrischen Koordinatensystem f\"ur diese nur wenig Sinn macht. Um dies zu demonstrieren, wurde ein weiterer Datensatz gew\"ahlt.
+
+Der letzte Datensatz bla bla ToDo Felix
+
+Da die Platte d\"unn ist, ist auch die Darstellung im Invariantenraum d\"unn, weshalb die einzelnen Teilbereiche schwer zu erkennen sein k\"onnen.
+
+Die Ellipsoide sind an der oberen Kante der Platte am gr\"o{\ss}ten (Abb. \ref{Plate3DIObject}), dies ist jedoch wieder auf negative Eigenwerte mit hohem Betrag zur\"uckzuf\"uhren. An den ToDo Punkten sind sie eher l\"anglich und werden mit zunehmender Entfernung kugelf\"ormiger.
+
+Auff\"allig sind ebenfalls die sehr kleinen Ellipsoide entlang zweier B\"ogen in der Mitte der Platte und gro{\ss}e Ellipsoide an den unteren Ecken. 
+
+Es wurde jeweils eine Visualisierung f\"ur den I und J Satz erzeugt. Da die Interpretation von $I_2, I_3, J_2$ und $J_3$ schwierig ist, beschr\"anken sich die Texte auf die Auswertung von $I_1$ und die Beschreibung der Bereiche der anderen Invarianten.
+
+\subsubsection{I-Invarianten}
+Die Spur ist, wie nach der Auswertung der Ellipsoiddarstellung zu erwarten war, an der oberen Kante der Platte am niedrigsten (siehe Abb. \ref{Plate3DIInvariant1} und \ref{Plate3DIObject1}). Interessant ist dabei, dass an den ToDo Punkten der ausgew\"ahlte Bereich am d\"unnsten ist. Im gleichen Bereich treten die h\"ochsten Werte f\"ur $I_2$ auf (Abb. \ref{Plate3DJInvariant2} und \ref{Plate3DJObject2}). 
+
+$I_3$ dagegen ist im unteren Bereich und an den ToDo Punkten am h\"ochsten (Abb. \ref{Plate3DIInvariant3} und \ref{Plate3DIObject3}).
 
 \begin{figure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Softnotch_Ellipsoids.png}
-		\subcaption{}
-	\end{subfigure}
+	\begin{minipage}[c]{0.66\textwidth}
+		\begin{subfigure}{\textwidth}
+			\centering
+			\includegraphics[height=3cm]{pictures/results/Plate3D_Ellipsoids.png}
+			\subcaption{}
+		\end{subfigure}	
+		\hspace*{\fill}
+		\begin{subfigure}{\textwidth}
+			\centering
+			\includegraphics[height=3cm]{pictures/results/Plate3D_I_Object.png}
+			\subcaption{}
+		\end{subfigure}
+	\end{minipage}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/Softnotch_Object.png}
+		\includegraphics[height=6cm]{pictures/results/Plate3D_J_InvariantSpace.png}
 		\subcaption{}
 	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Softnotch_InvariantSpace.png}
-		\subcaption{}
-	\end{subfigure}
-	\caption{Darstellung des Single Point Load Datensatzes. (a) An jedem Punkt des Gitters wird ein Ellipsoid gezeichnet. Die L\"angen der Halbachsen entsprechen den Eigenwerten. (b) Die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. (c) Das DVR des Objekts.}
-	\label{Softnotch}
+	
+	\caption{Darstellung des Bremshebel-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den J-Invarianten.}
+	\label{Plate3DJ}
 \end{figure}
+
+\subsubsection{J-Invarianten}
+Da $J_1$ immer gleich 0 ist, wurde stattdessen $I_1$ verwendet. Dadurch sind die ersten Invarianten beider S\"atze gleich, genauso wie die dargestellten Bereiche (Abb. \ref{Plate3DJObject1} und \ref{Plate3DJInvariant1}). $J_2$ dagegen ist nahe der ToDo Punkte und an den unteren beiden Ecken am h\"ochsten. Auch $I_3$ ist bei den ToDo Punkten am h\"ochsten.
+
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_I_InvariantSpace1.png}
 		\subcaption{}
-		\label{SoftnotchInvariant1}
+		\label{Plate3DIInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_Object1.png}
+		\includegraphics[height=3cm]{pictures/results/Plate3D_I_Object1.png}
 		\subcaption{}
-		\label{SoftnotchObject1}
+		\label{Plate3DIObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_I_InvariantSpace2.png}
 		\subcaption{}
-		\label{SoftnotchInvariant2}
+		\label{Plate3DIInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_Object2.png}
+		\includegraphics[height=3cm]{pictures/results/Plate3D_I_Object2.png}
 		\subcaption{}
-		\label{SoftnotchObject2}
+		\label{Plate3DIObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_I_InvariantSpace3.png}
 		\subcaption{}
-		\label{SoftnotchInvariant3}
+		\label{Plate3DIInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=5cm]{pictures/results/Softnotch_Object3.png}
+		\includegraphics[height=3cm]{pictures/results/Plate3D_I_Object3.png}
 		\subcaption{}
-		\label{SoftnotchObject3}
+		\label{Plate3DIObject3}
 	\end{subfigure}
-	\caption{Der Single Point Load Datensatz mit ausgew\"ahlten Invariantenbereichen.}
-	\label{SoftnotchInteraction}
+	\caption{Die mechanische Spannung des Metallplatten-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit niedrigem $I_1$ (Spur), (c) und (d) Bereiche mit hohem $I_2$ (Summe der Hauptminoren), (e) und (f) Bereiche mit hohem $I_3$ (Determinante).}
+	\label{Plate3DIInteraction}
 \end{figure}
 
 
 
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_J_InvariantSpace1.png}
+		\subcaption{}
+		\label{Plate3DJInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=3cm]{pictures/results/Plate3D_J_Object1.png}
+		\subcaption{}
+		\label{Plate3DJObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_J_InvariantSpace2.png}
+		\subcaption{}
+		\label{Plate3DJInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=3cm]{pictures/results/Plate3D_J_Object2.png}
+		\subcaption{}
+		\label{Plate3DJObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Plate3D_J_InvariantSpace3.png}
+		\subcaption{}
+		\label{Plate3DJInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=3cm]{pictures/results/Plate3D_J_Object3.png}
+		\subcaption{}
+		\label{Plate3DJObject3}
+	\end{subfigure}
+	\caption{Die mechanische Spannung des Metallplatten-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit niedrigem $I_1$ (Spur), (c) und (d) Bereiche mit hohem $J_2$ (Summe der Hauptminoren des Deviators), (e) und (f) Bereiche mit hohem $J_3$ (Determinante des Deviators).}
+	\label{Plate3DJInteraction}
+\end{figure}
+
+\clearpage
 
 \section{Ausblick}
 \label{sec:Ausblick}
