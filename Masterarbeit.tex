@@ -37,11 +37,11 @@
 \renewcommand*{\titlepagestyle}{empty}
 \addto\captionsngerman{\def\figurename{Abb.}}
 \subject{Masterarbeit}
-\title{Schematische 2D Visualisierung von RNA-Protein Interaktionen\xspace}
+\title{ToDo Schematische 2D Visualisierung von RNA-Protein Interaktionen\xspace}
 \newcommand{\matrikelnummer}{2878372\xspace}
 \author{Niklas Teichmann}
 \date{\today}
-\newcommand{\kurz}{Die Visualisierung von Tensorfeldern ist trotz vielen Jahrzehnten aktiver Forschung noch immer ein aktives Thema. Komplexe Strukturen innerhalb von Tensorfeldern stellen hohe Anforderungen an Visualisierungssoftware, um die Interpretation durch Benutzer zu erleichtern. Innerhalb dieser Arbeit wurde eine Erweiterung f\"ur die Visualisierungssoftware `FAnToM' entwickelt, die Techniken aus dem Direct Volume Rendering und dem Continuous Scatterplotting verwendet, um Invarianten von symmetrischen Tensoren 2. Grades und ihre Verteilung innerhalb eines Datensatzes darzustellen. Dabei wurde besonderer Wert auf Interaktivit\"at gelegt, um Nutzern die explorative Analyse der Daten zu erm\"oglichen.}
+\newcommand{\kurz}{Die Visualisierung von Tensorfeldern ist trotz vieler Jahrzehnte der Forschung noch immer ein aktives Thema. Komplexe Strukturen innerhalb von Tensorfeldern stellen hohe Anforderungen an Visualisierungssoftware, um die Interpretation durch Nutzer zu erleichtern. Innerhalb dieser Arbeit wurde eine Erweiterung f\"ur die Visualisierungssoftware `FAnToM' entwickelt, die Techniken aus dem Direct Volume Rendering und dem Continuous Scatterplotting verwendet, um Invarianten von symmetrischen Tensoren 2. Grades und ihre Verteilung innerhalb eines Datensatzes darzustellen. Dabei wurde besonderer Wert auf Interaktivit\"at gelegt, um Nutzern die explorative Analyse der Daten zu erm\"oglichen.}
 
 % renders abstract along with declaration at titlepage with \publishers workaroung
 \publishers{%
@@ -68,43 +68,43 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Einleitung}
-Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"aetzen. Beispiele daf\"ur sind die Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Auch diese muss sich jedoch den genannten Herausforderungen stellen. Dabei treten jedoch eine Reihe von Problem auf, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016contiuousScatterplot}:
+Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Beispiele daf\"ur sind die Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Auch diese muss sich jedoch den genannten Herausforderungen stellen. Dabei treten aber eine Reihe von Problemen auf, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016continuousScatterplot}:
 
 \paragraph{Menge an Daten pro Tensor}
 Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Aber selbst ein Tensor 2. Grades und 3. Dimension besteht bereits aus 9 Werten, f\"ur die eine passende Darstellung gefunden werden muss.
 
 \paragraph{Menge an Daten pro Datensatz}
-H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was gut skalierende Werzeuge zur Analyse notwendig macht. Zudem bestehen relevante Merkmale der Datens\"atze oft nur aus wenigen Datenpunkten, weshalb effektives Filtern wichtig wird.
+H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was gut skalierende Werkzeuge zur Analyse notwendig macht. Zudem bestehen relevante Merkmale der Datens\"atze oft nur aus wenigen Datenpunkten, weshalb effektives Filtern wichtig wird.
 
 \paragraph{Fehlende Intuition}
-Tensoren beschreiben im Allgemeinen lineare Abh\"angigkeiten zwischen Skalaren, Vektoren und anderen Tensoren. W\"ahrend bei niedrigen R\"angen (Skalare/Vektoren) noch intuitive Interpretation existieren (Zahlenwert/Punkt im dreidimensionalen Raum), f\"allt es Menschen erheblich schwieriger, Matrizen oder Tensoren h\"oheren Grades zu interpretieren. Die Repr\"asentation eines Tensors muss daher sehr gut durchdacht sein, und relevante Eigenschaften interpretierbar darstellen.
+Tensoren beschreiben im Allgemeinen lineare Abh\"angigkeiten zwischen Skalaren, Vektoren und anderen Tensoren. W\"ahrend bei niedrigen R\"angen (Skalare/Vektoren) noch intuitive Interpretationen existieren (Zahlenwert/Punkt im dreidimensionalen Raum), f\"allt es Menschen erheblich schwerer, Matrizen oder Tensoren h\"oheren Grades zu interpretieren. Die Repr\"asentation eines Tensors muss daher sehr gut durchdacht sein und relevante Eigenschaften interpretierbar darstellen.
 
 \paragraph{Dom\"anenspezifische Informationen}
-Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besonere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher schwer.
+Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besondere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
 
 
-Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren 2. Grades im dreidimensionalen Raum entwickelt und als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den der Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, Kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
+Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren 2. Grades im dreidimensionalen Raum entwickelt und als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
 
-Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt, die in dieser Arbeit verwendet wurden. Als n\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} Programmschnittstellen und Visualisierungstechniken erl\"autert, die innerhalb dieser Arbeit verwendet wurden. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Kapitel \hyperref[sec:Umsetzung]{5 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend werden in Kapitel \hyperref[sec:Ergebnisse]{6 Ergebnisse} wird die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{7 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
+Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Kapitel \hyperref[sec:Umsetzung]{5 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{6 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{7 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
  
 \section{Verwandte Arbeiten}
 \label{sec:Verwandte}
 Es existiert bereits eine gro{\ss}e Anzahl von Verfahren, die Visualisierungen von Tensorfeldern erzeugen. Nachfolgend werden, ohne Anspruch auf Vollst\"andigkeit, einige der wichtigsten genannt und kurz beschrieben.
 
-Eine relative einfache Darstellung eines Vektorfelds besteht darin, die einzelnen Komponenten eines Tensor 2. Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altniss des Wertes der Komponente des Vektors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste gefundene Erw\"ahnung dieses Verfahrens ist in einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
+Eine relativ einfache Darstellung eines Vektorfelds besteht darin, die einzelnen Komponenten eines Tensor 2. Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Vektors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste gefundene Erw\"ahnung dieses Verfahrens ist in einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
 
-Die wohl verbreiteteste Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"ankt sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden odern oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Benutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
+Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"anken sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Nutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
 
-Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren 2. Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind sowie die Eigenvektoren paarweise orthogonal zueinander. Das Verfahren zeichnet ausgehend von festgelegten Punkten Schl\"auche durch das Vektorfeld. Die Mittellinien dieser Schl\"auche entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch, orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren geht, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
+Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren 2. Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind sowie die Eigenvektoren paarweise orthogonal zueinander. Das Verfahren zeichnet ausgehend von festgelegten Punkten Schl\"auche durch das Vektorfeld. Die Mittellinien dieser Schl\"auche entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
 
-Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016contiuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren 2. Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
+Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren 2. Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
 
 \section{Grundlagen}
 \label{sec:Grundlagen}
 \subsection{Mathematische Grundlagen}
 In diesem Teil der Arbeit werden mathematische Grundlagen zu Tensoren, Feldern und Invarianten erl\"autert. Insbesondere f\"ur die Definition von Tensoren sind Vorkenntnisse n\"otig, die ebenfalls erkl\"art werden. 
 
-Eine erheblicher Teil der verwendeten Formeln und Definitionen stammen aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
+Eine erheblicher Teil der verwendeten Formeln und Definitionen stammt aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
 
 \subsubsection{Urbild und Bild einer Funktion}
 Zu jeder Funktion $f: A \rightarrow B$, die Objekten aus der Menge $A$ Objekte aus $B$ zuordnet, l\"asst sich das Bild einer Menge $A' \subset A$ als
@@ -147,7 +147,7 @@ Das Dirac Delta (auch Delta Distribution genannt) ist eine Funktion, die folgend
 	\int_{-\infty}^{+\infty}\delta(x)dx = 1
 \end{equation}
 
-Da diese beiden Eigenschaften f\"ur die vorliegende Arbeit ausreichen wird auf eine genaue Definition von $\delta$ verzichtet. Diese kann jedoch in \cite[S.~100~ff.]{kusse2010mathematical} nachgelesen werden.
+Da diese beiden Eigenschaften f\"ur die vorliegende Arbeit ausreichen, wird auf eine genaue Definition von $\delta$ verzichtet. Diese kann jedoch in \cite[S.~100~ff.]{kusse2010mathematical} nachgelesen werden.
 
 
 \subsubsection{Volumen einer Teilmenge von \texorpdfstring{$\mathbb{R}^n$}{}}
@@ -167,7 +167,7 @@ Die Jacobi Matrix $J_f$ einer differenzierbaren Abbildung $f: \mathbb{R}^n \righ
 	\end{pmatrix}
 \end{equation}
 
-Sie entspricht damit der ersten Ableitung in der mehrdimensionalen Analysis. Die Determinante der Jacobi-Matrix $det(J_f)$ wird auch als Funktionaldeterminante bezeichnet, und beschreibt einige Eigenschaften der Funktion $f$. Die f\"ur diese Arbeit wichtigste Rolle spielt der der absolute Wert $|det(J_f)|$ an einem Punkt $p$, die die Expansion bzw. das Schrumpfen der Funktion in der N\"ahe von $p$ beschreibt.  F\"ur eine lineare Funktion $f: \mathbb{R}^n\rightarrow \mathbb{R}^n$, deren Funktionaldeterminante in jedem Punkt $p_n \in \mathbb{R}$ gleich ist, bedeutet das mit dem $n$-dimensionalen euklidischen Abstand $||p_1, p_2||_n$
+Sie entspricht damit der ersten Ableitung in der mehrdimensionalen Analysis. Die Determinante der Jacobi-Matrix $det(J_f)$ wird auch als Funktionaldeterminante bezeichnet, und beschreibt einige Eigenschaften der Funktion $f$. Die f\"ur diese Arbeit wichtigste Rolle spielt der absolute Wert $|det(J_f)|$ an einem Punkt $p$, die die Expansion bzw. das Schrumpfen der Funktion in der N\"ahe von $p$ beschreibt.  F\"ur eine lineare Funktion $f: \mathbb{R}^n\rightarrow \mathbb{R}^n$, deren Funktionaldeterminante in jedem Punkt $p_n \in \mathbb{R}$ gleich ist, bedeutet das mit dem $n$-dimensionalen euklidischen Abstand $||p_1, p_2||_n$
 
 \begin{equation}
 	||f(p_1), f(p_2)||_n = det(J_f)\cdot||p_1, p_2||_n
@@ -209,9 +209,9 @@ mit $\lambda, \mu \in K$, $v_i, v'_i \in V_i$ gilt (f\"ur jede weitere Variable 
 
 
 \subsubsection{Tensor}
-Multilineare Funktionen der Form $T: V^*\times\dots\times V^*\times V \times \dots \times V \rightarrow K$, wobei $V$ ein Vektorraum \"uber $K$ und $V^*$ sein Dualraum ist, werden als Tensoren bezeichnet\cite[S.~218]{bowen2008introduction}. Der Grad des Tensors ist definiert als die Anzahl an Variablen der Funktion. Die Tensoren \"uber $V$ bildet wiederum einen Vektorraum \cite[S.~220]{bowen2008introduction}. Durch diese Defintion ist ein Tensor immer invariant zur Basis des Vektorraums seiner Variablen. Egal in welche Basis er umgerechnet wird, er dr\"uckt steht dasselbe aus.
+Multilineare Funktionen der Form $T: V^*\times\dots\times V^*\times V \times \dots \times V \rightarrow K$, wobei $V$ ein Vektorraum \"uber $K$ und $V^*$ sein Dualraum ist, werden als Tensoren bezeichnet\cite[S.~218]{bowen2008introduction}. Der Grad des Tensors ist definiert als die Anzahl an Variablen der Funktion. Die Tensoren \"uber $V$ bilden wiederum einen Vektorraum \cite[S.~220]{bowen2008introduction}. Durch diese Defintion ist ein Tensor immer invariant zur Basis des Vektorraums seiner Variablen. Egal in welche Basis er umgerechnet wird, er dr\"uckt stets dasselbe aus.
 
-In der vorliegenden Arbeit werden ausschlie{\ss}lich Tensoren 2. Grades verwendet, die in kartesischen, dreidimensionalen Koordinatensystemen erzeugt wurden. Dabei ist zu beachten, dass in kartesischen Koordinaten die Basis eines Vektorraumes $V$ und seines Dualraumes $V^*$ die gleiche Darstellung hat, also $V$ und $V^*$ austauschbar sind. Wenn in einen Tensor 2. Grades $T$ die Basisvektoren $e_{1,..,d}$ des zugrundeliegenden Vektorraumes $V$ bzw $V^*$ der Dimension $d$ in jeder m\"oglichen Kombination eingesetzt werden, ergeben sich f\"ur $1\leq i,j\leq d$ folgende Komponenten:
+In der vorliegenden Arbeit werden ausschlie{\ss}lich Tensoren 2. Grades verwendet, die in kartesischen, dreidimensionalen Koordinatensystemen erzeugt wurden. Dabei ist zu beachten, dass in kartesischen Koordinaten die Basis eines Vektorraumes $V$ und seines Dualraumes $V^*$ die gleiche Darstellung haben, also $V$ und $V^*$ austauschbar sind. Wenn in einen Tensor 2. Grades $T$ die Basisvektoren $e_{1,..,d}$ des zugrundeliegenden Vektorraumes $V$ bzw $V^*$ der Dimension $d$ in jeder m\"oglichen Kombination eingesetzt werden, ergeben sich f\"ur $1\leq i,j\leq d$ folgende Komponenten:
 
 \begin{equation}
 	c_{i,j} = \sum_{i=1}^{d} \sum_{j=1}^{d} T(e_i, e_j),  
@@ -223,10 +223,10 @@ Diese basisabh\"angige Darstellung des Tensors bildet eine $d\times d$ Matrix. A
 	m \cdot v = u
 \end{equation} 
 
-eine Abbildung auf einen Vektor $u$ desselben Vektorraumes wie $v$ ausgedr\"uckt werden kann, lassen sich mithilfe von Tensoren Abbildungen auf Vektorr\"aumen unabh\"angig von der Basis des Raumes formulieren.
+eine Abbildung auf einen Vektor $u$ desselben Vektorraumes wie $v$ ausgedr\"uckt werden kann, lassen sich mithilfe von Tensoren Abbildungen zwischen Vektorr\"aumen unabh\"angig von der Basis des Raumes formulieren.
 
 \subsubsection{Rang einer Matrix}
-Der Zeilenraum einer Matrix ist der Raum, der aus Linearkombinationen ihrer Zeilenvektoren aufgespannt wird. Die Dimension des Zeilenraumes ist gleich der Anzahl der linear unabh\"angigen Zeilenvektoren, und wird als Zeilenrang der Matrix bezeichnet. Analog l\"asst sich der Spaltenrang einer Matrix definieren. Es l\"asst sich zeigen, dass Zeilen- und Spaltenrang einer Matrix immer gleich sind und deshalb kurz als Rang $rang(M)$ der Matrix $M$ bezeichnet werden.
+Der Zeilenraum einer Matrix ist der Raum, der aus Linearkombinationen ihrer Zeilenvektoren aufgespannt wird. Die Dimension des Zeilenraumes ist gleich der Anzahl linear unabh\"angiger Zeilenvektoren, und wird als Zeilenrang der Matrix bezeichnet. Analog l\"asst sich der Spaltenrang einer Matrix definieren. Es l\"asst sich zeigen, dass Zeilen- und Spaltenrang einer Matrix immer gleich sind und deshalb kurz als Rang $rang(M)$ der Matrix $M$ bezeichnet werden.
 
 \subsubsection{Spur einer Matrix}
 Die Spur (`trace') einer $n\times n$Matrix $A$ mit Komponenten $a_{ij}$ mit $1 \leq i,j \leq n$ ist definiert als
@@ -235,7 +235,7 @@ Die Spur (`trace') einer $n\times n$Matrix $A$ mit Komponenten $a_{ij}$ mit $1 \
 	tr(A) = \sum_{i = 1}^{n} a{ii}
 \end{equation}
 
-also die Summe aller Elemente in der Hauptdiagonale. Eine wichtige Eigenschaft der Spur ist, dass bei der \"Uberf\"uhrung einer Matrix in eine andere Basis gleich bleibt (siehe auch \ref{Matrixinvarianten}).
+also die Summe aller Elemente in der Hauptdiagonale. Eine wichtige Eigenschaft der Spur ist, dass sie bei der \"Uberf\"uhrung einer Matrix in eine andere Basis gleich bleibt (siehe auch \ref{Matrixinvarianten}).
 
 
 \subsubsection{Norm einer Matrix}
@@ -255,7 +255,7 @@ Eine in kartesischen Koordinaten h\"aufig eingesetzte Norm ist die euklidische N
 	norm(A) = \sqrt{tr(AA^T)}
 \end{equation}
 
-Die euklidische Norm wird auch als `Frobenius Norm' bezeichnet.
+Die euklidische Norm wird auch als `Frobeniusnorm' bezeichnet.
 
 \subsubsection{Deviator einer Matrix}
 Eine Matrix $A$ kann in ihren isotropen Anteil $\bar{A}$ und ihren anisotropen Anteil $\tilde{A}$ wie folgt zerlegt werde:
@@ -293,15 +293,15 @@ wobei $det()$ die Determinante ist. Im Folgenden wird meistens der Modus des Dev
 Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte der Matrix zueinander aus:
 
 \begin{itemize}
-	\item $mode(A) = 1$: ein hoher, zwei niedrige Eigenwerte; lineare Anisotropie
+	\item $mode(A) = 1$: ein hoher, zwei gleiche niedrige Eigenwerte; lineare Anisotropie
 	\item $mode(A) = 0$: ein hoher, ein niedriger und mittlerer Eigenwert; Orthotropie
-	\item $mode(A) = -1$: zwei hohe, ein niedriger Eigenwert: planare Anisotropie
+	\item $mode(A) = -1$: zwei gleiche hohe, ein niedriger Eigenwert: planare Anisotropie
 \end{itemize} 
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/-001.png}
-	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die Fraktionale Anisotropie nimmt mit gr\"o{\ss}erer Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
+	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die fraktionale Anisotropie nimmt mit gr\"o{\ss}erer werdender Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
 	\label{Modus}
 \end{figure}
 Um die Intuition hinter Modus und fraktionaler Anisotropie zu verdeutlichen, sind in Abb. \ref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere soll damit gezeigt werden, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
@@ -340,7 +340,7 @@ tr(U,V^{T}) = 0
 
 \subsubsection{Matrixinvarianten}
 \label{Matrixinvarianten}
-Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmten Transformationen auf die Objekte sind. Invarianten eines Tensors in Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unab\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
+Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in der Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
 
 Da sich das vorliegende Paper auf symmetrische, dreidimensionale Tensoren 2. Grades und ausschlie{\ss}lich orthogonale Transformationen bezieht, werden die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
 
@@ -354,13 +354,13 @@ Da sich das vorliegende Paper auf symmetrische, dreidimensionale Tensoren 2. Gra
 	\rightarrow \mathbb{R}
 \end{equation}
 
-darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind. Die stimmt mit der Betrachtunsweise von Zobel und Scheuermann \cite{zobel2017extremal} \"uberein.
+darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind. Dies stimmt mit der Betrachtunsweise von Zobel und Scheuermann \cite{zobel2017extremal} \"uberein.
 
 \subsubsection{Invariantens\"atze} 
 Mengen von Invarianten werden als Invariantens\"atze bezeichnet.
-Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in `Orthogonal tensor invariants and the analysis of diffusion tensor magnetic resonance images' von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt zu zeigen dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
+Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in `Orthogonal tensor invariants and the analysis of diffusion tensor magnetic resonance images' von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
 
-F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"oechstens 3 Invarianten. In der Praxis spielen jedoch eine Vielzahl von Invariantens\"atzen eine Rolle, von denen im Folgendenden einige erl\"autert werden:
+F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens 3 Invarianten. In der Praxis spielt jedoch eine Vielzahl von Invariantens\"atzen eine Rolle, von denen im Folgenden einige erl\"autert werden:
 
 \paragraph{Die Eigenwerte}
 
@@ -434,7 +434,7 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 	\label{cylinderCoords}
 \end{figure}
 
-Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"r den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
+Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
 
 Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der absoluten `Gr\"o{\ss}e' der Matrix , $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
@@ -445,11 +445,11 @@ Der orthogonale R-Invariantensatz verwendet die Invarianten $R_1, R_2$ und $R_3$
 
 \begin{itemize}
 	\item $R_1(A)=norm(A)$ (Norm von $A$)
-	\item $R_2(A)=\sqrt{\frac{3}{2}} \frac{norm(\tilde{A})}{norm(A)}$ (Fraktionale Anisotropie)
+	\item $R_2(A)=\sqrt{\frac{3}{2}} \frac{norm(\tilde{A})}{norm(A)}$ (fraktionale Anisotropie)
 	\item $R_3(A)=mode(A)$ (Modus von $A$)
 \end{itemize}
 
-Dabei f\"allt auf, dass $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invariantensatz kann auch R in einem zylindrischen Koordinatensystem dargestellt werden.
+Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invariantensatz kann auch R in einem zylindrischen Koordinatensystem dargestellt werden.
 
 \begin{figure}
 	\centering
@@ -473,7 +473,7 @@ Innerhalb der vorliegenden Arbeit werden Spannung und Verformung an Punkten von 
 
 
 \subsubsection{Mechanische Spannung}
-In der Mechanik beschreibt Spannung (engl. stress) die Kraft, die Partikel innerhalb eines Objektes aufeinander auswirken. Um die Spannung an einem Punkt zu bestimmen, wird die Kraft, die auf infinitesimal kleine Fl\"achenteile von Schnitten durch das Objekt wirkt, berechnet. Die Kraft ist dabei als Vektor formulierbar. Wenn die Schnitte entlang von 3 zueinander orthogonalen Ebenen durchgef\"uhrt werden, erh\"alt man so drei Vektoren, die zusammen die Matrixdarstellung des Cauchy Tensors $\sigma$ bilden:
+In der Mechanik beschreibt Spannung (engl. stress) die Kraft, die Partikel innerhalb eines Objektes aufeinander auswirken. Um die Spannung an einem Punkt zu bestimmen, wird die Kraft, die auf infinitesimal kleine Fl\"achenteile von Schnitten durch das Objekt wirkt, berechnet. Die Kraft ist dabei als Vektor formulierbar. Wenn die Schnitte entlang von drei zueinander orthogonalen Ebenen durchgef\"uhrt werden, erh\"alt man so drei Vektoren, die zusammen die Matrixdarstellung des Cauchy Tensors $\sigma$ bilden:
 
 \begin{equation}
 	\sigma =  
@@ -505,19 +505,19 @@ Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\
 \subsection{FAnToM}
 FAnToM\cite{fantomWebsite}\cite{wiebel2009fantom} (`Field Analysis using Topological Methods') ist ein Programm, dessen Entwicklung im Jahre 1999 begann. Obwohl es zu Anfang noch als Hilfsmittel f\"ur die Analyse von Vektorfeldtopologien konzipiert war, entwickelte es sich \"uber die Jahre hinweg zu einer Plattform f\"ur diverse Visualisierungen.
 
-Erweiterungen von FAnToM werden in Form von sogenannten Algorithmen entwickelt. Dabei unterscheidet man 2 Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzelnen Feld mit Vektorwerten kombiniert, deren Komponenten den Skalaren entsprechen.
-Visualization Algorithms dagegen dienen dazu, Visualisierungen zu erzeugen. Interaktionen mit der den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
+Erweiterungen von FAnToM werden in Form von sogenannten Algorithmen entwickelt. Dabei unterscheidet man zwei Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzigen Feld mit Vektorwerten kombiniert, wobei die Vektorkomponenten den Skalaren entsprechen.
+Visualization Algorithms dagegen dienen dazu, Visualisierungen zu erzeugen. Interaktionen mit den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
 
-Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithmen k\"onnen als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithmen mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen so mit wenig Aufwand aus bestehenden Algorithmen komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithmen als Knoten dargestellt sind, deren Aus- und Eingaben durch Kanten verbunden werden k\"onnen.
+Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithmen als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithmen mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen mit wenig Aufwand aus bestehenden Algorithmen komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithmen als Knoten dargestellt sind, deren Aus- und Eingaben durch Kanten verbunden werden k\"onnen.
 
-Die aktuelle FAnToM-Session, also die momentan benutzten Algorithmen mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
+Die aktuelle FAnToM-Session, also die momentan genutzten Algorithmen mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
 
 Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
 \subsection{OpenGL}
 \label{sec:OpenGL}
-OpenGL\cite{openglWebsite} ist eine Spezifikation die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm am Ende laufen soll, entwickeln k\"onnen. 
+OpenGL\cite{openglWebsite} ist eine Spezifikation, die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm laufen soll, entwickeln k\"onnen. 
 
-Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Rendepipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Benutzern von OpenGL erm\"oglicht, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
+Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Renderpipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Nutzern von OpenGL erm\"oglichen, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
 
 \begin{enumerate}
 	\item Die Ausgabe des vorherigen Schrittes in der Renderpipeline
@@ -527,28 +527,28 @@ Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig 
 
 Ein wichtiger Spezialfall von Uniforms sind Texturen, die in dem OpenGL verwendenden Programm geladen, an die Shader \"ubergeben und dort verwendet werden k\"onnen.
 
-In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind folgend kurz erkl\"art.
+In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind im Folgenden kurz erkl\"art.
 
 \paragraph{Vertex Shader}
-Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist beispielsweise \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
+Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist zum Beispiel \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
 
 \paragraph{Geometry Shader}
-Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der dazugeh\"orenden Punkte, z.B. eine Liste von 3 Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern, und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen. Zus\"atzlich kann er pro Punkt Uniforms definieren, die an sp\"ater ausgef\"uhrte Shader (Vertex Shader) weitergegeben werden. Pro Primitv wird der Geometry Shader einmal ausgef\"uhrt.
+Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der zugeh\"origen Punkte, z.B. eine Liste von drei Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen sowie Uniforms pro Punkt definieren, welche an sp\"ater ausgef\"uhrte Shader (Fragment Shader) weitergegeben werden. Pro Primitiv wird der Geometry Shader einmal ausgef\"uhrt.
 
 \paragraph{Fragment Shader}
 Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen (z.B. Supersampling). Die Eingaben sind der Mittelpunkt des Fragments und die f\"ur diesen Punkt interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch Werte ausgegeben werden, z.B. ein Tiefenattribut, das korrekte \"Uberlappung von Primitiven erm\"oglicht.
 
-Weitere im Folgenden verwendete Funktionen von OpenGL sind `Blending', eine Funktion durch die Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist sowie die M\"oglichkeit, gerenderte Bilder in einer Textur zu speichern.
+Eine weitere im Folgenden verwendete Funktion von OpenGL ist `Blending', durch die Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist. Zudem existiert die M\"oglichkeit, gerenderte Bilder mithilfe von `Framebuffern' nicht anzuzeigen, sondern stattdessen in einer Textur zu speichern.
 
-Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
+Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader, erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
 
 \subsection{Qt}
-Qt\cite{qtWebsite} ist eine popul\"are, plattfor\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen.
+Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen.
 
-FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithmen heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, so dass durch OpenGl gerenderte Bilder angezeigt werden k\"onnen. Dies wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
+FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithmen heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGl gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
 
 \subsection{Direct Volume Rendering}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"ache der Objekte approximiert werden. Dies entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
 
 
 \begin{figure}
@@ -566,11 +566,11 @@ In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Drei
 		\label{Zahn}
 	\end{minipage}
 \end{figure}
-Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werte werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet.
+Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werten werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet.
 
-Eine Implementierung einer Interaktiven Transferfunktion in FAnToM ist in Abb. \ref{Colormap} zu sehen. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu komplett intransparent am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So werden allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. 
+Eine Implementierung einer interaktiven Transferfunktion in FAnToM ist in Abb. \ref{Colormap} zu sehen. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. 
 
-Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion Licht ausstrahlen, das von anderen Bereichen entsprechend ihrer Transparenz durchgelassen oder absorbiert wird. Dadurch ist es m\"oglich, Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abb. \ref{Zahn} dargestellt.
+Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion Licht ausstrahlen. Abh\"angig von ihrer Transparenz absorbieren andere Bereiche dieses Licht oder lassen es durch. Dadurch ist es m\"oglich, Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abb. \ref{Zahn} dargestellt.
 
 Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"alligkeit f\"ur Artefakte unterscheiden. In dieser Arbeit wurde Raycasting verwendet, was folgend erl\"autert wird.
 
@@ -579,10 +579,10 @@ Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/Raycasting}
-	\caption{Eine vereinfachte Darstellung eines optimierten Raycastings. Die Bildebene entspricht der Ebene, die durch die durch die imagin\"are Position der Pixel gebildet wird. Die Roten Punkte entlang der Strahlen entsprechen den Samplepunkten.}
+	\caption{Eine vereinfachte Darstellung eines optimierten Raycastings. Die Bildebene entspricht der Ebene, die durch die imagin\"are Position der Pixel gebildet wird. Die roten Punkte entlang der Strahlen entsprechen den Samplepoints.}
 	\label{Raycasting}
 \end{figure}
-Beim Raycasting wird f\"ur jedes Pixel ein Strahl durch den Mittelpunkt des Pixels und die Position der Kamera berechnet. Entlang dieses Strahls wird an, nach ihrer Entfernung von der Kamera geordneten Punkten  $s_1, \dots, s_n$ (`Samplepunkten') der interpolierte Wert des Feldes $v(s_i), 1\leq i\leq n$ berechnet. Der paarweise Abstand der Samplepunkte ist dabei kontant. Aus dem ermittelten Wert wird mithilfe der Transferfunktion die Farbe $f(v(s_i))$ und die Transparenz $t(v(s_i))$ f\"ur diesen Wert bestimmt.
+Beim Raycasting wird f\"ur jedes Pixel ein Strahl durch den Mittelpunkt des Pixels und die Position der Kamera berechnet. Entlang dieses Strahls wird, an nach ihrer Entfernung von der Kamera geordneten Punkten  $s_1, \dots, s_n$ (`Samplepoints') der interpolierte Wert des Feldes $v(s_i), 1\leq i\leq n$ berechnet. Der paarweise Abstand der Samplepunkte ist dabei konstant. Aus dem ermittelten Wert wird mithilfe der Transferfunktion die Farbe $f(v(s_i))$ und die Transparenz $t(v(s_i))$ f\"ur diesen Wert bestimmt.
 
 Dabei sei die Transparenz ein Wert im Intervall $[0,1]$ und Farbe ein Vektorraum \"uber $\mathbb{R}$, wie z.B. im RGBA Farbmodell, f\"ur den die Multiplikation mit einem Skalar definiert ist. Die Farbe des Pixels $p$ wird dann f\"ur die Samplepunkte entlang des entsprechenden Strahls berechnet als
 
@@ -591,9 +591,9 @@ Dabei sei die Transparenz ein Wert im Intervall $[0,1]$ und Farbe ein Vektorraum
 	\label{RaycastingFormula}
 \end{equation}
 
-Das hat den Effekt, dass weiter von der Kamera entfernte Samplepunkte von n\"aheren Punkten entsprechend ihrer Transparenz verdeckt werden. Insbesondere hat es die Konsequenz, dass, sobald gen\"ugend Punkte verarbeitet wurden, so dass die `verbleibende Transparenz' einen Grenzwert unterschreitet, sich die Farbe des Pixels nicht mehr stark ver\"andert, und die Berechnung fr\"uhzeitig beendet werden kann. Die verbleibende Transparenz wird durch die Gesamtzahl der Samplepunkte $n$ geteilt, damit eine h\"ohere Anzahl an Samplepunkten nicht zu einem schnelleren Verlust von Transparenz f\"uhrt.
+Das hat den Effekt, dass weiter von der Kamera entfernte Samplepunkte von n\"aheren Punkten entsprechend ihrer Transparenz verdeckt werden. Insbesondere folgt daraus die Konsequenz, dass, sobald gen\"ugend Punkte verarbeitet wurden, so dass die `verbleibende Transparenz' einen Grenzwert unterschreitet, sich die Farbe des Pixels nicht mehr stark ver\"andert, und die Berechnung fr\"uhzeitig beendet werden kann. Die verbleibende Transparenz wird durch die Gesamtzahl der Samplepunkte $n$ geteilt, damit eine h\"ohere Anzahl an Samplepoints nicht zu einem schnelleren Verlust von Transparenz f\"uhrt.
 
-Eine weitere Optimierung besteht darin, die Samplepunkte erst nach dem Eintreten des Strahls in das Feld beginnen zu lassen und die Berechnung zu beenden, sobald alle verbleibenden Samplepunkte ausserhalb des Feldes liegen. Eine vereinfachte Darstellung dieses optimierten Verfahrens ist in \ref{Raycasting} dargestellt.
+Eine weitere Optimierung besteht darin, den ersten Samplepunkt erst nach dem Eintreten des Strahls in das Feld zu setzen und die Berechnung zu beenden, sobald alle verbleibenden Samplepunkte ausserhalb des Feldes liegen. Eine vereinfachte Darstellung dieses optimierten Verfahrens ist in \ref{Raycasting} dargestellt.
  
 \begin{figure}
 	\begin{subfigure}{0.30\textwidth}
@@ -617,13 +617,13 @@ Eine weitere Optimierung besteht darin, die Samplepunkte erst nach dem Eintreten
 	\label{SamplingPoints}
 \end{figure}
 
-Die Qualit\"at eines Raycastings ist stark abh\"angig von der Anzahl an Samplepunkten pro Strahl und somit vom Abstand zwischen den Samplepunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Benutzer die Anzahl von Samplepunkten selbst ausw\"ahlt, kann er seinen optimalen Tradeoff zwischen Rechenzeit und Bildqualit\"at finden. In Abb. \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Samplepunkten erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Samplepunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Samplepunkten in \ref{SamplingPoints2} verschwinden diese Artefakte.
+Die Qualit\"at eines Raycastings ist stark abh\"angig von der Anzahl an Samplepoints pro Strahl und somit vom Abstand zwischen den Samplepoints. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Nutzer die Anzahl von Samplepoints selbst ausw\"ahlt, kann er seinen optimalen Tradeoff zwischen Rechenzeit und Bildqualit\"at finden. In Abb. \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Samplepoints erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Samplepoints erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Samplepoints in \ref{SamplingPoints2} verschwinden diese Artefakte.
 
-Eine weitere wichtige Einstellung ist, welche Zahl in Formel \ref{RaycastingFormula} f\"ur Variable $n$ verwendet wird. Wenn $n$ die Anzahl der Samplepunkte pro Strahl ist, kann dies, wenn die Blickrichtung der Kamera nicht senkrecht auf einer der Seitenfl\"achen steht, dazu f\"uhren, dass Bereiche am Rand des Feldes transparenter dargestellt werden als in der Mitte. Das liegt daran, dass der Strahl am Rand weniger Samplepunkte produziert die innerhalb des Feldes liegen. Ein Beispiel daf\"ur ist in \ref{SamplingPoints3} mit 200 Samplepunkten dargestellt. 
+Eine weitere wichtige Einstellung ist, welche Zahl in Formel \ref{RaycastingFormula} f\"ur Variable $n$ verwendet wird. Wenn $n$ die Anzahl der Samplepunkte pro Strahl ist, kann dies, wenn die Blickrichtung der Kamera nicht senkrecht auf einer der Seitenfl\"achen steht, dazu f\"uhren, dass Bereiche am Rand des Feldes transparenter dargestellt werden als in der Mitte. Das liegt daran, dass der Strahl am Rand weniger Samplepunkte produziert, die innerhalb des Feldes liegen. Ein Beispiel daf\"ur ist in \ref{SamplingPoints3} mit 200 Samplepoints dargestellt. 
 
-Alternativ kann f\"ur $n$ die Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, gew\"ahlt werden. Dies wurde in Abb. \ref{SamplingPoints2} getan. Wenn man nun \ref{SamplingPoints2} und \ref{SamplingPoints3} miteinander vergleicht, f\"allt auf, dass die Pixel in der mitte der Darstellung etwa die gleichen Farben erhalten haben, \ref{SamplingPoints3} in Richtung Rand jedoch erheblich transparenter wird. Welche von beiden Varianten bevorzugt wird, h\"angt von der Art des Datensatzes ab sowie davon, wie wichtig es ist, korrekte Werte ablesen und vergleichen zu k\"onnen.
+Alternativ kann f\"ur $n$ die Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, gew\"ahlt werden. Dies wurde in Abb. \ref{SamplingPoints2} getan. Wenn man nun \ref{SamplingPoints2} und \ref{SamplingPoints3} miteinander vergleicht, f\"allt auf, dass die Pixel in der Mitte der Darstellung etwa die gleichen Farben erhalten haben, \ref{SamplingPoints3} in Richtung Rand jedoch erheblich transparenter wird. Welche von beiden Varianten bevorzugt wird, h\"angt von der Art des Datensatzes ab sowie davon, wie wichtig es ist, korrekte Werte ablesen und vergleichen zu k\"onnen.
 
-\subsection{Contiuous Scatterplotting}
+\subsection{Continuous Scatterplotting}
 \subsubsection{Scatterplotting}
 \begin{figure}
 	\hspace{2cm}
@@ -641,9 +641,9 @@ Alternativ kann f\"ur $n$ die Anzahl der Samplepunkte, die tats\"achlich im Feld
 	\label{Scatterplots}
 \end{figure}
 
-Scatterplotting ist ein weiter verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es bildet eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird pro Objekt ein Punkt in ein in zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abb. \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal 3 Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
+Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abb. \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
 
-Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen sind leicht erkennbar. 
+Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
 
 Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ die Projektion auf eine Teilmenge der Attribute notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen. 
 
@@ -665,7 +665,7 @@ Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ 
 	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an. }
 	\label{ContinuousScatterplot}
 \end{figure}
-Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, so dass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016contiuousScatterplot} um einige wichtige Punkte erweitert. Dabei verwendet es einen Ansatz, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden 2 Annahmen getroffen:
+Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
 
 Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
 
@@ -674,7 +674,7 @@ Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \ma
 	\label{Dichtefunktion}
 \end{equation}
 
-Die zweite Annahme sagt aus, dass die Masse einer Teilmenge $V\subset\mathbb{R}^m$ gleich der Masse ihres Urbildes ist, also $\tau$ die Gesamtdichte nicht beeinflusst. Da $\tau$ in der Regel nicht invertierbar ist, wird $\tau^{-1}(\phi), \phi \subset \mathbb{R}^m$ verwendet, um das Urbild von $\phi$ zu notieren. 
+Die zweite Annahme besagt, dass die Masse einer Teilmenge $V\subset\mathbb{R}^m$ gleich der Masse ihres Urbildes ist, also $\tau$ die Gesamtdichte nicht beeinflusst. Da $\tau$ in der Regel nicht invertierbar ist, wird $\tau^{-1}(\phi), \phi \subset \mathbb{R}^m$ verwendet, um das Urbild von $\phi$ zu notieren. 
 
 
 F\"ur $\xi \in \Phi$ f\"uhren die Annahmen zu der Gleichung
@@ -683,19 +683,19 @@ F\"ur $\xi \in \Phi$ f\"uhren die Annahmen zu der Gleichung
 	\int_{\phi}\sigma(\xi)d^m\xi = \int_{\tau^{-1}(\phi) = V}s(x)d^nx
 \end{equation}
 
-Da $\tau$ weder injektiv noch surjektiv ist, gilt der umgekehrte Fall nur, wenn zus\"atzlich $\forall x \in V: f^{-1}(f(x)) \subset V$ gilt\cite [S.~20]{fritzsch2016contiuousScatterplot}.
+Da $\tau$ weder injektiv noch surjektiv ist, gilt der umgekehrte Fall nur, wenn zus\"atzlich $\forall x \in V: f^{-1}(f(x)) \subset V$ gilt\cite [S.~20]{fritzsch2016continuousScatterplot}.
 
 \begin{equation}
 	\int_{V}s(x)d^nx = \int_{\phi = \tau(V)}\sigma(\xi)d^m\xi
 \end{equation}
 
-Fritzsch \cite[S.~20~f.]{fritzsch2016contiuousScatterplot} definiert zus\"atzlich ein $\sigma_v$, das die Dichtefunktion der Einschr\"ankung von $\tau$ auf $V$ beschreibt, also den `Beitrag' von $V$ zu $\sigma$.
+Fritzsch \cite[S.~20~f.]{fritzsch2016continuousScatterplot} definiert zus\"atzlich ein $\sigma_v$, das die Dichtefunktion der Einschr\"ankung von $\tau$ auf $V$ beschreibt, also den `Beitrag' von $V$ zu $\sigma$.
 
 \begin{equation}
 	\int_{\phi} \sigma_v(\xi)d^m\xi = \int_{\tau|_V^{-1}(\phi)}s(x)d^nx
 \end{equation}
 
-Mithilfe der $\sigma_v$ stellt Fritzsch fest, dass f\"ur eine Zerlegung des Definitionsbereichs $U$ von $\tau$ in eine Menge von disjunkten Teilmengen $\hat{V} = {V_i | V_i \in U}$ gilt dass
+Mithilfe der $\sigma_v$ stellt Fritzsch fest, dass f\"ur eine Zerlegung des Definitionsbereichs $U$ von $\tau$ in eine Menge von disjunkten Teilmengen $\hat{V} = {V_i | V_i \in U}$ gilt, dass
 
 \begin{equation}
 \begin{split}
@@ -717,7 +717,7 @@ Da die Integranden des ersten und letzten Integrals gleich sein m\"ussen, ergibt
 	\label{DensitySum}
 \end{equation}
 
-Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
+Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass die gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
 
 Die Berechnung von $\sigma$ h\"angt vom Verh\"altnis von $m$ und $n$ zueinander ab. Da in der vorliegenden Arbeit nur der Fall $m=n=3$ auftritt, beschr\"ankt sich die weitere Er\"auterung auf diesen Fall. F\"ur $m=n$ unterscheiden Bachthaler und Weiskopf folgende F\"alle f\"ur $V \subseteq \mathbb{R}^n$\cite[S.~1430]{bachthaler2008continuous}:
 
@@ -736,10 +736,10 @@ bilden, wobei $J_\tau$ die Jacobimatrix von $\tau$ ist. Da der Wert der Determin
 	\label{Case1Formula}
 \end{equation}
 
-Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt entspricht der Betrag der Determinanten der Jacobimatrix der Expandieren oder Schrumpfen der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt also die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
+Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt, entspricht der Betrag der Determinanten der Jacobimatrix dem Betrag Expandierung oder Schrumpfung der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
 
 \paragraph{Fall 2: $\tau$ ist differenzierbar und konstant \"uber V, V ist keine Nullmenge}
-Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass ein Bereich aus $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit der Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
+Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass ein Bereich aus $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit dem Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
 
 \begin{equation}
 	\begin{split}
@@ -759,7 +759,7 @@ Aus den Eigenschaften des Dirac Deltas ergibt sich, dass die Masseerhaltung erf\
 	\end{split}
 \end{equation}
 
-Da $s(x) = 1$ festgelegt ist, ist die Bedingung er\"ullt. In \ref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichte der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss Formel \ref{DiracTimesVolume} entsprechend angepasst werden.
+Da $s(x) = 1$ festgelegt ist, ist die Bedingung erf\"ullt. In \ref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichten der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss Formel \ref{DiracTimesVolume} entsprechend angepasst werden.
 
 \paragraph{Fall 3: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist Nullmenge}
 Ein weiterer Fall, in dem $det(J_\tau) = 0$ ist, tritt auf wenn $V$ eine Nullmenge ist (also z.B. eine Linie im $\mathbb{R}^3$). Da Integration \"uber Nullmengen immer 0 ergibt, k\"onnen die Nullmengen und ihr Bild bez\"uglich $\tau$ einfach aus dem Scatterplotting entfernt werden, ohne die Masseerhaltung zu verletzen.
@@ -778,13 +778,13 @@ Wenn im Datensatz Unstetigkeiten auftreten, zum Beispiel zwischen Zellen, ist $\
 		\subcaption{}
 		\label{Case5Solution}
 	\end{subfigure}
-	\caption{Eine Darstellung den 5. Falls. (a) Alle drei Punkte des Dreiecks $V$ im linken Koordinatensystem werden auf eine Gerade abgebildet. Dadurch ist $\tau(V)$ eine Nullmenge. (b) Eine Darstellung des von Fritzsch vorgeschlagenen Ansatzes. Die graue, gestrichelte Linie entspricht dem Gradienten, die L\"ange der blauen Linie ist proportional zur Dichte. }
+	\caption{Eine Darstellung des f\"unften Falls. (a) Alle drei Punkte des Dreiecks $V$ im linken Koordinatensystem werden auf eine Gerade abgebildet. Dadurch ist $\tau(V)$ eine Nullmenge. (b) Eine Darstellung des von Fritzsch vorgeschlagenen Ansatzes. Die graue, gestrichelte Linie entspricht dem Gradienten, die L\"ange der blauen Linie ist proportional zur Dichte. }
 \end{figure}
 
 \paragraph{Fall 5: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist keine Nullmenge}\mbox{}\\
-Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016contiuousScatterplot}, die in der Praxis eine Rolle spielen. Dies tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe Abb. \ref{Case5}), also wenn entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
+Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016continuousScatterplot}, die in der Praxis eine Rolle spielen. Ein solcher Fall tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe Abb. \ref{Case5}), wenn also entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
 
-Die Jacobi Matrix enth\"alt in diesem Fall mindestens eine Nullzeile, wodurch f\"ur ihren Rang gilt $0 < rang(M) < m$. 
+Die Jacobimatrix enth\"alt in diesem Fall mindestens eine Nullzeile, wodurch f\"ur ihren Rang gilt $0 < rang(M) < m$. 
 
 Fritzsch schl\"agt zur L\"osung dieses Problems zwei Ans\"atze vor. 
 
@@ -796,28 +796,28 @@ Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $ran
 \label{sec:Umsetzung}
 In diesem Kapitel wird beschrieben, wie die Grundlagen, Technologien und Verfahren aus den vorherigen Kapiteln eingesetzt wurden, um eine interaktive Tensorfeldvisualisierung in FAnToM zu erzeugen.
 
-Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichte in den Zellen der neuen Zellstruktur werden durch Methoden des Contiuous Scatterplottings berechnet.
+Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im Folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichten in den Zellen der neuen Zellstruktur werden durch Methoden des Continuous Scatterplottings berechnet.
 
-In die Darstellung des zylindrischen Invarianten DVRs werden ausserdem noch Interaktionsfl\"achen in Form von Kreissektoren eingezeichnet. Durch Interaktion mit der Maus k\"onnen die Fl\"achen verschoben sowie ihr Radius und die Winkel der beiden Kreisradient zur XY Ebene ver\"andert werden.
-Mithilfe der Interaktionsfl\"achen kann der Benutzer Bereiche von Invarianten ausw\"ahlen. Alles, was ausserhalb des ausgew\"ahlten Bereichs liegt, wird im zylindrischen DVR ausgeblendet. Auch in der Darstellung des Objekts werden alle Bereiche ausgeblendet, deren Invarianten ausserhalb des gew\"ahlten Bereichs liegen. 
+In die Darstellung des zylindrischen Invarianten DVRs werden ausserdem noch Interaktionsfl\"achen in Form von Kreissektoren eingezeichnet. Durch Interaktion mit der Maus k\"onnen die Fl\"achen verschoben sowie ihr Radius und die Winkel der beiden Kreisradienten zur XY Ebene ver\"andert werden.
+Mithilfe der Interaktionsfl\"achen kann der Nutzer Bereiche von Invarianten ausw\"ahlen. Alles, was ausserhalb des ausgew\"ahlten Bereichs liegt, wird im zylindrischen DVR ausgeblendet. Auch in der Darstellung des Objekts werden alle Bereiche ausgeblendet, deren Invarianten ausserhalb des gew\"ahlten Bereichs liegen. 
 
-Zus\"atzlich existieren weitere Optionen, durch die der Benutzer die Darstellungen an seine Problemstellung anpassen kann.
+Zus\"atzlich existieren weitere Optionen, durch die der Nutzer die Darstellungen an seine Problemstellung anpassen kann.
 
 Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden n\"aher erl\"autert.
 
 \subsection{Datenvorbereitung}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.95\textwidth]{pictures/BigSession.png}
+	\includegraphics[width=\textwidth]{pictures/BigSession.png}
 	\caption{Der Flowgraph der FAnToM Session, die zur Vorbereitung der Daten verwendet wird.}
 	\label{BigSession}
 \end{figure}
 \subsubsection{Die Vorbereitungssession}
-Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt, und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithmen, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithmen der Session werden im Folgenden erkl\"art.
+Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithmen, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithmen der Session werden im weiteren Verlauf erkl\"art.
 
 Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des Objekts werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
 
-Als n\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils 3 Invarianten. Dazu werden 3 Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, die als Eingabe der eigentlichen Visualisierung verwendet wird.
+Als N\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils drei Invarianten. Dazu werden drei Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, das als Eingabe der eigentlichen Visualisierung verwendet wird.
 
 Durch den Algorithmus `Cylindric Coordinates' werden die Werte des Vektorfeldes als Koordinaten von Punkten in einem zylindrischen Koordinatensystems aufgefasst. Ein Punkt ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Aus diesen neuen Punkten werden Tetraederzellen \"aquivalent zum Eingabefeld definiert. Die Ausgabe entspricht also der Zellstruktur der Eingabe, in der alle Punkte auf die neuen Koordinaten `verschoben' wurden.
 
@@ -835,11 +835,11 @@ Zum Schluss wird das Quotientenfeld auf die verschobene Zellstruktur zellenweise
 
 Zwei Teile der Datenvorbereitung m\"ussen in der gleichen Session stattfinden wie die Visualisierung selbst, um dem Anwender die M\"oglichkeit der Interaktion zu geben. Das sind zum einen die Erzeugung der Transferfunktion, zum anderen die Berechnung der Dichte innerhalb der Voxel im Objekt. Die Session ist in Abb. \ref{VisualizationSession} zu sehen.
 
-Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in Abb. \ref{Colormap} beschrieben, ist diese vom Benutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt wird durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
+Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in Abb. \ref{Colormap} beschrieben, ist diese vom Nutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt werden durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
 
 \subsection{Voxelisierung}
 
-Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefeldes als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
+Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefelder als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
 
 \begin{figure}
 	\centering
@@ -863,19 +863,19 @@ Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{Raycastin
 	\label{TetraCuts}
 \end{figure}
 
-OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speicherbedarf und Pr\"azision eingestellt werden k\"onnen. F\"ur die vorliegende Arbeit wurde `GL\_RGBA16' gew\"ahlt, die 4 Werte mit jeweils 16 Bit Pr\"azision zur Verf\"ugung stellt. \"Ublicherweise wird in einem Feld der Tabelle die Werte f\"ur den roten, gr\"unen und blauen Anteil der Farbe sowie die Transparenz (`Alpha') an dieser Stelle codiert. Das DVR Verfahren interpretiert diese Werte jedoch anders: Der Alphawert entspricht der Dichte und die restlichen drei Farbwerte den interpolierten Invarianten der Zelle, in der das Voxel liegt. Die Invarianten spielen allerdings nur bei der Visualisierung des Objekts eine Rolle, weshalb diese Werte ansonsten leer gelassen werden.
+OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speicherbedarf und Pr\"azision eingestellt werden k\"onnen. F\"ur die vorliegende Arbeit wurde `GL\_RGBA16' gew\"ahlt, die vier Werte mit jeweils 16 Bit Pr\"azision zur Verf\"ugung stellt. \"Ublicherweise wird in einem Feld der Tabelle die Werte f\"ur den roten, gr\"unen und blauen Anteil der Farbe sowie die Transparenz (`Alpha') an dieser Stelle codiert. Das DVR Verfahren interpretiert diese Werte jedoch anders: Der Alphawert entspricht der Dichte und die restlichen drei Farbwerte den interpolierten Invarianten der Zelle, in der das Voxel liegt. Die Invarianten spielen allerdings nur bei der Visualisierung des Objekts eine Rolle, weshalb diese Werte ansonsten leer gelassen werden.
 
-Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen, und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringengenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der 3D Texturen zu implementieren. 
+Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der 3D Texturen zu implementieren. 
 
-Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der 3D Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen berechnet. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann es als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe Abb. \ref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird. Falls der Shader nicht-triviale Algorithmen enth\"alt, ist zus\"atzlich Pseudocode angegeben.
+Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der 3D Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen bestimmt werden. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann er als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe Abb. \ref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird. Falls der Shader nicht-triviale Algorithmen enth\"alt, ist zus\"atzlich Pseudocode angegeben.
 
-Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zeite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau 4 Punkte pro Primitiv sind, eignet es sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
+Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zweite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau vier Punkte pro Primitiv gibt, eignet das Format sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
 
-Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, ist ein Verfahren implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"r keinem der verwendeten Datens\"atze n\"otig.
+Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, ist ein Verfahren implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
 
-Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in eine Textur zu speichern. Dazu wird ein `Framebuffer' verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
+Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
 
-Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Benutzer selbst festgelegt werden. Falls in Richtung der X-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale maximale Ausdehung einer 3D Textur in jede Richtung.
+Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Nutzer selbst festgelegt werden. Falls in Richtung der X-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale Ausdehung einer 3D Textur in jede Richtung.
 
 \paragraph{Vertex Shader}
 Der Vertex Shader bekommt als Eingabe die Eckpunkte der Tetraeder, codiert in Form von Liniensegmenten mit Nachbarschaft. Falls das Feld in mehrere Texturen voxelisiert werden soll, wird eine Verschiebung und Skalierung durchgef\"uhrt, um nur die korrekten Tetraeder zu voxelisieren. Dichten und Invarianten werden als Variablen an den n\"achsten Teil der Shaderpipeline weitergegeben.
@@ -912,9 +912,9 @@ Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkant
 \paragraph{Fragment Shader}
 Der Fragment Shader normalisiert die Invarianten auf das Intervall $[0,\dots,1]$, wobei 0 dem niedrigsten und 1 dem h\"ochsten vorkommenden Wert entspricht. Damit wird sichergestellt, dass die Invarianten mit maximal m\"oglicher Pr\"azision in der Textur gespeichert werden.
 
-Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Benutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise mehr als 10 Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter an die 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt das auch kein Problem dar. 
+Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Nutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise um mehr als 10 Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter der 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt auch das kein Problem dar. 
 
-Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch eine von OpenGL bereitgestellten Funktion, dem `Blending'. Im Objekt kann dies nicht vorkommen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
+Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch eine von OpenGL bereitgestellte Funktion, dem `Blending'. Im Objekt kann dies nicht vorkommen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
 
 \subsection{Umsetzung des Continuous Scatterplottings}
 \label{CSPImplementation}
@@ -978,7 +978,7 @@ Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung
 
 Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort schwarz als Farbe des Fragments zur\"uckgegeben werden.
 
-Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. Dem Benutzer steht dabei frei, welche der beiden in Abschnitt \ref{Raycasting} beschriebenen Varianten er bevorzugt. 
+Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. Dem Nutzer steht dabei frei, welche der beiden in Abschnitt \ref{Raycasting} beschriebenen Varianten er bevorzugt. 
 
 Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offset erzeugt werden, der die Position des ersten Samplepunkts beeinflusst.
 
@@ -1242,9 +1242,9 @@ Aus der Darstellung von Bereichen mit hohem Modus (\ref{SinglePointInvariant3} u
 
 
 \subsection{Metallscheibe}
-Als zweites Beispiel wurde das Ergebnis einer thermo-mechanischen Simulation, durchgef\"uhrt von Dr. Thomas Nagel, verwendet, die auch in der Arbeit von Friztsch benutzt wurde \cite[S.15, 45 ff.]{fritzsch2016contiuousScatterplot}. Fritzsch beschreibt den Datensatz wie folgt:
+Als zweites Beispiel wurde das Ergebnis einer thermo-mechanischen Simulation, durchgef\"uhrt von Dr. Thomas Nagel, verwendet, die auch in der Arbeit von Friztsch benutzt wurde \cite[S.15, 45 ff.]{fritzsch2016continuousScatterplot}. Fritzsch beschreibt den Datensatz wie folgt:
 
-``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016contiuousScatterplot}
+``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016contibuousScatterplot}
 
 Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur Z-Achse sind. Die Z-Achse selbst zeigt nach unten.
 
@@ -1563,7 +1563,7 @@ Die Bereiche mit niedrigem Modus (Abb. \ref{BremshebelRInvariant3}) sind, da die
 		\subcaption{}
 		\label{BremshebelRObject3}
 	\end{subfigure}
-	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $R_1$ (Frobenius Norm), (c) und (d) Bereiche mit hohem $R_2$ (fraktionale Anisotropie), (e) und (f) Bereiche mit niedrigem $R_3$ (Modus).}
+	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $R_1$ (Frobeniusnorm), (c) und (d) Bereiche mit hohem $R_2$ (fraktionale Anisotropie), (e) und (f) Bereiche mit niedrigem $R_3$ (Modus).}
 	\label{BremshebelRInteraction}
 \end{figure}
 
@@ -1740,7 +1740,16 @@ Da $J_1$ immer gleich 0 ist, wurde stattdessen $I_1$ verwendet. Dadurch sind die
 
 \section{Ausblick}
 \label{sec:Ausblick}
-Fehler reduzieren durch Berechnung der Gr\"o{\ss}e des tats\"achlich belegten Volumens pro Tetraeder und Voxel -> Supersampling???
+Innerhalb der vorliegenden Arbeit wurde ein System entwickelt und evaluiert, das die Untersuchung von Tensordatenfeldern mithilfe von Invariantens\"atzen erm\"oglicht. Die Umsetzung liefert Ergebnisse, die mit den Erwartungen \"ubereinstimmen. Dadurch, dass die Darstellung durch Interaktionen in Echtzeit angepasst werden kann ist eine explorative Analyse der Daten m\"oglich. 
+
+Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik vorgef\"uhrt (ToDo Namen nennen?), wobei die Reaktionen positiv waren. Es wurde jedoch kritisiert, dass die explorative Analyse intensive Kenntnisse der Datens\"atze vorraussetzt. In der Praxis werden sogenannte Materialmodelle eingesetzt, die das Verhalten von Materialien beschreiben. Ausgehend davon lassen sich Invariantenbereiche definieren. Diese sind jedoch nicht immer zylinderachsenparallel wie die bereits implementierten Bereiche. Dies w\"are z.B. bei einem Material der Fall, das bei h\"oheren isotropen Spannungen auch h\"ohere anisotrope Spannungen aush\"alt. Ein solches Materialmodell w\"ure im Invariantenraum die Form eines Kegels annehmen. 
+
+Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"onnte eine lohnenswerte Erweiterung des Systems darstellen. Die Interpretation durch den Nutzer w\"urd erleichtert, da er die Bereiche nicht mehr per Hand einstellen m\"usste und daher weniger Kenntnisse \"uber die Invarianten und ihre Bedeutung notwendig w\"aren. Gleichzeitig w\"aren die Ergebnisse exakter und besser in der Praxis anwendbar. 
+
+Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Nicht nur dass die Voxelisierung einen gro{\ss}en Teil der Rechenzeit in Anspruch nimmt, es wird auch noch ein bewusster Fehler begangen. Die Dichte innerhalb eines Voxels entspricht im Moment stets der Summe der Tetraeder, die das Voxel schneiden, unabh\"angig davon, wie viel des Voxels vom Tetraeder eingenommen wird. Dadurch enth\"alt die 3D Textur insgesamt mehr Masse als das urspr\"ungliche Feld, was gegen einen Grundsatz des Continuous Scatterplottings verst\"o{\ss}t, die Masseerhaltung. Eine M\"oglichkeit diesen Fehler zu reduzieren oder sogar komplett zu vermeiden w\"are es, pro Voxel die Werte an mehreren Samplepoints zu berechnen und die Dichte auf den Mittelwert der Samplepunkte zu setzen. OpenGL bietet standardm\"a{\ss}ig eine Option dieses Supersampling zu implementieren, dies ist jedoch noch nicht in dieser Arbeit geschehen.
+
+Weitere Verbesserungsm\"oglichkeiten werden wahrscheinlich erst sichtbar werden, wenn das System in der Praxis eingesetzt wird. 
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % HERE ENDS YOUR DOCUMENT
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
