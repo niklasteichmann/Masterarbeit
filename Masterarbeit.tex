@@ -920,7 +920,7 @@ Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiec
 \label{CSPImplementation}
 Die beiden beschriebenen Verfahren implementieren gemeinsam ein vollst\"andiges Continuous Scatterplotting. Dies wird in diesem Abschnitt genauer begr\"undet.
 
-Der erste Teil, das Berechnen des Dichtebeitrags $\sigma_{V_i}$ der Tetraeder $V_i$, efolgt bereits in der Vorverarbeitung der Daten. Dabei wird die f\"ur Fall 1 angegebene Formel \ref{Case1Formula} verwendet. Die anderen F\"alle k\"onnen zwar theoretisch vorkommen, sind jedoch extrem unwahrscheinlich. Durch unvermeidbare Rundungsfehler werden Bereiche konstanter Invarianten (Fall 2), Nullmengen (Fall 3) und Abbildungen auf Teilr\"aume mit geringerer Dimension (Fall 5) zerst\"ort. Das Erkennen von diesen Rundungsfehlern wird dadurch erschwert, dass in den verwendeten Datens\"atzen tats\"achlich Bereiche mit sehr geringen Ver\"anderungen der Invarianten oder Abbildungen auf sehr flache Tetraeder vorkommen. Die Unterscheidung solcher extremen Formen von Fall 1 zu den anderen F\"allen ist nicht ohne weiteres m\"oglich. Fall 4 kommt nicht vor, da die verwendeten Felder \"uberall differenzierbar sind.
+Der erste Teil, das Berechnen des Dichtebeitrags $\sigma_{V_i}$ der Tetraeder $V_i$, erfolgt bereits in der Vorverarbeitung der Daten. Dabei wird die f\"ur Fall 1 angegebene Formel \ref{Case1Formula} verwendet. Die anderen F\"alle k\"onnen zwar theoretisch vorkommen, sind jedoch extrem unwahrscheinlich. Durch unvermeidbare Rundungsfehler werden Bereiche konstanter Invarianten (Fall 2), Nullmengen (Fall 3) und Abbildungen auf Teilr\"aume mit geringerer Dimension (Fall 5) zerst\"ort. Das Erkennen von diesen Rundungsfehlern wird dadurch erschwert, dass in den verwendeten Datens\"atzen tats\"achlich Bereiche mit sehr geringen Ver\"anderungen der Invarianten oder Abbildungen auf sehr flache Tetraeder vorkommen. Die Unterscheidung solcher extremen Formen von Fall 1 zu den anderen F\"allen ist nicht ohne Weiteres m\"oglich. Fall 4 kommt nicht vor, da die verwendeten Felder \"uberall differenzierbar sind.
 
 Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich Formel \ref{DensitySum} anwenden. Die $\sigma_V$ entsprechen den berechneten Dichtewerten pro Tetraeder, die f\"ur jedes Voxel durch das Blending aufaddiert werden.
 
@@ -928,19 +928,17 @@ Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich F
 
 Da Texturen nur Werte im Intervall $[0,\dots,1]$ enthalten k\"onnen, aber vor der fertiggestellten Voxelisierung die maximale Dichte in der 3D Textur nicht bestimmt werden kann, muss ein Verfahren implementiert werden, um das korrekte Maximum zu berechnen.
 
-Zun\"achst wird die h\"ochste, \"uberhaupt m\"ogliche Dichte in einem Voxel berechnet. Diese kommt genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden. Somit entspricht sie der Summe der Dichten aller Tetraeder. Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die gr\"o{\ss}te m\"ogliche Dichte geteilt und somit auf das Intervall $[0,\dots,1]$ normalisiert wird. 
+Zun\"achst wird die h\"ochste \"uberhaupt m\"ogliche Dichte in einem Voxel berechnet. Diese kommt genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden. Somit entspricht sie der Summe der Dichten aller Tetraeder. Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die berechnete maximal m\"ogliche Dichte geteilt und somit auf das Intervall $[0,\dots,1]$ normalisiert wird. 
 
-Als n\"achstes wird das Maximum der entstandenen 3D Textur gesucht. Da die 3D Textur relativ gro{\ss} werden kann (bis zu mehreren Gigabyte), die \"Ubertragung von Daten von der Grafikkarte zum Arbeitsspeicher relativ langsam ist und das Finden des Maximums gut parallelisiert werden kann, wurde auch dieses Problem durch eine Shaderpipeline gel\"ost.
+Als N\"achstes wird das Maximum der entstandenen 3D Textur gesucht. Da die 3D Textur relativ gro{\ss} werden kann (bis zu mehreren Gigabyte), die \"Ubertragung von Daten von der Grafikkarte zum Arbeitsspeicher relativ langsam ist und das Finden des Maximums gut parallelisiert werden kann, wurde auch dieses Problem durch eine Shaderpipeline gel\"ost. Indem das Maximum (ein Wert zwischen 0 und 1) mit dem gr\"o{\ss}ten m\"oglichen Wert multipliziert wird, erh\"alt man das korrekte Maximum. Dies kann verwendet werden, um die Werte einer weiteren Voxelisierung zu normalisieren. Dadurch wird die Pr\"azision in der 3D Textur erh\"oht.
 
-Indem das Maximum (ein Wert zwischen 0 und 1) mit dem gr\"o{\ss}ten m\"oglichen Wert multipliziert wird, erh\"alt man das korrekte Maximum. Dies kann verwendet werden, um die Werte einer weiteren Voxelisierung zu normalisieren. Dadurch wird die Pr\"azision in der 3D Textur erh\"oht.
-
-Die Eingabe der Shaderpipeline ist die 3D Textur sowie eine Linie zwischen den Punkten (-1.0, 0.0, 0.0) und (1.0, 0.0, 0.0). Berechnet wird eine Darstellung der Linie aus $Z$ Pixeln, wobei $Z$ die Anzahl an Schichten der 3D Textur ist. Der Wert jedes Pixels entspricht dem Maximum der jeweiligen Schicht. Durch Verwendung eines Framebuffers wird das Ergebnis in eine Textur gerendert, die erheblich wenige Speicherplatz verbraucht als die 3D Textur. Diese wird zur\"uck in den Arbeitsspeicher geladen und das Maximum durch linearen Durchlauf gefunden.
+Die Eingabe der Shaderpipeline ist die 3D Textur, sowie eine Linie zwischen den Punkten (-1.0, 0.0, 0.0) und (1.0, 0.0, 0.0). Berechnet wird eine Darstellung der Linie aus $Z$ Pixeln, wobei $Z$ die Anzahl an Schichten der 3D Textur ist. Der Wert jedes Pixels entspricht dem Maximum der jeweiligen Schicht. Durch Verwendung eines Framebuffers wird das Ergebnis in eine Textur gerendert, die erheblich weniger Speicherplatz verbraucht als die 3D Textur. Diese wird zur\"uck in den Arbeitsspeicher geladen und das Maximum durch linearen Durchlauf gefunden.
 
 \paragraph{Vertex Shader}
 Der Vertex Shader ordnet (-1.0, 0.0, 0.0) den Wert 0 und (1.0, 0.0, 0.0) den Wert 1 zu und gibt diese Werte an den Fragment Shader weiter.
 
 \paragraph{Fragment Shader}
-F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert, und das Maximum der Schicht zur\"uckgegeben. Der Algorithmus ist in \ref{MaximumAlgo} dargestellt.
+F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert und das Maximum der Schicht zur\"uckgegeben. Der Algorithmus ist in \ref{MaximumAlgo} dargestellt.
 
 \begin{algorithm}
 	\KwData{$T$ 3D Textur, $z$ interpolierte z-Koordinate der Schicht,\\
@@ -952,7 +950,7 @@ F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berec
 		\For{$y \gets 0$ \KwTo $y_{max}$}{
 			$p \gets punktAnKoordinaten(\frac{x}{x_{max}},\frac{y}{y_{max}},z)$
 			$voxelDichte = texturwertAnPunkt(T, p)$
-			$max = maximuim(max, voxelDichte)$
+			$max = maximum(max, voxelDichte)$
 		}	
 	}
 	\Return max\;
@@ -966,7 +964,7 @@ F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berec
 
 F\"ur die beiden DVR Darstellungen wird eine Variante des schon in \ref{sec:Raycasting} beschriebenen Verfahrens verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
 
-Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht Bildeben in Abb. \ref{Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
+Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht der Bildebene in Abb. \ref{Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
 
 Der Code basiert auf dem Algorithmus `Volume Renderer GLSL', erweitert diesen aber deutlich.
 
@@ -974,9 +972,9 @@ Der Code basiert auf dem Algorithmus `Volume Renderer GLSL', erweitert diesen ab
 Im Vertex Shader werden lediglich die X- und Y-Koordinaten der Punkte in einer Variable gespeichert und an den Fragment Shader \"ubergeben.
 
 \paragraph{Fragment Shader}
-Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. 
+Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des Inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. 
 
-Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort schwarz als Farbe des Fragments zur\"uckgegeben werden.
+Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten hat, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort Schwarz als Farbe des Fragments zur\"uckgegeben werden.
 
 Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. Dem Nutzer steht dabei frei, welche der beiden in Abschnitt \ref{Raycasting} beschriebenen Varianten er bevorzugt. 
 
@@ -984,7 +982,7 @@ Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offs
 
 Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formel \ref{RaycastingFormula} zu einem Farbwert kombiniert. 
 
-Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand der 3D Textur, Abbruch nachdem verbleibende Transparenz Grenzwert unterschreitet) sind implementiert.
+Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand der 3D Textur, Abbruch nachdem die verbleibende Transparenz einen Grenzwert unterschreitet) sind implementiert.
 
 \begin{figure}
 	\hspace*{\fill}
@@ -1006,7 +1004,7 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 	\label{RaycastingExample}
 \end{figure}
 
-Wenn beim Rendering des Feldes im Invariantenraumes der ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegen, wird dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegt, wird dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
 
 \begin{algorithm}[t]
 	\KwData{$s$ Strahlvektor der L\"ange 1, $t$ Schrittweite,\\
@@ -1035,7 +1033,7 @@ Wenn beim Rendering des Feldes im Invariantenraumes der ein Samplepunkt ausserha
 	\label{RaycastingAlgorithm}
 \end{algorithm}
 
-Um die Tiefenwahrnehmung zu verbessern werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
+Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
 \subsection{Die Interaktionsfl\"achen}
 \begin{figure}
@@ -1072,7 +1070,7 @@ Um die Tiefenwahrnehmung zu verbessern werden zus\"atzlich Farben an Punkten, di
 	\hspace*{\fill}
 	\caption{Die Darstellungen der Interaktionsfl\"achen. (a) Eine Interaktionsfl\"ache mit den einzelnen Bereichen. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlen die jeweiligen Invarianten aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionsfl\"achen durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
 \end{figure}
-Um in der Darstellung des Feldes im Invariantenraum Bereiche aus\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Diese haben die Form von Halbkreisen, und k\"onnen durch die Maus manipuliert werden. Durch Klicken und Halten der mittleren Maustaste k\"onnen untere und obere Schranken der Invariantenbereiche ausgew\"ahlt und durch Bewegung der Maus ihre Werte ver\"andert werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. 
+Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Diese haben die Form von Halbkreisen und k\"onnen durch die Maus manipuliert werden. Durch Klicken und Halten der mittleren Maustaste k\"onnen untere und obere Schranken der Invariantenbereiche ausgew\"ahlt und durch Bewegung der Maus ihre Werte ver\"andert werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. 
 
 Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft oder nicht, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl eine Interaktionsfl\"ache trifft, wird der getroffene Bereich ausgew\"ahlt. Wenn beide Interaktionsfl\"achen getroffen werden, wird die n\"ahere von beiden bevorzugt.
 
@@ -1101,7 +1099,7 @@ Der Visualisierungsalgorithmus bietet eine Reihe von Optionen an, durch die beid
 Die Anzahl der Samplepunkte pro Strahl kann f\"ur beide Darstellungen unabh\"angig voneinander mittels eines Textfeldes gew\"ahlt werden.
 
 \paragraph{Jittering}
-Um visuelle Artefakte zu verringern, kann durch eine Option ein pseudo-zuf\"alliger Offset vor dem ersten Samplepunkt gesetzt berechnet werden.
+Um visuelle Artefakte zu verringern, kann durch eine Option ein pseudo-zuf\"alliger Offset vor dem ersten Samplepunkt gesetzt werden.
 
 \paragraph{Helligkeit}
 Ein Slider erm\"oglicht die Einstellung der Helligkeit des Volume Renderings unabh\"angig von der Transferfunktion.
@@ -1113,7 +1111,7 @@ Durch einen weiteren Slider kann ein Faktor festgelegt werden, mit dem die Dicht
 Der dritte Slider legt einen Grenzwert f\"ur die Dichtewerte fest. Bereiche, deren Dichte unterhalb dieses Grenzwerts liegt, werden als komplett transparent angenommen.
 
 \paragraph{Lineare Interpolation}
-Standardm\"a{\ss}ig misst das Sampling die Dichtewerte der Textur an diesem Punkt. Da die Texur durch Rasterisierung enstanden ist, kann dies zu visuellen Artefakten f\"uhren, die die Darstellung `blockig' erscheinen lassen. Durch eine Option kann f\"ur lineare Interpolation verwendet werden, um die Dichte an einem Punkt zu bestimmen. Dabei wird neben der Dichte des Voxels selbst auch die Dichte der angrenzenden Voxel verwendet, und zwischen diesen der Wert f\"ur den Punkt interpoliert.
+Standardm\"a{\ss}ig misst das Sampling die Dichtewerte der Textur an einem vorgegebenen Punkt. Da die Texur durch Rasterisierung enstanden ist, kann dies zu visuellen Artefakten f\"uhren, die die Darstellung `blockig' erscheinen lassen. Es wurde eine Option implementiert, durch die stattdessen lineare Interpolation verwendet werden kann, um die Dichte an einem Punkt zu bestimmen. Dabei wird neben der Dichte des Voxels selbst auch die Dichte der angrenzenden Voxel verwendet, und zwischen diesen der Wert f\"ur den Punkt interpoliert.
 
 \paragraph{Skalierung der Transparenz mit der Anzahl der Samplepunkte im Feld}
 Diese Option macht es m\"oglich, die im Abschnitt \ref{sec:Raycasting} und Abb. \ref{RaycastingImplementation} erl\"auterte Skalierung der Transparenz mit der Anzahl der Samplepunkte, die tats\"achlich im Feld liegen, an- und auszuschalten.
@@ -1128,18 +1126,18 @@ Um die Gr"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen
 
 \subsection{Optionen des Invariantenraumrenderings}
 \paragraph{Wireframe}
-Optional kann ein `Wireframe' angezeigt werden, ein Liniengitter das das Feld begrenzt. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Die Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
-\paragraph{Koordinatenlabels}
+Optional kann ein `Wireframe' angezeigt werden, ein Liniengitter das das Feld begrenzt. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
+\paragraph{Koordinatenlabel}
 Um die Invariantenbereiche mit der Maus besser einstellen zu k\"onnen, ist es optional m\"oglich, die Werte der Schranken an den Interaktionsfl\"achen anzuzeigen.
 
 \paragraph{Interaktionsfl\"achen ausblenden}
-Da die Interaktionsfl\"achen einen gro{\ss}en Teil des Objekts verdecken k\"onnen, ist es m\"oglich, diese auszublenden. W\"ahrend sie ausgeblendet sind, ist keine Interaktion mit ihnen m\"oglich, die Invariantenbereiche k\"onnen also nicht mit der Maus ver\"andert werden.
+Da die Interaktionsfl\"achen einen gro{\ss}en Teil des Objekts verdecken k\"onnen, besteht die M\"oglichkeit, diese auszublenden. W\"ahrend sie ausgeblendet sind, ist keine Interaktion mit ihnen m\"oglich, die Invariantenbereiche k\"onnen also nicht mit der Maus ver\"andert werden.
 
 \paragraph{Wurzelskalierung}
-Die im Fragment Shader der Voxelisiserung durchgef\"uhre Skalierung, indem die dritte Wurzel gezogen wird, kann an- und ausgeschaltet werden.
+Die im Fragment Shader der Voxelisiserung durchgef\"uhre Skalierung durch Ziehen der dritten Wurzel kann an- und ausgeschaltet werden.
 
 \paragraph{Normalisierung des Feldes}
-Weil das Feld im Invariantenraum beliebige Formen annehmen kann, zum Beispiel flache Zylinder oder schmale Zylinderausschnitte, kann es sinnvoll sein, die Positionen auf einen festen Halbzylinder zu skalieren um leeren Raum zu vermeiden und sehr kleine Tetraeder besser sichtbar zu machen. Dies ist durch eine Option m\"oglich. Dabei werden die Minima und Maxima in allen drei Dimensionen berechnet und das Feld auf so skaliert, dass es die Form eines Halbzylinders mit einer feste H\"ohe von 1 annimmt.
+Im Invariantenraum kann das Feld beliebige Formen annehmen. Wenn beispielsweise eine Dimension sehr viel kleiner ist als die beiden anderen, kann dies die Betrachtung des Datensatzes erschwereren. Deshalb ist m\"oglich, das Feld durch eine Option zu skalieren. Dabei werden die Begrenzungsfl\"achen des Feldes in allen drei zylindrischen Dimensionen berechnet und die Darstellung des Feldes anschlie{\ss}end so skaliert, dass die Begrenzungsfl\"achen einen Halbzylinder mit fester H\"ohe und Radius von 1 bilden. Zus\"atzlich die Skalierung die Vorteile dass leerer Raum in der Darstellung vermieden und kleine Tetraeder besser sichtbar gemacht werden.
 
 \subsection{Das Intervallfenster}
 \begin{figure}
