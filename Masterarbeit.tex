@@ -59,6 +59,7 @@
 
 \begin{document}
 \maketitle\clearpage
+\thispagestyle{empty}
 \tableofcontents
 \thispagestyle{empty}
 \clearpage
@@ -1288,6 +1289,8 @@ Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}
 
 Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gewonnen werden kann, ist, dass sowohl der isotrope als auch der anisotrope Anteil der Spannung auf der R\"uckseite der Scheibe h\"oher ist als auf der Vorderseite. Das ist darauf zur\"uckzuf\"uhren, dass die R\"uckseite erhitzt wird, sich also das Material ausdehnt. Aus der Darstellung der Glyphen in Abb. \ref{MetalDiskStressEllipsoids} ist dies nur schwer abzulesen, da weder die Form noch die Gr\"o{\ss}e der Glyphen auf Vorder- und R\"uckseite stark voneinander abweicht. Zu\"satzlich erlauben die DVRs auch die Analyse von Tensoren im Inneren der Metallscheibe, was in der Glyphendarstellung durch \"Uberlagerung der Glyphen nicht m\"oglich ist.
 
+\clearpage
+
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
@@ -1334,7 +1337,9 @@ Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gew
 	\label{MetalDiskStressInteraction}
 \end{figure}
 
-\begin{figure}
+\clearpage
+
+\begin{figure}[H]
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/MetalDiskStrain_Ellipsoids.png}
@@ -1364,7 +1369,7 @@ Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gew
 Die Verformungstensoren der Metallscheibensimulation sind in Abb. \ref{MetalDiskStrainEllipsoids} dargestellt. Erkennbar ist, dass die Glyphen am inneren Rand erheblich gr\"o{\ss}er sind als alle anderen. Die Eigenwerte dieser Tensoren haben tats\"achlich einen relativ hohen Betrag, sind jedoch teilweise negativ, was dazu f\"uhrt, dass auch die Spur dort niedrig oder sogar negativ ist. Dies f\"allt auch in Abb. \ref{MetalDiskStrainInvariant1} auf, wo Bereiche niedriger Spur ausgeblendet werden.
 Die Spur ist, \"ahnlich wie beim Spannungsdatensatz, unten links gr\"o{\ss}er als oben rechts. $K_2$, und somit auch die Anisotropie, ist in einem halbkreisf\"ormigen Bereich an der Innenseite der Scheibe am gr\"o{\ss}ten (siehe Abb. \ref{MetalDiskStrainInvariant2}). Im gleichen Bereich ist auch $K_3$ hoch (siehe Abb. \ref{MetalDiskStrainInvariant3}). Das Material wird also am inneren Rand der Scheibe in die Richtung zweier Eigenvektoren zusammengepresst und dehnt sich in entlang des dritten aus. Aus der Glyphendarstellung wird auch die Richtung dieses Eigenvektors ersichtlich, n\"amlich zum Mittelpunkt der Scheibe hin. Die Scheibe dehnt sich also in diesem Bereich zur Mitte hin aus.
 
-Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datensatz: Unterschiede, die sonst nur zu geringen Form\"anderungen der Ellipsoide f\"uhren, sind leichter zu erkennen und ohne \"Uberlappungen sind Strukturen im Inneren der Metallscheibe sichtbar. Insbesondere die Unterschiede zwischen den Tensoren des oberen rechten und unteren linken Teils der Scheibe werden deutlich, wogegen die Ellipsoidglyphen in diesen Bereichen sehr \"ahnlich sind (Abb. \ref{MetalDiskStrainEllipsoids}).
+Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datensatz: Unterschiede, die sonst nur zu geringen Form\"anderungen der Ellipsoide f\"uhren, sind leichter zu erkennen und ohne \"Uberdeckungen sind Strukturen im Inneren der Metallscheibe sichtbar. Insbesondere die Unterschiede zwischen den Tensoren des oberen rechten und unteren linken Teils der Scheibe werden deutlich, wogegen die Ellipsoidglyphen in diesen Bereichen sehr \"ahnlich sind (Abb. \ref{MetalDiskStrainEllipsoids}).
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
@@ -1462,7 +1467,7 @@ Bereiche mit niedrigem Modus, also mit planarer Anisotropie, sind in Abb. \ref{B
 
 Tensoren mit hohen Werten f\"ur $K_2$ deuten h\"aufig auf Bereiche hin, innerhalb derer starke anisotrope Kr\"afte wirken. Solche Kr\"afte f\"uhren oft zu starken Verformungen oder sogar zu Br\"uchen des Materials. Gerade deshalb ist eine Untersuchung des Tensorfeldes auf Bereiche mit hohem $K_2$ ein wichtiger Anwendungsfall. Vom Bremshebeldatensatz existieren einige Varianten, die sich in der Anzahl und Form der inneren Verstrebungen unterscheiden. Die Untersuchung der H\"ohe und Verteilung der Werte f\"ur $K_2$ kann dabei wichtige Hinweise darauf liefern, welche Verstrebungen die Kraft besser verteilen als andere. 
 
-\begin{figure}
+\begin{figure}[p]
 	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace1.png}
@@ -1513,8 +1518,6 @@ Trotz der sehr unterschiedlichen Form des Feldes im Invariantenraum (Abb. \ref{B
 
 Die Bereiche mit niedrigem Modus (Abb. \ref{BremshebelRInvariant3}) sind, da die Ausgangsdaten die gleichen sind, nat\"urlich identisch.
 
-Gerade in Abb. \ref{BremshebelRObject2} zeigt sich ein weitere Vorteil der implementierten Visualisierung: Die Bereiche mit hohem $R_2$ sind \"uberall im Objekt verteilt. Diese Bereiche klar darzustellen w\"are bei den meisten klassischen Visualisierungen nur schwer m\"oglich, hier dagegen ist es ein Leichtes den passenden Bereich auszuw\"ahlen.
-
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
@@ -1561,12 +1564,21 @@ Gerade in Abb. \ref{BremshebelRObject2} zeigt sich ein weitere Vorteil der imple
 	\label{BremshebelRInteraction}
 \end{figure}
 
+Gerade in Abb. \ref{BremshebelRObject2} zeigt sich ein weitere Vorteil der implementierten Visualisierung: Die Bereiche mit hohem $R_2$ sind \"uberall im Objekt verteilt. Diese Bereiche klar darzustellen w\"are bei den meisten klassischen Visualisierungen nur schwer m\"oglich, hier dagegen ist es ein Leichtes den passenden Bereich auszuw\"ahlen.
+
+
+
+
 \subsection{Fazit}
 Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementierte Verfahren folgende Vorteile gegen\"uber den klassichen Visualisierungen bietet:
 
-\paragraph{title}
+Durch die Voxelisierung ist es dem Benutzer m\"oglich, die Aufl\"osung der Darstellung selbst festzulegen. Das hat den Vorteil, dass ein Kompromiss zwischen Geschwindigkeit und Qualit\"at der Visualisierung gefunden werden kann, unabh\"angig von der Menge an Datenpunkten im Feld. 
 
+Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o(\ss)enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
 
+Die meisten in \hyperref{sec:Verwandte} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
+
+Durch die in Echtzeit vornehmbaren Interaktionen ist es zudem m\"oglich, Bereiche mit bestimmten Invariantenkombinationen hervorzuheben. Diese explorative Analyse unterscheidet die Visualisierung von den klassischen statischen Ans\"atzen und bietet die M\"oglichkeit, uninteressante Bereiche auszublenden. Auch Zusammeh\"ange zwischen den Verteilungen der Invarianten im Objekt k\"onnen durch die Interaktionen leicht gefunden werden. Selbst kleine Ver\"anderungen der Invarianten \"uber den Datensatz hinweg lassen sich verfolgen.
 
 \section{Ausblick}
 \label{sec:Ausblick}
