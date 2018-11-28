@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc} % utf8 input encoding
 \usepackage{lmodern} % font
 \usepackage[T1]{fontenc} % 8-Bit output encoding
-\usepackage[ngerman]{babel} % This is a (new)german document so we want to have german labels as well
+%\usepackage[ngerman]{babel} % This is a (new)german document so we want to have german labels as well
 \usepackage[dvipsnames]{xcolor} % refer to some colors by name
 \usepackage{graphicx} % able to load more graphic formats
 \usepackage[pdfborder={0 0 0},colorlinks,urlcolor=NavyBlue,linkcolor=NavyBlue,citecolor=NavyBlue]{hyperref} % make clickable hyper links in documents
@@ -27,7 +27,7 @@
 % header and footer settings
 \pagestyle{scrheadings}
 \clearscrheadfoot
-\newcommand{\veranstaltung}{Schematische 2D Visualisierung von RNA-Protein Interaktionen\xspace}
+\newcommand{\veranstaltung}{Continuous Scatterplotting von Tensorfeldern\xspace}
 \lohead{\veranstaltung}
 \rohead{\headmark}
 \setfootsepline{0.1pt}
@@ -35,7 +35,7 @@
 
 % title page
 \renewcommand*{\titlepagestyle}{empty}
-\addto\captionsngerman{\def\figurename{Abb.}}
+%\addto\captionsngerman{\def\figurename{Abb.}}
 \subject{Masterarbeit}
 \title{Continuous Scatterplotting von Tensorfeldern in 3D\xspace}
 \newcommand{\matrikelnummer}{2878372\xspace}
@@ -50,8 +50,8 @@
     \parbox{\linewidth}{\textbf{Zusammenfassung}:~\kurz}\vfill
     \footnotesize
     \parbox{\linewidth}{\textsf{Hiermit erkläre ich, die vorliegende wissenschaftliche Arbeit selbständig und ohne unzulässige fremde Hilfe
-    angefertigt zu haben. Ich habe keine anderen als die angeführten Quellen und Hilfsmittel benutzt und sämtliche Textstellen, die wörtlich oder
-    sinngemäß aus veröffentlichten oder unveröffentlichten Schriften entnommen wurden, und alle Angaben, die auf mündlichen Auskünften beruhen, als
+    angefertigt zu haben. Ich habe keine anderen als die angef\"uhrten Quellen und Hilfsmittel benutzt und sämtliche Textstellen, die wörtlich oder
+    sinngemäß aus veröffentlichten oder unveröffentlichten Schriften entnommen wurden, und alle Angaben, die auf m\"undlichen Ausk\"unften beruhen, als
     solche kenntlich gemacht. Ebenfalls sind alle von anderen Personen bereitgestellten Materialen oder erbrachten Dienstleistungen als solche
     gekennzeichnet.}}\vspace{0.4cm}
     \parbox{\linewidth}{\textsf{Leipzig, d. \underline{\hspace{2cm}} \hfill \underline{\hspace{4cm}}\newline Ort, Datum \hspace{3.0cm} Matrikelnummer: \matrikelnummer \hfill Unterschrift}}
@@ -71,22 +71,24 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Einleitung}
-Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Beispiele daf\"ur sind die Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Auch diese muss sich jedoch den genannten Herausforderungen stellen. Dabei treten aber eine Reihe von Problemen auf, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016continuousScatterplot}:
+Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Tensoren stellen, vereinfacht ausgedr\"uckt, mathematische Funktionen dar, die eine Menge von Vektoren auf einen skalaren Wert abbilden. Skalare, Vektoren und Matrizen können ebenfalls als Tensoren aufgefasst werden. Die Auswertung der Tensoren ist dann mittels des inneren Produkts möglich. Im Abschnitt \hyperref[sec:Grundlagen] wird dies näher erklärt.
+
+Beispiele f\"ur Tensorfelder findet man in der Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder bei Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Dabei stellen sich eine Reihe von Herausforderungen, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016continuousScatterplot}:
 
 \paragraph{Menge an Daten pro Tensor}
-Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Aber selbst ein Tensor 2. Grades und 3. Dimension besteht bereits aus 9 Werten, f\"ur die eine passende Darstellung gefunden werden muss.
+Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Selbst ein Tensor 2. Grades und 3. Dimension, der durch eine $3 \times 3$ Matrix dargestell wird, besteht bereits aus 9 Werten, f\"ur die eine visuelle Codierung gefunden werden muss.
 
 \paragraph{Menge an Daten pro Datensatz}
-H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was gut skalierende Werkzeuge zur Analyse notwendig macht. Zudem bestehen relevante Merkmale der Datens\"atze oft nur aus wenigen Datenpunkten, weshalb effektives Filtern wichtig wird.
+H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was Ansp\"uche an die Skalierbarkeit der Visualisierung stellt. Zus\"atzlich bestehen relevante Merkmale der Datens\"atze oft nur aus einem geringen Anteil der Menge von Tensoren. Bei der Entwicklung der Visualisierung muss daher auch die Sichtbarkeit solch kleiner Merkmale sichergestellt werden.
 
 \paragraph{Fehlende Intuition}
-Tensoren beschreiben im Allgemeinen lineare Abh\"angigkeiten zwischen Skalaren, Vektoren und anderen Tensoren. W\"ahrend bei niedrigen R\"angen (Skalare/Vektoren) noch intuitive Interpretationen existieren (Zahlenwert/Punkt im dreidimensionalen Raum), f\"allt es Menschen erheblich schwerer, Matrizen oder Tensoren h\"oheren Grades zu interpretieren. Die Repr\"asentation eines Tensors muss daher sehr gut durchdacht sein und relevante Eigenschaften interpretierbar darstellen.
+Tensoren beschreiben im Allgemeinen Abbildungen zwischen Skalaren, Vektoren und h\"oheren Tensoren. W\"ahrend bei niedrigen R\"angen (Skalare/Vektoren) noch intuitive Interpretationen existieren (Zahlenwert/Punkt im mehrdimensionalen Raum), f\"allt es Menschen erheblich schwerer, Matrizen oder Tensoren h\"oheren Grades zu interpretieren. Die Repr\"asentation eines Tensors muss daher sehr gut durchdacht sein und relevante Eigenschaften interpretierbar darstellen.
 
 \paragraph{Dom\"anenspezifische Informationen}
 Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besondere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
 
 
-Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren 2. Grades im dreidimensionalen Raum entwickelt und als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
+Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren 2. Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Probleme zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
 
 Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Kapitel \hyperref[sec:Umsetzung]{5 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{6 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{7 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
  
@@ -94,11 +96,11 @@ Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \h
 \label{sec:Verwandte}
 Es existiert bereits eine gro{\ss}e Anzahl von Verfahren, die Visualisierungen von Tensorfeldern erzeugen. Nachfolgend werden, ohne Anspruch auf Vollst\"andigkeit, einige der wichtigsten genannt und kurz beschrieben.
 
-Eine relativ einfache Darstellung eines Vektorfelds besteht darin, die einzelnen Komponenten eines Tensor 2. Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Vektors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste gefundene Erw\"ahnung dieses Verfahrens ist in einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
+Eine relativ einfache Darstellung eines Vektorfelds besteht darin, die einzelnen Komponenten eines Tensor 2. Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Vektors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste von mir gefundene Erw\"ahnung dieses Verfahrens stammt aus einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
 
 Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"anken sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Nutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
 
-Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren 2. Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind sowie die Eigenvektoren paarweise orthogonal zueinander. Das Verfahren zeichnet ausgehend von festgelegten Punkten Schl\"auche durch das Vektorfeld. Die Mittellinien dieser Schl\"auche entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
+Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren 2. Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Schl\"auche durch das Vektorfeld. Die Mittellinien dieser Schl\"auche entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
 
 Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren 2. Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
 
@@ -107,7 +109,7 @@ Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuu
 \subsection{Mathematische Grundlagen}
 In diesem Teil der Arbeit werden mathematische Grundlagen zu Tensoren, Feldern und Invarianten erl\"autert. Insbesondere f\"ur die Definition von Tensoren sind Vorkenntnisse n\"otig, die ebenfalls erkl\"art werden. 
 
-Eine erheblicher Teil der verwendeten Formeln und Definitionen stammt aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
+Der Gro{\ss}teil der verwendeten Formeln und Definitionen stammt aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
 
 \subsubsection{Urbild und Bild einer Funktion}
 Zu jeder Funktion $f: A \rightarrow B$, die Objekten aus der Menge $A$ Objekte aus $B$ zuordnet, l\"asst sich das Bild einer Menge $A' \subset A$ als
@@ -128,7 +130,7 @@ bestimmen. $f(A)$ wird hierbei die Bildfunktion, $f^{-1}(B)$ die Urbildfunktion 
 Gegeben sei eine Funktion $f: A \rightarrow B$. Dann ist $f|_{A'}: A' \rightarrow B$, die Einschr\"ankung von $f$ auf die Menge $A' \subset A$, definiert als 
 
 \begin{equation}
-	f|_{A'}(a) = f(a) \text{ f"ur alle } a \in A'
+	f|_{A'}(a) = f(a) \text{ f\"ur alle } a \in A'
 \end{equation}
 
 und auf allen $a \in A, a \notin A'$ nicht definiert. 
@@ -181,20 +183,40 @@ Indem man das Lebesgue-Stieltjes Ma{\ss} in $\mathbb{R}^n$ mittels des euklidisc
 \subsubsection{Lineare Abbildungen}
 Seien $V,U$ zwei Vektorr\"aume \"uber demselben K\"orper $K$. Eine lineare Abbildung $\varphi: V \rightarrow U$ ist eine Funktion, so dass f\"ur alle $\lambda \in K$, $v \in V$ und $u \in U$ gilt\cite[S.~85]{bowen2008introduction}:
 
-\begin{equation}
-\begin{split}
-	&\varphi(u+v) = \varphi(u) + \varphi(v)
-	\\
-	&\varphi(\lambda v) = \lambda \cdot \varphi(v) 
-\end{split}
-\end{equation}
+\begin{align}
+	&\varphi(u+v) = \varphi(u) + \varphi(v) \\
+	&\varphi(\lambda v) = \lambda \cdot \varphi(v)
+\end{align}
 
-also $\phi$ ein homogener Homomorphismus ist.
+%Die Menge aller linearen Abbildungen von $V$ nach $U$ wird mit $L(V,U)$ bezeichnet. \cite[S.~97]{bowen2008introduction}.
 
-Die Menge aller linearen Abbildungen von $V$ nach $U$ wird mit $L(V,U)$ bezeichnet. \cite[S.~97]{bowen2008introduction}.
+\subsubsection{Vektorraum}
+Sei $V$ eine Menge, $(K, +, \cdot )$ ein K\"orper, $\oplus$ eine Abbildung $V \times V \rightarrow V$  Vektoraddition und $\odot$ eine Abbildung $K \times V \rightarrow V$ genannt Skalarmultiplikation. $(V, \oplus, \odot)$ wird dann als Vektorraum bezeichnet, wenn zus\"atzlich fuer die Vektoraddition die folgenden Eigenschaften gelten: 
+
+\begin{align}
+	\forall u,v,w \in V&: u \oplus (v \oplus w ) = (u \oplus v ) \oplus w 	\tag{Assoziativit\"at) (\addtocounter{equation}{1}\theequation}\\
+	\exists 0_V \in V. \forall v \in V&: v\oplus 0_V = 0_V \oplus v = 0_V 	\tag{neutrales Element) (\addtocounter{equation}{1}\theequation}\\
+	\forall v_+ \in V. \exists v_- \in V&: v_+ \oplus v_- = v_- \oplus v_+ = 0_V	\tag{inverse Elemente) (\addtocounter{equation}{1}\theequation}\\
+	\forall u, v \in V&: u \oplus v    \tag{Kommutativit\"at) (\addtocounter{equation}{1}\theequation}
+\end{align}
+
+und f\"ur die Skalarmultiplikation folgende Eigenschaften:
+
+\begin{align}
+	\forall k \in K. \forall u,v \in V&: k \odot (u \oplus v ) = (k \odot u ) \oplus( k \odot v) 	\tag{Distributivit\"at) (\addtocounter{equation}{1}\theequation}\\
+	\forall k, l \in K. \forall v \in V&: ( k + l ) \odot v = (k \odot v ) \oplus( l \odot v) 	\tag{Distributivit\"at) (\addtocounter{equation}{1}\theequation}\\
+	\forall k, l \in K. \forall v \in V&: (k \cdot l) \odot v = k \odot (l \odot v)	\tag{Assoziativit\"at) (\addtocounter{equation}{1}\theequation}\\
+	\exists k_1 \in K. \forall v \in V&: k_1 \odot v = v	\tag{Einselement) (\addtocounter{equation}{1}\theequation}
+\end{align}
 
 \subsubsection{Dualraum}
-Sei $V$ ein Vektorraum und $K$ sein zugrundeliegender K\"orper. Dann bildet die Menge der linearen Abbildungen der Form $\varphi: V \rightarrow K$ wiederum einen Vektorraum $V^*$. Dieser wird \textbf{Dualraum} genannt\cite[S.~203]{bowen2008introduction}. 
+Sei $V$ ein $n$-dimensionaler Vektorraum und $K$ sein zugrundeliegender K\"orper. Die lineare Abbildung $\varphi: V \rightarrow K$ eines Vektors $v = (v_1, ..., v_n) \in V$ auf den skalaren Wert $k \in K$ hat dann die Form
+
+\begin{equation}
+	\varphi(v_1, ..., v_n) = \varphi_1 \cdot v_1 + ... + \varphi_n \cdot v_n = k
+\end{equation}
+
+Die $\varphi_1, ..., \varphi_n$ k\"onnen wiederum als Vektor geschrieben werden. Der durch die Menge aller $\varphi$ \"uber $V$  erzeugte, $n$-dimensionalen Vektorraum $V^*$ wird \textbf{Dualraum} genannt\cite[S.~203]{bowen2008introduction}.
 
 Vektoren aus $V$ werden als \textbf{kovariant} bezeichnet, Vektoren aus $V^*$ als \textbf{kontravariant}\cite[S.~205]{bowen2008introduction}.
 
@@ -232,7 +254,7 @@ eine Abbildung auf einen Vektor $u$ desselben Vektorraumes wie $v$ ausgedr\"uckt
 Der Zeilenraum einer Matrix ist der Raum, der aus Linearkombinationen ihrer Zeilenvektoren aufgespannt wird. Die Dimension des Zeilenraumes ist gleich der Anzahl linear unabh\"angiger Zeilenvektoren, und wird als Zeilenrang der Matrix bezeichnet. Analog l\"asst sich der Spaltenrang einer Matrix definieren. Es l\"asst sich zeigen, dass Zeilen- und Spaltenrang einer Matrix immer gleich sind und deshalb kurz als Rang $rang(M)$ der Matrix $M$ bezeichnet werden.
 
 \subsubsection{Spur einer Matrix}
-Die Spur (`trace') einer $n\times n$Matrix $A$ mit Komponenten $a_{ij}$ mit $1 \leq i,j \leq n$ ist definiert als
+Die Spur (`trace') einer $n\times n$ Matrix $A$ mit Komponenten $a_{ij}$ mit $1 \leq i,j \leq n$ ist definiert als
 
 \begin{equation}
 	tr(A) = \sum_{i = 1}^{n} a{ii}
@@ -243,11 +265,11 @@ also die Summe aller Elemente in der Hauptdiagonale. Eine wichtige Eigenschaft d
 
 \subsubsection{Norm einer Matrix}
 Eine Norm ist eine Abbildung $f: V \rightarrow \mathbb{R}$ eines Vektorraumes $V$ \"uber dem K\"orper $K$ auf die reellen Zahlen, die folgende Bedingungen erf\"ullt:
-\begin{enumerate}
-	\item $f(kv) = |k|f(v)$ (Absolute Homogenit\"at)
-	\item $f(u+v) \leq f(u) + f(v)$ (Erf\"ullung der Dreiecksungleichung)
-	\item $f(v) = 0 \iff v=0$ ist der Nullvektor (Definitheit)
-\end{enumerate}
+\begin{align}
+	&f(kv) = |k|f(v) \tag{Absolute Homogenit\"at) (\addtocounter{equation}{1}\theequation}\\
+	&f(u+v) \leq f(u) + f(v) \tag{Erf\"ullung der Dreiecksungleichung) (\addtocounter{equation}{1}\theequation}\\
+	&f(v) = 0 \iff v=0 \text{ ist der Nullvektor} \tag{Definitheit) (\addtocounter{equation}{1}\theequation}
+\end{align}
 
 mit $k \in K$, $u,v \in V$.
 
@@ -273,7 +295,27 @@ $\tilde{A}$ wird auch als Deviator von A bezeichnet. Bei einer $3\times 3$ Matri
 \bar{A} = \frac{1}{3}tr(A)I
 \end{equation}
 
-wobei $I$ die Matrixdarstellung des Einheitstensor ist.
+wobei $I$ die Matrixdarstellung des Einheitstensors ist, also
+
+\begin{equation}
+	I = 	
+	\begin{pmatrix}
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 1 \\
+	\end{pmatrix}
+\end{equation}
+
+\subsubsection{Eigenwerte und Eigenvektoren einer Matrix}
+
+Eigenvektoren $v_i$, $1\leq i\leq n$ einer n $\times$ n Matrix $M$ sind vom Nullvektor verschiedene Vektoren, f\"ur die gilt
+
+\begin{equation}
+	M \cdot v_i = \lambda_i v_i
+\end{equation}
+
+Intuitiv bedeutet das, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet.
+Falls der Rang einer $n\times n$ Matrix $M$ kleiner ist als $n$, so hat diese Matrix $n - rang(M)$ Eigenwerte, die 0 sind.
 
 \subsubsection{Fraktionale Anisotropie einer Matrix}
 Die fraktionale Anisotropie $FA(M)$ einer Matrix, mit $\bar{\lambda}$ als Mittelwert der Eigenwerte, ist definiert als
@@ -297,7 +339,7 @@ Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte
 
 \begin{itemize}
 	\item $mode(A) = 1$: ein hoher, zwei gleiche niedrige Eigenwerte; lineare Anisotropie
-	\item $mode(A) = 0$: ein hoher, ein niedriger und mittlerer Eigenwert; Orthotropie
+	\item $mode(A) = 0$: ein hoher, ein niedriger und ein mittlerer Eigenwert; Orthotropie
 	\item $mode(A) = -1$: zwei gleiche hohe, ein niedriger Eigenwert: planare Anisotropie
 \end{itemize} 
 
@@ -343,9 +385,9 @@ tr(U,V^{T}) = 0
 
 \subsubsection{Matrixinvarianten}
 \label{Matrixinvarianten}
-Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in der Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
+Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
 
-Da sich das vorliegende Paper auf symmetrische, dreidimensionale Tensoren 2. Grades und ausschlie{\ss}lich orthogonale Transformationen bezieht, werden die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
+Da sich die vorliegende Arbeit \"uberwiegend mit symmetrischen, dreidimensionalen Tensoren 2. Grades und ausschlie{\ss}lich orthogonale Transformationen besch\"aftigt, beschr\"nkt sich auch die Betrachtung der Invarianten auf diese. Dabei gilt f\"ur solche Tensoren insbesondere, dass die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert werden. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
 
 \begin{equation}
 	\Psi:
@@ -363,17 +405,11 @@ darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind
 Mengen von Invarianten werden als Invariantens\"atze bezeichnet.
 Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in `Orthogonal tensor invariants and the analysis of diffusion tensor magnetic resonance images' von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
 
-F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens 3 Invarianten. In der Praxis spielt jedoch eine Vielzahl von Invariantens\"atzen eine Rolle, von denen im Folgenden einige erl\"autert werden:
+F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens 3 Invarianten. In der Praxis spielt eine Vielzahl solcher Invariantens\"atze eine Rolle, von denen im Folgenden einige erl\"autert werden:
 
 \paragraph{Die Eigenwerte}
 
-Eigenvektoren $v_i$, $1\leq i\leq 3$ einer 3 $\times$ 3 Matrix $M$ sind vom Nullvektor verschiedene Vektoren, f\"ur die gilt
-
-\begin{equation}
-	M \cdot v_i = \lambda_i v_i
-\end{equation}
-
-Intuitiv bedeutet das, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet und bilden einen orthogonalen Invariantensatz. Sie sind insbesondere in der Medizin sehr beliebt, da Eigenwerte Hinweise auf Diffusionsbewegungen in Gewebe liefern k\"onnen.
+Die Eigenwerte bilden einen orthogonalen Invariantensatz. Sie sind insbesondere in der Medizin sehr beliebt, da hohe Eigenwerte von Diffusionstensoren auf die Bewegungsrichtung von Molek\"ulen in Gewebe schlie{\ss}en lassen.
 
 \paragraph{Der I-Invariantensatz}
 Das charakteristische Polynom $\chi$ einer $3\times3$ Matrix $A$ hat die Form
@@ -386,7 +422,7 @@ Das charakteristische Polynom $\chi$ einer $3\times3$ Matrix $A$ hat die Form
 	\end{split}
 \end{equation}
 
-wobei $\lambda$ ein Element aus dem K\"orper von $A$ und $I$ die dreidimensionale Einheitsmatrix ist. Es wird h\"aufig verwendet um die Eigenwerte von Matrizen zu bestimmen, da diese den Nullstellen entsprechen.
+wobei $\lambda$ ein Element aus dem K\"orper von $A$ und $I$ die dreidimensionale Einheitsmatrix ist. Es wird h\"aufig verwendet um die Eigenwerte von Matrizen zu bestimmen, da diese den Nullstellen des Polynoms entsprechen.
 
 Eine weitere Eigenschaft ist, dass die Parameter $I_1, I_2, I_3$ einen Invariantensatz darstellen. Wegen der Wichtigkeit des charakteristischen Polynoms werden sie h\"aufig als `Hauptinvarianten' bezeichnet. Alternativ k\"onnen sie auch berechnet werden als
 
@@ -395,7 +431,7 @@ Eine weitere Eigenschaft ist, dass die Parameter $I_1, I_2, I_3$ einen Invariant
 	\item $I_2(A) = \frac{1}{2}(tr(A)^2 - tr(A^2))$ (Summe der Hauptminoren von $A$)
 	\item $I_3(A) = det(A)$ (Determinante von $A$)
 \end{itemize}
-I bildet jedoch keinen orthogonalen Invariantensatz.
+Der I Invariantensatz ist jeodch nicht orthogonal.
 
 \paragraph{Der J-Invariantensatz}
  Die Berechnung der J-Invarianten ist identisch zum I-Invariantensatz, nur dass statt $A$ der Deviator von $A$ als Eingabe verwendet wird:
@@ -461,7 +497,7 @@ Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-In
 	\label{KRInvariants}
 \end{figure}
 
-\"Ahnlich wie der K-Invariantensatz existiert auch f\"ur den R-Satz eine Interpretation in der Kontinuumsmechanik. 
+Genauso wie f\"ur den K-Invariantensatz existiert auch f\"ur den R-Satz eine Interpretation in der Kontinuumsmechanik. 
 
 Sowohl K als auch R beschreiben die Verteilung, die Gr\"o{\ss}e und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
 
@@ -508,14 +544,14 @@ Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\
 \subsection{FAnToM}
 FAnToM\cite{fantomWebsite}\cite{wiebel2009fantom} (`Field Analysis using Topological Methods') ist ein Programm, dessen Entwicklung im Jahre 1999 begann. Obwohl es zu Anfang noch als Hilfsmittel f\"ur die Analyse von Vektorfeldtopologien konzipiert war, entwickelte es sich \"uber die Jahre hinweg zu einer Plattform f\"ur diverse Visualisierungen.
 
-Erweiterungen von FAnToM werden in Form von sogenannten Algorithmen entwickelt. Dabei unterscheidet man zwei Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzigen Feld mit Vektorwerten kombiniert, wobei die Vektorkomponenten den Skalaren entsprechen.
+Erweiterungen von FAnToM werden in Form von sogenannten Algorithms entwickelt. Dabei unterscheidet man zwei Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzigen Feld mit Vektorwerten kombiniert, wobei die Komponenten eines Vektors an einem Punkt den Skalaren der Eingabefelder am selben Punkt entsprechen.
 Visualization Algorithms dagegen dienen dazu, Visualisierungen zu erzeugen. Interaktionen mit den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
 
-Ein wesentliches Feature von FAnToM besteht darin, Algorithmen miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithmen als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithmen mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen mit wenig Aufwand aus bestehenden Algorithmen komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithmen als Knoten dargestellt sind, deren Aus- und Eingaben durch Kanten verbunden werden k\"onnen.
+Ein wesentliches Feature von FAnToM besteht darin, Algorithms miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithms als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithms mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen mit wenig Aufwand aus bestehenden Algorithms komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithms als Knoten dargestellt sind, deren Aus- und Eingaben miteinander verbunden werden k\"onnen, was als Kante im Graph dargestellt wird.
 
-Die aktuelle FAnToM-Session, also die momentan genutzten Algorithmen mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
+Die aktuelle FAnToM-Session, also die momentan genutzten Algorithms mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
 
-Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das hoch entwickelte (: anderes Wort) Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithmen.
+Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das effiziente und weit entwickelte Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithms.
 \subsection{OpenGL}
 \label{sec:OpenGL}
 OpenGL\cite{openglWebsite} ist eine Spezifikation, die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm laufen soll, entwickeln k\"onnen. 
@@ -530,28 +566,37 @@ Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig 
 
 Ein wichtiger Spezialfall von Uniforms sind Texturen, die in dem OpenGL verwendenden Programm geladen, an die Shader \"ubergeben und dort verwendet werden k\"onnen.
 
-In der vorliegenden Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind im Folgenden kurz erkl\"art.
+F\"ur die vorliegende Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind im Folgenden kurz erkl\"art.
 
 \paragraph{Vertex Shader}
-Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist zum Beispiel \"ublich um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
+Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist zum Beispiel \"ublich, um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
 
 \paragraph{Geometry Shader}
-Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der zugeh\"origen Punkte, z.B. eine Liste von drei Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen sowie Uniforms pro Punkt definieren, welche an sp\"ater ausgef\"uhrte Shader (Fragment Shader) weitergegeben werden. Pro Primitiv wird der Geometry Shader einmal ausgef\"uhrt.
+Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der zugeh\"origen Punkte, z.B. eine Liste von drei Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen, sowie Uniforms pro Punkt definieren, welche an sp\"ater ausgef\"uhrte Shader (z.B. den Fragment Shader) weitergegeben werden. Pro Primitiv wird der Geometry Shader einmal ausgef\"uhrt.
 
 \paragraph{Fragment Shader}
-Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen (z.B. Supersampling). Die Eingaben sind der Mittelpunkt des Fragments und die f\"ur diesen Punkt interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch Werte ausgegeben werden, z.B. ein Tiefenattribut, das korrekte \"Uberlappung von Primitiven erm\"oglicht.
+Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen. In der Regel wird pro Pixel mindestens ein Fragment berechnet. Wenn mehrere Fragmente pro Pixel berechnet, und deren Farbwerte kombiniert werden, bezeichnet man dies als Supersampling. Die Eingaben in den Fragment Shader sind die Mittelpunkte der Fragmente und die f\"ur diese Punkte interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch andere Werte berechnet und ausgegeben werden, z.B. ein Tiefenattribut, das die Entfernung des Fragments zur Kamera angibt und damit korrekte \"Uberlappung von Primitiven erm\"oglicht.
 
-Eine weitere im Folgenden verwendete Funktion von OpenGL ist `Blending', durch die Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist. Zudem existiert die M\"oglichkeit, gerenderte Bilder mithilfe von `Framebuffern' nicht anzuzeigen, sondern stattdessen in einer Textur zu speichern.
+Eine weitere im Folgenden verwendete Funktion von OpenGL ist `Blending', durch das Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist. Zudem existiert die M\"oglichkeit, gerenderte Bilder mithilfe von `Framebuffern' nicht anzuzeigen, sondern stattdessen in einer Textur zu speichern.
 
 Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader, erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
 
 \subsection{Qt}
-Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen.
+Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen. Darunter sind beliebte Oberfl\"achenelemente wie Kn\"opfe, Textfelder und Ankreuzk\"asten, wodurch die Gestaltung einer Nutzerschnittstelle sehr einfach wird.
 
-FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithmen heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGl gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
+FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGL gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
 
 \subsection{Direct Volume Rendering}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. 
+
+Um diese inneren Strukturen darstellen zu k\"onnen, m\"ussen Objekte als Volumen abgespeichert werden, als sogenannte volumetrische Daten. Eine beliebte Variante besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, sogenannte Voxel, zu zerlegen, und diesen Dichtewerte zuzuordnen. Die Dichtewerte sind im einfachsten Fall in den Voxeln, die das Objekt schneiden 1 und \"ueberall sonst 0. Das funktioniert gut f\"ur Datens\"atze, bei denen das Material an jedem Punkt gleich ist. Es gibt jedoch viele Anwendungsf\"alle, in denen das Material sich \"uber das Objekt hinweg ver\"andert und f\"ur den Nutzer wichtige Informationen enth\"alt. Beispiele daf\"ur sind die Dichte von Gesteinsschichten in der Geologie oder die von einem Volumen abgegebene Energie in der Magnetresonanztomographie, die auf die Menge an Wasserstoffatomen in diesem Volumen schließen l\"asst. Den Voxeln wird in diesen F\"allen meistens eine Gleitkommazahl zwischen 0 und 1 zugeordnet, aber auch andere Varianten kommen vor. 
+
+In der Praxis kommen Voxel unterschiedlicher Formen vor. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel beliebige Formen annehmen, existieren.
+
+Neue Verfahren wurden ben\"otigt um volumetrischen Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert ist Volume Visualization eine Methode der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Die folgenden Erl\"auterungen beschr\"anken sich auf auf Voxeldaten basierenden Visualisierungen.
+
+\subsubsection{Isofl\"achen}
+Das Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
 
 
 \begin{figure}
@@ -816,7 +861,7 @@ Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden
 	\label{BigSession}
 \end{figure}
 \subsubsection{Die Vorbereitungssession}
-Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithmen, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithmen der Session werden im weiteren Verlauf erkl\"art.
+Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithms, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithms der Session werden im weiteren Verlauf erkl\"art.
 
 Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des Objekts werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
 
@@ -1584,7 +1629,7 @@ Durch die in Echtzeit vornehmbaren Interaktionen ist es zudem m\"oglich, Bereich
 \label{sec:Ausblick}
 Innerhalb der vorliegenden Arbeit wurde ein System entwickelt und evaluiert, das die Untersuchung von Tensordatenfeldern mithilfe von Invariantens\"atzen erm\"oglicht. Die Umsetzung liefert Ergebnisse, die mit den Erwartungen \"ubereinstimmen. Dadurch, dass die Darstellung durch Interaktionen in Echtzeit angepasst werden kann ist eine explorative Analyse der Daten m\"oglich. 
 
-Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik von der Technischen Universit\"at Dortmund und dem Helmholtz-Zentrum für Umweltforschung f\"urvorgef\"uhrt, wobei die Reaktionen positiv waren. Es wurde jedoch kritisiert, dass die explorative Analyse intensive Kenntnisse der Datens\"atze vorraussetzt. In der Praxis werden sogenannte Materialmodelle eingesetzt, die das Verhalten von Materialien beschreiben. Ausgehend davon lassen sich Invariantenbereiche definieren. Diese sind jedoch nicht immer zylinderachsenparallel wie die bereits implementierten Bereiche. Dies w\"are z.B. bei einem Material der Fall, das bei h\"oheren isotropen Spannungen auch h\"ohere anisotrope Spannungen aush\"alt. Ein solches Materialmodell w\"urde im Invariantenraum die Form eines Kegels annehmen. 
+Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik von der Technischen Universit\"at Dortmund und dem Helmholtz-Zentrum f\"ur Umweltforschung f\"urvorgef\"uhrt, wobei die Reaktionen positiv waren. Es wurde jedoch kritisiert, dass die explorative Analyse intensive Kenntnisse der Datens\"atze vorraussetzt. In der Praxis werden sogenannte Materialmodelle eingesetzt, die das Verhalten von Materialien beschreiben. Ausgehend davon lassen sich Invariantenbereiche definieren. Diese sind jedoch nicht immer zylinderachsenparallel wie die bereits implementierten Bereiche. Dies w\"are z.B. bei einem Material der Fall, das bei h\"oheren isotropen Spannungen auch h\"ohere anisotrope Spannungen aush\"alt. Ein solches Materialmodell w\"urde im Invariantenraum die Form eines Kegels annehmen. 
 
 Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"onnte eine lohnenswerte Erweiterung des Systems darstellen. Die Interpretation durch den Nutzer w\"urd erleichtert, da er die Bereiche nicht mehr per Hand einstellen m\"usste und daher weniger Kenntnisse \"uber die Invarianten und ihre Bedeutung notwendig w\"aren. Gleichzeitig w\"aren die Ergebnisse exakter und besser in der Praxis anwendbar. 
 
