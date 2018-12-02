@@ -7,7 +7,7 @@
 \usepackage[dvipsnames]{xcolor} % refer to some colors by name
 \usepackage{graphicx} % able to load more graphic formats
 \usepackage[pdfborder={0 0 0},colorlinks,urlcolor=NavyBlue,linkcolor=NavyBlue,citecolor=NavyBlue]{hyperref} % make clickable hyper links in documents
-\usepackage[headsepline,plainheadsepline]{scrpage2} % for header and footer layout
+\usepackage[headsepline,plainheadsepline]{scrlayer-scrpage} % for header and footer layout
 \usepackage{nag} % for not using forbidden things referenced in l2tabu
 \usepackage{blindtext} % for inserting blind text
 \usepackage[backend=biber, style=numeric]{biblatex} % for references
@@ -30,7 +30,7 @@
 \newcommand{\veranstaltung}{Continuous Scatterplotting von Tensorfeldern\xspace}
 \lohead{\veranstaltung}
 \rohead{\headmark}
-\setfootsepline{0.1pt}
+\KOMAoptions{footsepline = 0.1pt}
 \ofoot{\textsf{\thepage}}
 
 % title page
@@ -345,7 +345,7 @@ Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{pictures/-001.png}
+	\includegraphics[width=0.5\textwidth]{pictures/001.png}
 	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die fraktionale Anisotropie nimmt mit gr\"o{\ss}erer werdender Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
 	\label{Modus}
 \end{figure}
@@ -492,7 +492,7 @@ Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-In
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{pictures/-000.png}
+	\includegraphics[width=0.5\textwidth]{pictures/000.png}
 	\caption{Dargestellt sind Isofl\"achen der K und R Invarianten von diagonalisierten $3\times 3$ Matrizen (alle Werte ausserhalb der Hauptdiagonale sind 0). Die Koordinatenachsen entsprechen den drei Eigenwerten der Matrizen. Entnommen aus \cite[S.~139]{ennis2006orthogonal}}
 	\label{KRInvariants}
 \end{figure}
@@ -586,24 +586,58 @@ Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"u
 
 FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGL gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
 
-\subsection{Direct Volume Rendering}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. 
+\subsection{Volumetrische Daten}
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Um diese inneren Strukturen darstellen zu k\"onnen, m\"ussen Objekte als Volumen abgespeichert werden, als sogenannte volumetrische Daten. 
 
-Um diese inneren Strukturen darstellen zu k\"onnen, m\"ussen Objekte als Volumen abgespeichert werden, als sogenannte volumetrische Daten. Eine beliebte Variante besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, sogenannte Voxel, zu zerlegen, und diesen Dichtewerte zuzuordnen. Die Dichtewerte sind im einfachsten Fall in den Voxeln, die das Objekt schneiden 1 und \"ueberall sonst 0. Das funktioniert gut f\"ur Datens\"atze, bei denen das Material an jedem Punkt gleich ist. Es gibt jedoch viele Anwendungsf\"alle, in denen das Material sich \"uber das Objekt hinweg ver\"andert und f\"ur den Nutzer wichtige Informationen enth\"alt. Beispiele daf\"ur sind die Dichte von Gesteinsschichten in der Geologie oder die von einem Volumen abgegebene Energie in der Magnetresonanztomographie, die auf die Menge an Wasserstoffatomen in diesem Volumen schließen l\"asst. Den Voxeln wird in diesen F\"allen meistens eine Gleitkommazahl zwischen 0 und 1 zugeordnet, aber auch andere Varianten kommen vor. 
+Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, sogenannte Voxel, zu zerlegen, und denen, die das Objekt schneiden, Datenwerte zuzuordnen. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Objekt den Voxel schneidet oder nicht. Wenn das Material des Objekts jedoch komplexere Eigenschaften hat, die sich \"uber das Objekt hinweg ver\"andern, k\"onnen auch diese f\"ur den Raum des Voxels berechnet und so abgespeichert werden. Beispiele f\"ur solche sich \"uber das Objekt hinweg ver\"andernde Daten sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Voxel bilden somit ein \"Aquivalent zu Pixeln im dreidimensionalen Raum.
 
-In der Praxis kommen Voxel unterschiedlicher Formen vor. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel beliebige Formen annehmen, existieren.
+In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren. 
 
-Neue Verfahren wurden ben\"otigt um volumetrischen Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert ist Volume Visualization eine Methode der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Die folgenden Erl\"auterungen beschr\"anken sich auf auf Voxeldaten basierenden Visualisierungen.
+\subsection{Volume Visualization}
+
+Um volumetrische Daten darstellen zu k\"onnen, werden spezielle Verfahren ben\"otigt. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations mit Vor- und Nachteilen vorgestellt.
 
 \subsubsection{Isofl\"achen}
-Das Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
+\begin{figure}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.5\textwidth]{pictures/isosurface.png}
+		\caption{Darstellung einer Isofl\"ache in einem automatisch generierten Datensatz. Erzeugt mihilfe von FAnToM \cite{fantomWebsite}.} 
+		\label{Isosurface}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.7\textwidth]{pictures/slicing.png}
+		\caption{Darstellung von drei Slicings durch einen volumetrischen MRI Datensatz. In Orange ist zus\"atzlich eine Isofl\"ache eingezeichnet. Entnommen aus \cite{vis15}.}
+		\label{Slicing}
+	\end{minipage}
+\end{figure}
 
+Volumetrische Datens\"atze beinhalten oft komplexe Strukturen. Die Position und Form sowie die Datenwerte innerhalb dieser Strukturen gut zu vermitteln stellt oft ein zentrales Ziel der Volume Visualization dar. Eine M\"oglichkeit diese Informationen zu vermitteln stellt die Berechnung und Darstellung von Isofl\"achen dar. Die Isofl\"ache einer Funktion $f: \mathbb{R}^3\rightarrow\mathbb{R}$ und eines Isowerts $i \in \mathbb{R}$ ist definiert als eine Oberfl\"ache, die den $\mathbb{R}^3$ in zwei Regionen $R_0, R_1$ teilt, wobei f\"ur jeden Punkt $r_0 \in R_0$ gilt $f(r_0) < i$ und f\"ur jeden Punkt $r_1 \in R_1$ gilt $f(r_1) > i$ \cite{schroeder2005overview}. Die Isofl\"ache muss dabei nicht zusammenh\"angend sein. Auf der Isofl\"ache selbst ist $f$ gleich dem Isowert. 
 
+In Abb. \ref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1,1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
+
+Die Berechnung von Isofl\"achen stellt einige Herausforderungen, besonders bez\"uglich der Korrektheit des Verlaufs der Isofl\"achen innerhalb eines Voxels und der ben\"otigten Rechenzeit. In der Vergangenheit wurden einige Verfahren entwickelt, die sich in Hinblick auf Korrektheit und Geschwindigkeit start unterscheiden. Der wohl einflussreichste davon ist ``Marching Cubes''. Marching Cubes kategorisiert Voxel abh\"angig davon, welche der Werte ihrer Eckpunkte gr\"o{\ss}er oder kleiner als der Isowert sind. F\"ur jede so gebildete Kategorie von Voxeln existiert eine vordefinierte Menge von Dreiecken, die den Verlauf der Isolinie innerhalb dieser Voxel ann\"ahernd beschreiben. F\"ur jedes Voxel werden die Dreiecke der jeweiligen Kategorie korrekt rotiert und zur Isofl\"ache hinzugef\"ugt.
+
+Viele neuere Algorithmen bauen direkt auf Marching Cubes auf, indem sie entweder Fehler des urspr\"unglichen Algorithmus beheben, Optimierungen anbieten oder auf Voxeln anderer Formen (z.B. Tetraeder) anwendbar sind.
+
+Die Visualisierung von volumetrischen Daten mithilfe von Isofl\"achen bietet eine Reihe von Vorteilen. 
+
+Als erstes muss Isofl\"ache nicht neu berechnet werden, solang sich der Isowert nicht \"andert. Die resultierenden Dreiecke k\"onnen von Standard 3D Grafikbibliotheken und -hardware sehr effizient und in sehr gro{\ss}er Anzahl dargestellt werden. Auch Rotation, Zoomen und andere Interaktionen brauchen nur vergleichsweise wenig Rechenaufwand.
+
+Desweiteren bieten Isofl\"achen eine ausgezeichnete Darstellung der Form und Position von Strukturen innerhalb eines Datensatzes. Durch Schattierung und Beleuchtung der Dreiecke f\"allt es leicht, dem Benutzer eine Vorstellung des dreidimensionalen Form zu vermitteln.
+
+Wenn es dem Benutzer zus\"atzlich erlaubt wird, den Isowert interaktiv festzulegen (z.B. mithilfe eines Textfeldes oder eines Schiebereglers) erlauben Isof\"achen Entwicklungen der Werte \"uber den Datensatz hinweg zu analysieren.
+
+Isofl\"achen haben jedoch auch Nachteile. So kann es passieren, dass eine Isof\"ache, die einen geschlossenen dreidimensionalen K\"orper bildet, den Blick auf Strukturen im Inneren des K\"orpers blockiert. Und zuletzt stellen Isofl\"achen immer nur einen kleinen Teil des Datensatzes gleichzeitig dar, was es erschwert einen \"Uberblick des gesamten Volumens zu erhalten.
+
+\subsubsection{Slicing}
 \begin{figure}
 	\begin{minipage}{0.5\textwidth}
 		\centering
 		\includegraphics[width=0.9\textwidth]{pictures/Colormap.png}
-		\caption{Eine Implementierung einer interaktiven Transferfunktion in FAnToM. }
+		\caption{Eine Implementierung einer interaktiven Transferfunktion in FAnToM.} 
 		\label{Colormap}
 	\end{minipage}
 	\hspace{0.5cm}
@@ -614,11 +648,44 @@ Das Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behobe
 		\label{Zahn}
 	\end{minipage}
 \end{figure}
+Ein einfacher Ansatz um einen volumetrischen Datensatz zu visualisieren ist das sogenannte ``Slicing''. Dabei wird der Schnitt zwischen dem Datensatz und einer Ebene berechnet, und dieser Schnitt durch eine Menge von verbundenen, texturierten Dreiecken, einem sogenannten ``Dreieckszug'' (engl. ``Triangle Strip'') dargestellt. Form und Position des Dreieckzuges entsprechen dabei der Schnittebene. Mithilfe von Interpoltion werden die Werte des volumetrischen Datensatzes an Punkten auf der Oberfl\"ache der Dreiecke, bezeichnet als Samplepunkte, berechnet. Um aus den Samplepunkten die F\"arbungen der Dreiecke zu berechnen, gibt es zwei Verfahren, bezeichnet als Pr\"aklassifizierung und Postklassifizierung.
+
+Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Samplepunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. Dabei ist zu beachten, dass dort Datenwerten nicht nur Farben, sondern auch Transparenzwerte zugeordnet werden, was im Slicing nur sehr selten Anwendung findet. Um die Farben an allen anderen Punkten zu bestimmen, werden die Farben der Samplepunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0, 1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
+
+\begin{equation}
+	f(x)= 
+	\begin{cases}
+		(1.0, 0.0, 0.0, 1.0)\text{ (Rot), wenn } x\leq 0\\
+		(0.0, 1.0, 0.0, 1.0)\text{Gr\"un, sonst}
+	\end{cases}
+\end{equation}
+
+Wenn nun drei Punkte $p_0, p_1, p_2$ existieren, von denen $p_0$ und $p_2$ Samplepunkte sind und $p_1$ genau in der Mitte zwischen $p_0$ und $p_2$ liegt, so wird, abh\"angig von der Wahl der Interpolation, $p_1$ ein Wert zugeordnet, der zwischen dem von $p_0$ und dem von $p_2$ liegt. Bei linearer, komponentenweiser Interpolation beispielsweise ensteht als Farbe von $p_1$ ein dunkles Gelb. Die Interpretation dieser Farbe durch den Benutzer ist schwierig, da die Werte nicht an der Transferfunktion ablesen kann, sondern zun\"achst herausfinden muss, welche Farben gemischt wurden. Besonders problematisch ist dies, wenn die Mischfarbe in der Transferfunktion f\"r einen komplett anderen Wert verwendet wurde, was zu falschen Schl\"ussen \"uber die Verteilung der Werte im Datensatz f\"uhren kann.
+
+Die Postklassifizierung l\"ost diese Probleme indem die Reihenfolge der Interpolation und Anwendung der Transferfunktion vertauscht , also zun\"achst die Datenwerte interpoliert und danach die Transferfunktion auf die interpolierten Werte angewendet wird. Dadurch werden Farbverl\"aufe so wie in der Tansferfunktion dargestellt. Ein neuer Nachteil entsteht jedoch: Durch die Interpolation k\"onnen neue Datenwerte entstehen, die so im Datensatz nicht vorkommen. In dem meisten F\"allen wird dies jedoch als das geringere \"Ubel angesehen, weshalb Postklassifizierung fast immer bevorzugt wird.
+
+In Abbildung \ref{Slicing} sind drei Slicings zusammen mit einer orangenen Isofl\"ache abgebildet.
+
+Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orientierung der Schnittfl\"ache interaktiv anpassen kann, bietet Slicing eine gute M\"oglichkeit um die Verteilung von Werten innerhalb eines volumetrischen Datensatzes zu analysieren und Werte sogar ablesen zu k\"onnen. Der Rechenaufwand ist sogar noch geringer als bei der Berechnung der Isofl\"achen und macht es m\"oglich, die Slicings ohne sp\"urbare Verz\"ogerung zu repositionieren. Slicings eignen sich auch, um andere Volume Visualizations zu erg\"anzen (wie z.B. in Abb. \ref{Slicing}).
+
+Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Positionen und Orientierungen zu finden, um interessante Bereiche sichtbar zu machen sowie darin, dass die Form von dreidimensionalen Strukturen relativ schlecht vermittelt wird. 
+
+\subsubsection{Direct Volume Rendering}
+Dieses Kapitel besch\"aftigt sich mit einer speziellen Art der Volume Visualization, dem `Direct Volume Rendering'. Unter Direct Volume Rendering werden Methoden zusammengefasst, die folgenden Erl\"auterungen beschr\"anken sich auf auf Voxeldaten basierenden Visualisierungen.
+
+Das Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
+
+\paragraph{Texture Slicing}
+\paragraph{Splatting}
+\paragraph{Raycasting}
+\paragraph{Shear Warp}
+\paragraph{Cell Projection}
+
+
+
 Eine Alternative bietet das Direct Volume Rendering\cite{drebin1988volume} (im Folgenden DVR). Als Eingabe wird ein Feld $f: \mathbb{R}^3\rightarrow\mathbb{R}$ verwendet, das Punkten im dreidimensionalen Raum skalare Werte zuordnet. Die Interpretation dieser Werte kann, abh\"angig vom Einsatzgebiet, unterschiedlich sein. Beispiele daf\"ur sind die abgegebene Energie von Regionen in der Magnetresonanztomographie oder die Menge von absorbierter R\"ontgenstrahlung in der Computertomographie. Den skalaren Werten werden mittels einer `Transferfunktion' Farbwerte und Transparenz zugeordnet.
 
-Eine Implementierung einer interaktiven Transferfunktion in FAnToM ist in Abb. \ref{Colormap} zu sehen. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. 
-
-Ziel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion Licht ausstrahlen. Abh\"angig von ihrer Transparenz absorbieren andere Bereiche dieses Licht oder lassen es durch. Dadurch ist es m\"oglich, Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abb. \ref{Zahn} dargestellt.
+Eine Implementierung einer interaktiven Transferfunktion in FAnToM ist in Abb. \ref{Colormap} zu sehen. DZiel des DVR ist es, mithilfe der Transferfunktion eine dreidimensionale Darstellung des Feldes zu erzeugen, in der Bereiche entsprechend der Transferfunktion Licht ausstrahlen. Abh\"angig von ihrer Transparenz absorbieren andere Bereiche dieses Licht oder lassen es durch. Dadurch ist es m\"oglich, Strukturen im Inneren des Feldes sichtbar zu machen. Ein Beispiel f\"ur eine so erzeugtes Bild ist in Abb. \ref{Zahn} dargestellt.
 
 Es existieren viele DVR Verfahren die sich in Laufzeit, Bildqualit\"at und Anf\"alligkeit f\"ur Artefakte unterscheiden. In dieser Arbeit wurde Raycasting verwendet, was folgend erl\"autert wird.
 
