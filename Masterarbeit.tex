@@ -508,7 +508,7 @@ Ein physikalisches Feld ist eine physikalische Gr\"o{\ss}e, die an verschiedenen
 Wenn Felder nicht in Form einer kontinuierlichen Funktion beschrieben werden k\"onnen, z.B. weil nur f\"ur endlich viele Punkte Messwerte vorhanden sind, kann ein Feld auf einem Gitter, das aus diesen Messpunkten besteht, definiert werden. Die Werte innerhalb der Zellen lassen sich dann durch Interpolation der Werte an den Eckpunkten berechnen.
 
 
-Innerhalb der vorliegenden Arbeit werden Spannung und Verformung an Punkten von Objekten als Felder $\mathbb{R} \rightarrow \mathbb{R}^{m\times n}$ beschrieben.
+Innerhalb der vorliegenden Arbeit werden Spannung und Verformung an Punkten von Objekten als Felder $\mathbb{R}^3 \rightarrow \mathbb{R}^{m\times n}$ beschrieben.
 
 
 \subsubsection{Mechanische Spannung}
@@ -587,15 +587,16 @@ Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"u
 FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGL gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
 
 \subsection{Volumetrische Daten}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, so wie Bereiche unterschiedlicher Materialien oder Dichte. Um diese inneren Strukturen darstellen zu k\"onnen, m\"ussen Objekte als Volumen abgespeichert werden, als sogenannte volumetrische Daten. 
+Felder, die Punkten im dreidimensionalen Raum bestimmte Werte zuordnen, sind ein h\"aufig vorkommender Typ von Datens\"atzen, der oft unter dem Begriff ``Volumetrische Datens\"atze'' zusammengefasst wird. Dieser Abschnitt beschreibt einen der verbreitetsten Ans\"atze um solche Felder abzuspeichern.  
 
-Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, sogenannte Voxel, zu zerlegen, und denen, die das Objekt schneiden, Datenwerte zuzuordnen. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Objekt den Voxel schneidet oder nicht. Wenn das Material des Objekts jedoch komplexere Eigenschaften hat, die sich \"uber das Objekt hinweg ver\"andern, k\"onnen auch diese f\"ur den Raum des Voxels berechnet und so abgespeichert werden. Beispiele f\"ur solche sich \"uber das Objekt hinweg ver\"andernde Daten sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Voxel bilden somit ein \"Aquivalent zu Pixeln im dreidimensionalen Raum.
+Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer mathematischen Funktion, durch die das Feld hinreichend approxmimiert wird, zu speichern. Bei komplexeren Feldern ist dies meistens nicht m\"oglich, da entweder keine hinreichend gut passende Funktion bekannt ist, oder aber die Auswertung der Funktion an einem Punkt sehr viel Rechenzeit ben\"otigen w\"urde (wie z.B. bei aufw\"andigen Simulationen). 
+
+Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels (Mittelpunkt, Eckpunkte, Seitenfl\"achen, \dots) die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt Voxel schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
 
 In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren. 
 
 \subsection{Volume Visualization}
-
-Um volumetrische Daten darstellen zu k\"onnen, werden spezielle Verfahren ben\"otigt. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations mit Vor- und Nachteilen vorgestellt.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
 
 \subsubsection{Isofl\"achen}
 \begin{figure}
@@ -628,11 +629,12 @@ Als erstes muss Isofl\"ache nicht neu berechnet werden, solang sich der Isowert 
 
 Desweiteren bieten Isofl\"achen eine ausgezeichnete Darstellung der Form und Position von Strukturen innerhalb eines Datensatzes. Durch Schattierung und Beleuchtung der Dreiecke f\"allt es leicht, dem Benutzer eine Vorstellung des dreidimensionalen Form zu vermitteln.
 
-Wenn es dem Benutzer zus\"atzlich erlaubt wird, den Isowert interaktiv festzulegen (z.B. mithilfe eines Textfeldes oder eines Schiebereglers) erlauben Isof\"achen Entwicklungen der Werte \"uber den Datensatz hinweg zu analysieren.
+Indem es dem Benutzer zus\"atzlich erlaubt wird, den Isowert interaktiv festzulegen (z.B. mithilfe eines Textfeldes oder eines Schiebereglers) wird es m\"oglich, Entwicklungen der Werte \"uber den Datensatz hinweg zu analysieren.
 
 Isofl\"achen haben jedoch auch Nachteile. So kann es passieren, dass eine Isof\"ache, die einen geschlossenen dreidimensionalen K\"orper bildet, den Blick auf Strukturen im Inneren des K\"orpers blockiert. Und zuletzt stellen Isofl\"achen immer nur einen kleinen Teil des Datensatzes gleichzeitig dar, was es erschwert einen \"Uberblick des gesamten Volumens zu erhalten.
 
 \subsubsection{Slicing}
+\label{section:Slicing}
 \begin{figure}
 	\begin{minipage}{0.5\textwidth}
 		\centering
@@ -648,15 +650,15 @@ Isofl\"achen haben jedoch auch Nachteile. So kann es passieren, dass eine Isof\"
 		\label{Zahn}
 	\end{minipage}
 \end{figure}
-Ein einfacher Ansatz um einen volumetrischen Datensatz zu visualisieren ist das sogenannte ``Slicing''. Dabei wird der Schnitt zwischen dem Datensatz und einer Ebene berechnet, und dieser Schnitt durch eine Menge von verbundenen, texturierten Dreiecken, einem sogenannten ``Dreieckszug'' (engl. ``Triangle Strip'') dargestellt. Form und Position des Dreieckzuges entsprechen dabei der Schnittebene. Mithilfe von Interpoltion werden die Werte des volumetrischen Datensatzes an Punkten auf der Oberfl\"ache der Dreiecke, bezeichnet als Samplepunkte, berechnet. Um aus den Samplepunkten die F\"arbungen der Dreiecke zu berechnen, gibt es zwei Verfahren, bezeichnet als Pr\"aklassifizierung und Postklassifizierung.
+Ein einfacher Ansatz um einen volumetrischen Datensatz zu visualisieren ist das sogenannte ``Slicing''\cite{munzner2014visualization}. Dabei wird der Schnitt zwischen dem Datensatz und einer Ebene berechnet, und dieser Schnitt durch eine Menge von verbundenen, texturierten Dreiecken, einem sogenannten ``Dreieckszug'' (engl. ``Triangle Strip'') dargestellt. Form und Position des Dreieckzuges entsprechen dabei der Schnittebene. Mithilfe von Interpoltion werden die Werte des volumetrischen Datensatzes an Punkten auf der Oberfl\"ache der Dreiecke, bezeichnet als Samplepunkte, berechnet. Um aus den Samplepunkten die F\"arbungen der Dreiecke zu berechnen, gibt es zwei Verfahren, bezeichnet als Pr\"aklassifizierung und Postklassifizierung.
 
-Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Samplepunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Transparenz, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Transparenzwerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Transparenz zugeordnet. Dabei ist zu beachten, dass dort Datenwerten nicht nur Farben, sondern auch Transparenzwerte zugeordnet werden, was im Slicing nur sehr selten Anwendung findet. Um die Farben an allen anderen Punkten zu bestimmen, werden die Farben der Samplepunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0, 1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
+Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Samplepunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Opazit\"at, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Opazit\"atswerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Opazit\"at zugeordnet. Dabei ist zu beachten, dass Opazit\"at im allgemeinen Fall bei Slicing nicht verwendet wird. Um die Farben an allen anderen Punkten der Schnittfl\"ache zu bestimmen, werden die Farben der Samplepunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0, 1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
 
 \begin{equation}
 	f(x)= 
 	\begin{cases}
 		(1.0, 0.0, 0.0, 1.0)\text{ (Rot), wenn } x\leq 0\\
-		(0.0, 1.0, 0.0, 1.0)\text{Gr\"un, sonst}
+		(0.0, 1.0, 0.0, 1.0)\text{ (Gr\"un), sonst}
 	\end{cases}
 \end{equation}
 
@@ -671,9 +673,23 @@ Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orient
 Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Positionen und Orientierungen zu finden, um interessante Bereiche sichtbar zu machen sowie darin, dass die Form von dreidimensionalen Strukturen relativ schlecht vermittelt wird. 
 
 \subsubsection{Direct Volume Rendering}
-Dieses Kapitel besch\"aftigt sich mit einer speziellen Art der Volume Visualization, dem `Direct Volume Rendering'. Unter Direct Volume Rendering werden Methoden zusammengefasst, die folgenden Erl\"auterungen beschr\"anken sich auf auf Voxeldaten basierenden Visualisierungen.
+Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen kleinen Teil des volumetrischen Datensatzes gleichzeitig dar. Das hat den Vorteil, dass ein Benutzer nur einen Teil der Daten gleichzeitig interpretieren muss, bringt jedoch eine Reihe von Nachteilen mit sich. Erstens wird vorrausgesetzt, dass der Benutzer durch Interaktion unterschiedliche Bereiche ausw\"ahlt, um sich einen \"Uberblick \"uber den Datensatz zu verschaffen, was abh\"angig von Gr\"o{\ss}e und Komplexit\"at viel Zeit und Aufmerksamkeit des Nutzers in Anspruch nehmen kann. Zweitens besteht dabei das Risiko, dass Merkmale des Datensatzes, die nur bei sehr bestimmten Einstellungen sichtbar sind, \"ubersehen werden. Und drittens muss der Benutzer zus\"atzliche mentale Arbeit verrichten, um die jeweils angezeigten Teile in seiner Vorstellung zusammenzusetzten, damit er ein vollst\"andiges Verst\"andnis des Datensatzes entwickeln kann. Dies kann, wiederum abh\"angig von Gr\"o{\ss}e und Komplexit\"at, fast unm\"oglich sein.
 
-Das Durch das Berechnen und Zeichnen von Isofl\"achen kann dieses Problem behoben werden, dies erfordert jedoch hohe Rechenzeiten und gute Kenntnis der Datens\"atze, um geeignete Isowerte festzulegen.
+Der Begriff ``Direct Volume Rendering'' bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren.
+
+Dazu wird der Datensatz zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber eine Transferfunktion bestimmt. Diese \"ahnelt der, die auch beim Slicing verwendet wird, ordnet einem skalaren Wert jedoch neben einer Farbe auch noch eine Opazit\"at zu (siehe dazu Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}).  
+
+
+advantages: insensitivity to scene complexity (after preprocessing), object complexity,
+no texturing after preprocessing, viewpoint independence (viewpoint independent attributes [color, texture color,
+normal vector, antialiasing, visibility of light sources, viewpoint independent parts of illumination])
+- unlike surface graphics, datasets can come directly from sampled datasets
+- inner structures
+
+
+weaknesses: memory size, processing power (special architecture), discrete form -> artifacts, limits to accuracy of
+volume measurements, rotation by not 90 degree, no information about the geometry of the original object (surface
+and normal computation)
 
 \paragraph{Texture Slicing}
 \paragraph{Splatting}
