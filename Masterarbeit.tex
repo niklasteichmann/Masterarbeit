@@ -593,10 +593,14 @@ Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer 
 
 Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels (Mittelpunkt, Eckpunkte, Seitenfl\"achen, \dots) die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt Voxel schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
 
+Voxel haben einen entscheidenden Vorteil gegen\"uber anderen volumetrischen Datens\"atzen: Die Komplexit\"at der Daten, und daraus folgend die Rechenzeit der meisten Algorithmen, die Voxel als Eingabe verwenden, ist nicht abh\"angig von der Anzahl und Komplexit\"at der in der urspr\"unglichen Szene dargstellten Objekte, sondern  nur noch von der Anzahl der Voxel, auf die die Szene abgebildet wurde. Durch Anpassung der Anzahl der Voxel ist es m\"oglich, Rechenzeit und Qualit\"at der Ergebnisse von Algorithmen gegeneinander abzuw\"agen.
+
 In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren. 
 
 \subsection{Volume Visualization}
 In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
+
+Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an Speicher (da m\"oglicherweise viele tausende Voxel abgespeichert werden m\"ussen), die aus der diskreten Approximierung entstehenden Artefakte (z.B. Treppeneffekte in Bereichen mit pl\"otzlichen Ver\"anderungen) und das Verlorengehen von Informationen \"uber die urspr\"ungliche Form von abgebildeten Objekten.
 
 \subsubsection{Isofl\"achen}
 \begin{figure}
@@ -677,19 +681,54 @@ Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen
 
 Der Begriff ``Direct Volume Rendering'' bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren.
 
-Dazu wird der Datensatz zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber eine Transferfunktion bestimmt. Diese \"ahnelt der, die auch beim Slicing verwendet wird, ordnet einem skalaren Wert jedoch neben einer Farbe auch noch eine Opazit\"at zu (siehe dazu Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}).  
+Dazu wird der Datensatz zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber eine Transferfunktion bestimmt. Diese \"ahnelt der, die auch beim Slicing verwendet wird, ordnet einem skalaren Wert jedoch neben einer Farbe auch noch eine Opazit\"at zu (siehe dazu Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}).
 
+\begin{figure}
+	\centering
+	\includegraphics{pictures/DVR.png}
+	\caption{Schematische Darstellung des Direct Volume Renderings. Farbwerte an Positionen auf der Bildebene werden durch Integration entlang von Geraden durch Kameraposition, der Position auf der Bildebene und dem Datensatz bestimmt.}
+	\label{DVR}
+\end{figure}
 
-advantages: insensitivity to scene complexity (after preprocessing), object complexity,
-no texturing after preprocessing, viewpoint independence (viewpoint independent attributes [color, texture color,
-normal vector, antialiasing, visibility of light sources, viewpoint independent parts of illumination])
-- unlike surface graphics, datasets can come directly from sampled datasets
-- inner structures
+Aus diesem Modell wird ein Bild erzeugt, das den gesamten Datensatz visualisiert. Dazu wird eine Position im Raum als ``Kameraposition'' festgelegt, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt. Indem Pixel des Bildschirms auf Positionen der Bildeben abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe an einer Position der Bildebene ergibt sich dabei aus dem Integral des aus dem Datensatz kommenden Lichts entlang einer Linie, die die Kameraposition, die Position auf der Bildebene und Voxel des Datensatzes schneidet (siehe Abb. \ref{DVR}).
+
+Mathematisch l\"asst sich dieses Integral ausdr\"ucken als
+
+\begin{equation}
+	I(x,r) = \int_{0}^{L} C(s)\mu(s) e^{-\int_{0}^{s}\mu(t)dt}ds
+\end{equation}
+
+Dabei entspricht $x$ der Position auf der Bildebene, $r$ der Richtung der Geraden, $L$ der L\"ange der Geraden, bis sie zum letzten Mal einen Voxel schneidet, $C(s)$ dem an Position $s$ emittierten Licht und $\mu(s)$ dem Okklusionskoeffizienten an $s$, also dem Anteil von Licht, das an $s$ absorbiert wird ($\mu(s) \in [0, \dots, 1])$. Einfacher ausgedr\"uckt emittiert jeder Punkt Licht und absorbiert gleichzeitig einen Teil des von Punkten emittierten Lichts, die auf der Gerade weiter entfernt von der Kamera liegen.
+
+Dieses Integral l\"asst sich im allgemeinen Fall nur mit viel Rechenaufwand, wenn \"uberhaupt, automatisch berechnen \cite[S.~136]{kaufman2005overview}. Um dennoch Visualisierungen mit Interaktionen, die keine sp\"urbare Verz\"ogerung hervorrufen, umsetzen zu k\"onnen, wird das Integral vereinfacht. Durch Vereinfachungsschritte (siehe Kaufman et al. \cite[S.~136]{kaufman2005overview} f\"ur Details) ergibt sich die Formel
+
+\begin{equation}
+	I(x,r) = \sum_{i=0}^{L/\Delta s - 1} C(i\Delta s)\alpha(i\Delta s) \prod_{j=0}^{i-1}( 1 - \alpha(j \Delta s))
+\end{equation}
+
+Hier entspricht $\Delta s$ einem Bruchteil von $L$. Desto kleiner $\Delta s$ wird, desto besser wird das Integral approximiert. Die Funktion $\alpha(i \Delta s)$ ermittelt die Opazit\"at an dem Punkt auf der Geraden, der $i \Delta s$ von der Kamera entfernt ist.
+
+Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur $i > 0$):
+
+\begin{align}
+	&\alpha_0 = c_0 = 0\\
+	&c_i = C(i\Delta s)\alpha(i\Delta s)(1-\alpha_{i-1}) + c_{i-1}\\
+	&\alpha_i = \alpha(i \Delta s)(1-\alpha_{i-1}) + \alpha_{i-1} 
+\end{align}
 
 
 weaknesses: memory size, processing power (special architecture), discrete form -> artifacts, limits to accuracy of
 volume measurements, rotation by not 90 degree, no information about the geometry of the original object (surface
 and normal computation)
+
+\paragraph{Raycasting}
+
+Eine direkte Umsetzung dieser rekursiven Funktionen traversiert den Datensatz entlang der Geraden und berechnet das emittierte und absorbierte Licht an Samplepunkten, die in regelm\"a{\ss}igen Abst\"anden auf der Gerade liegen. Dabei k\"onnen Techniken wie in \ref{section:Slicing} beschrieben verwendet werden. Dabei sind zwei Varianten m\"oglich: Wenn der Algorithmus bei der Kameraposition beginnt und sich immer weiter von ihr entfernt, so bezeichnet man dies als front-to-back. Dabei gibt es den Vorteil, dass wenn der Wert von $\alpha_i$ sich nah genug an 1 ann\"ahert, der Einfluss der weiter hinten liegenden Samplepunkten auf die Farbe so klein wird, dass er ignoriert werden und die Berechnung fr\"uhzeitig beendet weden kann. Die alternative Richtung, beginnend am Punkt an dem die Gerade aus dem Volumen austritt und mit abnehmender Entfernung der Samplepunkte zur Kamera bezeichnet man als back-to-front. Da dort kein fr\"uhzeitiges Abbrechen m\"oglich ist, wird diese Variante jedoch seltener verwendet.
+
+Eine weitere Optimierung besteht darin, den ersten Samplepunkt erst nach dem Eintreten des Strahls in das Feld zu setzen und die Berechnung zu beenden, sobald alle verbleibenden Samplepunkte ausserhalb des Feldes liegen. Eine vereinfachte Darstellung dieses optimierten Verfahrens ist in \ref{Raycasting} dargestellt.
+
+Da f\"ur dieses Verfahren die Geraden (Strahlen) durch das Volumen berechnet und entlang dieser Werte berechnet werden, bezeichnet man es als Raycasting. 
+
 
 \paragraph{Texture Slicing}
 \paragraph{Splatting}
@@ -724,7 +763,6 @@ Dabei sei die Transparenz ein Wert im Intervall $[0,1]$ und Farbe ein Vektorraum
 
 Das hat den Effekt, dass weiter von der Kamera entfernte Samplepunkte von n\"aheren Punkten entsprechend ihrer Transparenz verdeckt werden. Insbesondere folgt daraus die Konsequenz, dass, sobald gen\"ugend Punkte verarbeitet wurden, so dass die `verbleibende Transparenz' einen Grenzwert unterschreitet, sich die Farbe des Pixels nicht mehr stark ver\"andert, und die Berechnung fr\"uhzeitig beendet werden kann. Die verbleibende Transparenz wird durch die Gesamtzahl der Samplepunkte $n$ geteilt, damit eine h\"ohere Anzahl an Samplepoints nicht zu einem schnelleren Verlust von Transparenz f\"uhrt.
 
-Eine weitere Optimierung besteht darin, den ersten Samplepunkt erst nach dem Eintreten des Strahls in das Feld zu setzen und die Berechnung zu beenden, sobald alle verbleibenden Samplepunkte ausserhalb des Feldes liegen. Eine vereinfachte Darstellung dieses optimierten Verfahrens ist in \ref{Raycasting} dargestellt.
  
 \begin{figure}
 	\begin{subfigure}{0.30\textwidth}
