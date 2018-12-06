@@ -1255,7 +1255,7 @@ Die Anzahl der Voxel, in die das Feld voxelisiert werden soll, kann f\"ur die ei
 \subsubsection{Optionen des Objektrenderings}
 
 \paragraph{Bounding Box}
-Um die Gr"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen wei{\ss}e Linien an den Kanten der begrenzenden Fl\"achen eingezeichnet werden, also eine `Bounding Box' dargestellt werden.
+Um die Gr\"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen wei{\ss}e Linien an den Kanten der begrenzenden Fl\"achen eingezeichnet werden, also eine `Bounding Box' dargestellt werden.
 
 \subsection{Optionen des Invariantenraumrenderings}
 \paragraph{Wireframe}
@@ -1279,7 +1279,7 @@ Im Invariantenraum kann das Feld beliebige Formen annehmen. Wenn beispielsweise 
 	\caption{Das Intervall-Fenster.}
 	\label{IntervalWindow}
 \end{figure}
-Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0,\dots1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVRs angewendet.
+Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0,\dots,1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVRs angewendet.
 
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
@@ -1702,7 +1702,7 @@ Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementiert
 
 Durch die Voxelisierung ist es dem Benutzer m\"oglich, die Aufl\"osung der Darstellung selbst festzulegen. Das hat den Vorteil, dass ein Kompromiss zwischen Geschwindigkeit und Qualit\"at der Visualisierung gefunden werden kann, unabh\"angig von der Menge an Datenpunkten im Feld. 
 
-Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o(\ss)enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
+Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o{(\ss}enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
 
 Die meisten in \hyperref{sec:Verwandte} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
 
@@ -1732,14 +1732,6 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 \ofoot{\vspace{-0.1cm}\textbf{\large\thepage}/\textbf{\large\getpagerefnumber{LastBibPage}}}
 \pagenumbering{Roman}
 
-\defbibfilter{papers}{
-	type=article or
-	type=inproceedings or
-	type=incollection
-}
-\printbibliography[type=thesis,title={Abschlussarbeiten}]
-\printbibliography[type=book,title={Bücher}]
-\printbibliography[filter=papers,title={Artikel}]
-\printbibliography[type=online,title={Internetressourcen}]
+\printbibliography
 \label{LastBibPage}
 \end{document}
