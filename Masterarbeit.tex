@@ -600,7 +600,7 @@ In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"ars
 \subsection{Volume Visualization}
 In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
 
-Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an Speicher (da m\"oglicherweise viele tausende Voxel abgespeichert werden m\"ussen), die aus der diskreten Approximierung entstehenden Artefakte (z.B. Treppeneffekte in Bereichen mit pl\"otzlichen Ver\"anderungen) und das Verlorengehen von Informationen \"uber die urspr\"ungliche Form von abgebildeten Objekten.
+Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an Speicher (da m\"oglicherweise viele tausende Voxel abgespeichert werden m\"ussen), die aus der diskreten Approximierung entstehenden Artefakte (z.B. Treppeneffekte in Bereichen mit pl\"otzlichen Ver\"anderungen) und das Verlorengehen von Informationen \"uber die urspr\"ungliche Form der abgebildeten Objekte.
 
 \subsubsection{Isofl\"achen}
 \begin{figure}
@@ -679,19 +679,43 @@ Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Posi
 \subsubsection{Direct Volume Rendering}
 Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen kleinen Teil des volumetrischen Datensatzes gleichzeitig dar. Das hat den Vorteil, dass ein Benutzer nur einen Teil der Daten gleichzeitig interpretieren muss, bringt jedoch eine Reihe von Nachteilen mit sich. Erstens wird vorrausgesetzt, dass der Benutzer durch Interaktion unterschiedliche Bereiche ausw\"ahlt, um sich einen \"Uberblick \"uber den Datensatz zu verschaffen, was abh\"angig von Gr\"o{\ss}e und Komplexit\"at viel Zeit und Aufmerksamkeit des Nutzers in Anspruch nehmen kann. Zweitens besteht dabei das Risiko, dass Merkmale des Datensatzes, die nur bei sehr bestimmten Einstellungen sichtbar sind, \"ubersehen werden. Und drittens muss der Benutzer zus\"atzliche mentale Arbeit verrichten, um die jeweils angezeigten Teile in seiner Vorstellung zusammenzusetzten, damit er ein vollst\"andiges Verst\"andnis des Datensatzes entwickeln kann. Dies kann, wiederum abh\"angig von Gr\"o{\ss}e und Komplexit\"at, fast unm\"oglich sein.
 
-Der Begriff ``Direct Volume Rendering'' bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren.
+Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren.
 
-Dazu wird der Datensatz zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber eine Transferfunktion bestimmt. Diese \"ahnelt der, die auch beim Slicing verwendet wird, ordnet einem skalaren Wert jedoch neben einer Farbe auch noch eine Opazit\"at zu (siehe dazu Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}).
+\"Ahnlich wie beim \ref{section:Slicing} wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0,\dots 1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt (siehe Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}). Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Wenn $T_O$, der Teil der Transferunktion $T$ der skalare Werte $s$ auf eine Opazit\"at abbildet, definiert ist als
+
+\begin{equation}
+	T_O(s) = 
+	\begin{cases}
+		1\text{ wenn $s=x$ f\"ur genau ein $x \in \mathbb{R}$}\\
+		0\text{ sonst}
+	\end{cases}
+\end{equation}
+
+so entspricht das erzeugte Bild einer Isof\"ache. Wenn dagegen nur eine zweidimensionale Schicht von Voxeln aus dem Datensatz dargestellt wird und die Opazit\"at konstant 1 ist, so wird eine Darstellung erzeugt, die dem Slicing \"ahnelt. Diese Optionen sind zwar in der Regel erheblich langsamer als auf die Darstellung von Isofl\"achen bzw. Slicings spezialisierte Algorithmen, zeigen jedoch die Flexibilit\"at des Direct Volume Renderings. 
+
+
+<CONTINUE>
+
+DVR Verfahren gliedern sich in 2 Gruppen, die als image-order und object-order bezeichent werden.
 
 \begin{figure}
 	\centering
 	\includegraphics{pictures/DVR.png}
-	\caption{Schematische Darstellung des Direct Volume Renderings. Farbwerte an Positionen auf der Bildebene werden durch Integration entlang von Geraden durch Kameraposition, der Position auf der Bildebene und dem Datensatz bestimmt.}
-	\label{DVR}
+	\caption{Schematische Darstellung der image-order Verfahren. Farbwerte an Positionen auf der Bildebene werden durch Integration entlang von Geraden durch Kameraposition, der Position auf der Bildebene und dem Datensatz bestimmt.}
+	\label{image-order}
 \end{figure}
 
-Aus diesem Modell wird ein Bild erzeugt, das den gesamten Datensatz visualisiert. Dazu wird eine Position im Raum als ``Kameraposition'' festgelegt, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt. Indem Pixel des Bildschirms auf Positionen der Bildeben abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe an einer Position der Bildebene ergibt sich dabei aus dem Integral des aus dem Datensatz kommenden Lichts entlang einer Linie, die die Kameraposition, die Position auf der Bildebene und Voxel des Datensatzes schneidet (siehe Abb. \ref{DVR}).
+Allen image-order Verfahren ist gemein, dass sie eine Position im Raum als ``Kameraposition'' festlegen, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt (siehe Abb. \ref{image-order}). Indem Positionen der Bildebene auf Pixel des Bildschirms abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe an einer Position der Bildebene ergibt sich dabei abh\"angig vom gew\"ahlten Verfahren \cite[S.~134]{kaufman2005overview}.
 
+Im Gegensatz dazu zerlegen object-order Verfahren den volumetrischen Datensatz in eine Menge von Basiselementen oder Basisfunktionen, die auf eine Bildebene projeziert werden und damit den Datensatz darstellen\cite[S.~138]{kaufman2005overview}. Wenn sich Projektionen der Basiselemente \"uberlappen, was f\"ur nicht-degenerierte Datens\"atze praktisch der Standardfall ist, werden die Farbwerte abh\"angig von gew\"ahltem Verfahren und   
+
+aus dem Integral des aus dem Datensatz kommenden Lichts entlang einer Linie, die die Kameraposition, die Position auf der Bildebene und Voxel des Datensatzes schneidet .
+
+
+Dazu wird der Datensatz zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber eine Transferfunktion bestimmt. Diese \"ahnelt der, die auch beim Slicing verwendet wird, ordnet einem skalaren Wert jedoch neben einer Farbe auch noch eine Opazit\"at zu (siehe dazu Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{section:Slicing}).
+
+
+Aus diesem Modell wird ein Bild erzeugt, das den gesamten Datensatz visualisiert. Dazu wird 
 Mathematisch l\"asst sich dieses Integral ausdr\"ucken als
 
 \begin{equation}
@@ -714,12 +738,7 @@ Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur
 	&\alpha_0 = c_0 = 0\\
 	&c_i = C(i\Delta s)\alpha(i\Delta s)(1-\alpha_{i-1}) + c_{i-1}\\
 	&\alpha_i = \alpha(i \Delta s)(1-\alpha_{i-1}) + \alpha_{i-1} 
-\end{align}
-
-
-weaknesses: memory size, processing power (special architecture), discrete form -> artifacts, limits to accuracy of
-volume measurements, rotation by not 90 degree, no information about the geometry of the original object (surface
-and normal computation)
+\end{align} 
 
 \paragraph{Raycasting}
 
