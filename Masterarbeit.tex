@@ -3,7 +3,7 @@
 \usepackage[utf8]{inputenc} % utf8 input encoding
 \usepackage{lmodern} % font
 \usepackage[T1]{fontenc} % 8-Bit output encoding
-%\usepackage[ngerman]{babel} % This is a (new)german document so we want to have german labels as well
+\usepackage[ngerman]{babel} % This is a (new)german document so we want to have german labels as well
 \usepackage[dvipsnames]{xcolor} % refer to some colors by name
 \usepackage{graphicx} % able to load more graphic formats
 \usepackage[pdfborder={0 0 0},colorlinks,urlcolor=NavyBlue,linkcolor=NavyBlue,citecolor=NavyBlue]{hyperref} % make clickable hyper links in documents
@@ -21,6 +21,9 @@
 \usepackage{amssymb}
 \usepackage{svg}
 \usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{pgfplots}
 \addbibresource{Literatur.bib} % database for references
 \graphicspath{{./images/}} % sets the default path for images
 
@@ -187,8 +190,6 @@ Seien $V,U$ zwei Vektorr\"aume \"uber demselben K\"orper $K$. Eine lineare Abbil
 	&\varphi(u+v) = \varphi(u) + \varphi(v) \\
 	&\varphi(\lambda v) = \lambda \cdot \varphi(v)
 \end{align}
-
-%Die Menge aller linearen Abbildungen von $V$ nach $U$ wird mit $L(V,U)$ bezeichnet. \cite[S.~97]{bowen2008introduction}.
 
 \subsubsection{Vektorraum}
 Sei $V$ eine Menge, $(K, +, \cdot )$ ein K\"orper, $\oplus$ eine Abbildung $V \times V \rightarrow V$  Vektoraddition und $\odot$ eine Abbildung $K \times V \rightarrow V$ genannt Skalarmultiplikation. $(V, \oplus, \odot)$ wird dann als Vektorraum bezeichnet, wenn zus\"atzlich fuer die Vektoraddition die folgenden Eigenschaften gelten: 
@@ -473,7 +474,7 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 	\label{cylinderCoords}
 \end{figure}
 
-Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abbildung \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
+Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abb. \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
 
 Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der absoluten `Gr\"o{\ss}e' der Matrix , $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
@@ -500,6 +501,72 @@ Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-In
 Genauso wie f\"ur den K-Invariantensatz existiert auch f\"ur den R-Satz eine Interpretation in der Kontinuumsmechanik. 
 
 Sowohl K als auch R beschreiben die Verteilung, die Gr\"o{\ss}e und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
+
+\subsubsection{Faltung}
+Die kontinuierliche Faltung $*_c$ zweier Funktionen $f,g:\mathbb{R}^n\rightarrow\mathbb{C}$ ist definiert als
+
+\begin{equation}
+(f*_cg)(x) = \int_{\mathbb{R}^n} f(\tau)g(x-\tau)d\tau
+\end{equation}
+
+Um den Rechen- und Speicheraufwand zu reduzieren, wird oft die diskrete Faltung $*_d$ verwendet. Diese ist f\"ur den diskreten Definitionsbereich $\mathbb{D} \subset \mathbb{Z}$ und Funktionen $f,g:\mathbb{D}\rightarrow\mathbb{C}$ definiert als
+
+\begin{equation}
+(f*_dg)(n) = \sum_{k\in\mathbb{D}}f(k)g(n-k)
+\end{equation}
+
+Das Ergebnis der Faltung ist eine neue Funktion, die bildlich betrachtet den um $g$ gewichteten Mittelwert von $f$ an jedem Punkt darstellt. $g$ wird in diesem Fall als Kern oder Faltungskern bezeichnet. Um beispielsweise den Wert von $(f*g)$ an der Stelle $x$ zu bestimmen, wird $g$ um $x$ verschoben, $f$ und $g$ punktweise multipliziert und das Integral des Ergebnisses gebildet, was der Bestimmung des Mittelwerts entspricht. Dies geht aus dem Mittelwertsatz der Integralrechnung hervor.
+
+\subsubsection{Gau{\ss}sche Glockenkurve}
+Glockenkurven sind Funktionen der Form 
+
+\begin{equation}
+f(x) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\end{equation}
+
+Die Variablen $\mu$ und $\sigma$ dienen dazu die Form der Glockenkurve und ihre Position im Koordinatensystem zu beeinflussen. Das Maximum der Glockenkurve liegt immer bei $\mu$. Und mit $\sigma$ l\"asst sich die Breite und H\"ohe der Glockenkurve beeinflussen, wobei die Fl\"ache darunter gleich bleibt.
+
+In Abb. \ref{Gauss} sind drei Glockenkurven mit unterschiedlichen Werten f\"ur $\mu$ und $\sigma$ dargestellt.
+
+\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[
+	no markers, domain=0:10, range=0:10, samples=100,
+	axis x line=left,
+	axis y line=middle,
+	xlabel=$x$, ylabel=$y$,
+	every axis y label/.style={at=(current axis.above origin),anchor=south},
+	every axis x label/.style={at=(current axis.right of origin),anchor=west},
+	height=5cm, width=8cm,
+	xtick={1,2,3,4,5,6,7,8,9,10}, 
+	ytick={0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0},
+	enlargelimits=false, clip=false, axis on top,
+	grid = major
+	]
+	\addplot [very thick,red] {gauss(5,2 )};
+	\addplot [very thick,green] {gauss(6,1 )};
+	\addplot [very thick,blue] {gauss(7,0.5 )};
+	\end{axis}
+	
+	\end{tikzpicture}
+	\caption{Darstellung von drei Gau{\ss}schen Glockenkurven mit unterschiedlichen $\mu$ und $\sigma$: Rot:$\mu=5, \sigma=2$, Gr\"un:$\mu=6, \sigma=1$, Blau:$\mu=7, \sigma=0.5$}
+	\label{Gauss}
+\end{figure}
+
+Im zweidimensionalen Fall existiert analog eine Glockenkurve mit der Formel
+
+\begin{equation}
+	f(x,y) = 
+	\frac{1}{\sqrt{2\pi \sigma_x^2}}e^{-\frac{(x-\mu_x)^2}{2\sigma_x^2}} \cdot 
+	\frac{1}{\sqrt{2\pi \sigma_y^2}}e^{-\frac{(x-\mu_y)^2}{2\sigma_y^2}}
+\end{equation}
+
+Die Variablen $\mu_x$ und $\mu_y$ dienen dabei dazu, die Positionen der Kurven in der jeweiligen Dimension festzulegen. Die H\"ohe und Form der Glockenkurve ergeben sich aus $\sigma_x$ und $\sigma_y$. Eine Erh\"ohung von $\sigma_x$ beispielsweise f\"uhrt dazu, dass die H\"ohe des Extremums reduziert und die Glocke in x-Richtung gestreckt wird.
 
 \subsection{Mechanische Grundlagen}
 \subsubsection{Physikalisches Feld}
@@ -598,7 +665,7 @@ Voxel haben einen entscheidenden Vorteil gegen\"uber anderen volumetrischen Date
 In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren. 
 
 \subsection{Volume Visualization}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{kaufman2005overview}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{hansen2005visualization}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
 
 Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an Speicher (da m\"oglicherweise viele tausende Voxel abgespeichert werden m\"ussen), die aus der diskreten Approximierung entstehenden Artefakte (z.B. Treppeneffekte in Bereichen mit pl\"otzlichen Ver\"anderungen) und das Verlorengehen von Informationen \"uber die urspr\"ungliche Form der abgebildeten Objekte.
 
@@ -619,7 +686,7 @@ Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an S
 	\end{minipage}
 \end{figure}
 
-Volumetrische Datens\"atze beinhalten oft komplexe Strukturen. Die Position und Form sowie die Datenwerte innerhalb dieser Strukturen gut zu vermitteln stellt oft ein zentrales Ziel der Volume Visualization dar. Eine M\"oglichkeit diese Informationen zu vermitteln stellt die Berechnung und Darstellung von Isofl\"achen dar. Die Isofl\"ache einer Funktion $f: \mathbb{R}^3\rightarrow\mathbb{R}$ und eines Isowerts $i \in \mathbb{R}$ ist definiert als eine Oberfl\"ache, die den $\mathbb{R}^3$ in zwei Regionen $R_0, R_1$ teilt, wobei f\"ur jeden Punkt $r_0 \in R_0$ gilt $f(r_0) < i$ und f\"ur jeden Punkt $r_1 \in R_1$ gilt $f(r_1) > i$ \cite{schroeder2005overview}. Die Isofl\"ache muss dabei nicht zusammenh\"angend sein. Auf der Isofl\"ache selbst ist $f$ gleich dem Isowert. 
+Volumetrische Datens\"atze beinhalten oft komplexe Strukturen. Die Position und Form sowie die Datenwerte innerhalb dieser Strukturen gut zu vermitteln stellt oft ein zentrales Ziel der Volume Visualization dar. Eine M\"oglichkeit diese Informationen zu vermitteln stellt die Berechnung und Darstellung von Isofl\"achen dar. Die Isofl\"ache einer Funktion $f: \mathbb{R}^3\rightarrow\mathbb{R}$ und eines Isowerts $i \in \mathbb{R}$ ist definiert als eine Oberfl\"ache, die den $\mathbb{R}^3$ in zwei Regionen $R_0, R_1$ teilt, wobei f\"ur jeden Punkt $r_0 \in R_0$ gilt $f(r_0) < i$ und f\"ur jeden Punkt $r_1 \in R_1$ gilt $f(r_1) > i$ \cite[S.~7]{hansen2005visualization}. Die Isofl\"ache muss dabei nicht zusammenh\"angend sein. Auf der Isofl\"ache selbst ist $f$ gleich dem Isowert. 
 
 In Abb. \ref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1,1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
 
@@ -655,13 +722,14 @@ Wenn nun drei Punkte $p_0, p_1, p_2$ existieren, von denen $p_0$ und $p_2$ Abtas
 
 Die Postklassifizierung l\"ost diese Probleme indem die Reihenfolge der Interpolation und Anwendung der Transferfunktion vertauscht , also zun\"achst die Datenwerte interpoliert und danach die Transferfunktion auf die interpolierten Werte angewendet wird. Dadurch werden Farbverl\"aufe so wie in der Tansferfunktion dargestellt. Ein neuer Nachteil entsteht jedoch: Durch die Interpolation k\"onnen neue Datenwerte entstehen, die so im Datensatz nicht vorkommen. In dem meisten F\"allen wird dies jedoch als das geringere \"Ubel angesehen, weshalb Postklassifizierung fast immer bevorzugt wird.
 
-In Abbildung \ref{Slicing} sind drei Slicings zusammen mit einer orangenen Isofl\"ache abgebildet.
+In Abb. \ref{Slicing} sind drei Slicings zusammen mit einer orangenen Isofl\"ache abgebildet.
 
 Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orientierung der Schnittfl\"ache interaktiv anpassen kann, bietet Slicing eine gute M\"oglichkeit um die Verteilung von Werten innerhalb eines volumetrischen Datensatzes zu analysieren und Werte sogar ablesen zu k\"onnen. Der Rechenaufwand ist sogar noch geringer als bei der Berechnung der Isofl\"achen und macht es m\"oglich, die Slicings ohne sp\"urbare Verz\"ogerung zu repositionieren. Slicings eignen sich auch, um andere Volume Visualizations zu erg\"anzen (wie z.B. in Abb. \ref{Slicing}).
 
 Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Positionen und Orientierungen zu finden, um interessante Bereiche sichtbar zu machen sowie darin, dass die Form von dreidimensionalen Strukturen relativ schlecht vermittelt wird. 
 
-\subsubsection{Direct Volume Rendering}
+\subsection{Direct Volume Rendering}
+\label{sec:DVR}
 \begin{figure}
 	\begin{minipage}{0.5\textwidth}
 		\centering
@@ -679,7 +747,7 @@ Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Posi
 \end{figure}
 Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen kleinen Teil des volumetrischen Datensatzes gleichzeitig dar. Das hat den Vorteil, dass ein Benutzer nur einen Teil der Daten gleichzeitig interpretieren muss, bringt jedoch eine Reihe von Nachteilen mit sich. Erstens wird vorrausgesetzt, dass der Benutzer durch Interaktion unterschiedliche Bereiche ausw\"ahlt, um sich einen \"Uberblick \"uber den Datensatz zu verschaffen, was abh\"angig von Gr\"o{\ss}e und Komplexit\"at viel Zeit und Aufmerksamkeit des Nutzers in Anspruch nehmen kann. Zweitens besteht dabei das Risiko, dass Merkmale des Datensatzes, die nur bei sehr bestimmten Einstellungen sichtbar sind, \"ubersehen werden. Und drittens muss der Benutzer zus\"atzliche mentale Arbeit verrichten, um die jeweils angezeigten Teile in seiner Vorstellung zusammenzusetzten, damit er ein vollst\"andiges Verst\"andnis des Datensatzes entwickeln kann. Dies kann, wiederum abh\"angig von Gr\"o{\ss}e und Komplexit\"at, fast unm\"oglich sein.
 
-Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren. Ein gro{\ss}er Teil der Informationen in diesem Abschnitt stammt aus Buch ``The Visualization Handbook''\cite{hansen2005visualization}, speziell aus den Kapiteln ``Overview of Volume Rendering'' \cite{kaufman2005overview} und ``Hardware Accelerated Volume Rendering'' \cite{pfister2005hardware}.
+Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren. Ein gro{\ss}er Teil der Informationen in diesem Abschnitt stammt aus Buch ``The Visualization Handbook''\cite{hansen2005visualization}, speziell aus den Kapiteln ``Overview of Volume Rendering'' (S. 127-164) von Kaufman und Mueller, ``Volume Rendering Using Splatting'' (S. 175-188) von Crawfis, Xue und Sang, ``Pre-Integrated Volume Rendering'' (S. 211-228) von Kraus und Ertl  sowie ``Hardware Accelerated Volume Rendering'' (S. 229-258) von Pfister.
 
 \"Ahnlich wie beim Slicing wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0,\dots 1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt (siehe Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{sec:Slicing}). Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Ein Beispiel f\"ur ein durch Direct Volume Rendering erzeugtes Bild zeigt Abb. \ref{Zahn}. 
 
@@ -698,7 +766,7 @@ Im Gegensatz dazu zerlegen object-order Verfahren den volumetrischen Datensatz i
 
 Hybride Verfahren versuchen Vorteile von image-order (fr\"uhzeitige Terminierung) und object-order Verfahren (geringer Speicherverbrauch, Rechenzeit abh\"angig von Anzahl Voxeln) zu kombinieren. Die Details der Implementierung unterscheiden sich jedoch stark zwischen den einzelnen Verfahren. 
 
-Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so transformiert, dass die DVR Visualisierung mittels mathematischer Eigenschaften des Wertebereichs (englisch ``Domain'') erzeugt werden kann. Ein Beispiel daf\"ur ist, den Datensatz zun\"achst mittels der Fourier Transformation in den Frequenzraum zu \"uberf\"uhren. Indem im Frequenzraum ein bestimmter 2D Ausschnitt gew\"ahlt und zur\"uck in den Ortsraum transformiert wird, kann eine Projektion des urspr\"unglichen Datensatzes erzeugt werden. Ein gro{\ss}er Vorteil von Domain-Verfahren liegt h\"aufig in der sehr viel k\"urzeren Rechenzeit. Bei der bereits erw\"ahnten Variante im Frequenzraum beispielsweise hat eine Komplexit\"at von $O(N^2 log(N))$ statt den bei DVR Verfahren \"ublichen. Leider schr\"ankt dieses Verfahren die m\"oglichen erzeugbaren Visualisierungen auf ein simples Integral entlang der Sichtstrahlen ein $O(N^3)$ \cite[S.~143]{kaufman2005overview}. Es existieren Ergebnisse, die versuchen andere Visualisierungen zu approximieren, jedoch stellt dies eine deutliche Einschr\"ankung des DVR dar, weshalb im Folgenden Domain-Verfahren nicht weiter beleuchtet werden.
+Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so transformiert, dass die DVR Visualisierung mittels mathematischer Eigenschaften des Wertebereichs (englisch ``Domain'') erzeugt werden kann. Ein Beispiel daf\"ur ist, den Datensatz zun\"achst mittels der Fourier Transformation in den Frequenzraum zu \"uberf\"uhren. Indem im Frequenzraum ein bestimmter 2D Ausschnitt gew\"ahlt und zur\"uck in den Ortsraum transformiert wird, kann eine Projektion des urspr\"unglichen Datensatzes erzeugt werden. Ein gro{\ss}er Vorteil von Domain-Verfahren liegt h\"aufig in der sehr viel k\"urzeren Rechenzeit. Bei der bereits erw\"ahnten Variante im Frequenzraum beispielsweise hat eine Komplexit\"at von $O(N^2 log(N))$ statt den bei DVR Verfahren \"ublichen. Leider schr\"ankt dieses Verfahren die m\"oglichen erzeugbaren Visualisierungen auf ein simples Integral entlang der Sichtstrahlen ein $O(N^3)$ \cite[S.~143]{hansen2005visualization}. Es existieren Ergebnisse, die versuchen andere Visualisierungen zu approximieren, jedoch stellt dies eine deutliche Einschr\"ankung des DVR dar, weshalb im Folgenden Domain-Verfahren nicht weiter beleuchtet werden.
 
 \begin{figure}
 	\centering
@@ -723,14 +791,14 @@ Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so
 		\label{DVR:Translucent}
 	\end{subfigure}
 	\caption{Arten von DVR Visualisierungen: (a) R\"ontenbild, (b) MIP,\\ 
-	(c) Isof\"ache, (d) Transluzent. Entnommen aus \cite[S.~134]{kaufman2005overview}}
+		(c) Isof\"ache, (d) Transluzent. Entnommen aus \cite[S.~134]{hansen2005visualization}}
 	\label{DVRModes}
 \end{figure}
-Es existieren 4 popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In Abbildung \ref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
+Es existieren 4 popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In Abb. \ref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
 
 \paragraph{R\"ontgenbilder}
 Die Bezeichung ``R\"ontgenbilder'' stammt aus der \"Ahnlichkeit der entstehenden Bilder zu denen, die beim klassischen R\"ontgen in der bildgebenden Medizin erzeugt werden. Die F\"arbung eines Pixels ergibt sich in diesem Verfahren dadurch, dass die ermittelten Farb- und Transparenzwerte aller zur F\"arbung dex Pixels beitragenden Voxel aufaddiert werden. Damit sind die Voxel gemeint, die zum Beispiel vom selben Strahl durch den Mittelpunkt des Pixels geschnitten (image-order) werden oder deren Basisfunktionen sich in diesem Pixel \"uberschneiden (object-order). Das Blending entspricht in diesem Fall einer Addition, die die Farbe eines Voxels auf die bisher bestimmte Farbe eines Pixels aufaddiert. Ein Beispiel f\"ur ein so erzeugtes Bild ist in Abb. \ref{DVR:Xray} zu sehen. 
-	
+
 \paragraph{Maximum Intensity Projection (MIP)}
 Bei der Maximum Intensity Projection wird zun\"achst der Voxel mit dem h\"ochsten Skalarwert berechnet, der auf diesen Pixel abgebildet wird (wiederum z.B. per Strahl oder Projektion der Basisfunktion). Nachdem dieser Wert bestimmt wurde, wird auf ihn die Transferfunktion angewendet und das Ergebnis als Farbe des Pixels festgelegt. Das Blending entspricht einer Maximumsfunktion, die den h\"ochsten bisher f\"ur einen Pixel gefundenen Skalarwert und den Skalarwert des Voxels entgegennimmt und das Maximum der beiden ausgibt. Abb. \ref{DVR:MIP} zeigt ein durch MIP erstelltes Bild. 
 
@@ -739,180 +807,17 @@ Bei der Maximum Intensity Projection wird zun\"achst der Voxel mit dem h\"ochste
 Wenn $T_O$, der Teil der Transferunktion $T$ der skalare Werte $s$ auf eine Opazit\"at abbildet, definiert ist als
 
 \begin{equation}
-	T_O(s) = 
-	\begin{cases}
-		1\text{ wenn $s=x$ f\"ur genau ein $x \in \mathbb{R}$}\\
-		0\text{ sonst}
-	\end{cases}
+T_O(s) = 
+\begin{cases}
+1\text{ wenn $s=x$ f\"ur genau ein $x \in \mathbb{R}$}\\
+0\text{ sonst}
+\end{cases}
 \end{equation}
 
 so entsprechen die erzeugten Bilder Isofl\"achen. Da Isofl\"achen komplett opak sind, wird die Berechnung abgebrochen, sobald f\"ur einen Pixel der zur Kamera n\"aheste Voxel, der Teil einer Isofl\"ache ist, gefunden wurde. Blending entsprich hier einer Minimumsfunktion, die anstelle der Farbwerte die Distanz zur Kamera zur Entscheidung verwendet. Abh\"angig vom Verfahren kann auch sofort terminiert werden wenn ein opakes Voxel gefunden wurde, dies erschwert jedoch das sp\"atere Hinzuf\"ugen von z.B. Schatten. Durch geschickte Wahl der Reihenfolge, in der die Voxel verarbeitet werden (z.B. mit zunehmender Entfernung zur Kamera), kann weitere Beschleunigung erreicht werden. In Abb. \ref{DVR:Isosurface} ist eine so erzeugte Isofl\"ache dargestellt.
 
 \paragraph{Transluzent}
 Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, so dass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \ref{DVR:Translucent} zu sehen. 
-
-In den folgenden Abschnitten werden einige DVR Verfahren vorgestellt.
-
-\subsubsection{Texture Slicing}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.6\textwidth]{pictures/Texture_Slicing}
-	\caption{Schematische Darstellung des Texture Slicings. Die gestrichelten Linien entsprechen Schnittbildern durch den Datensatz. Die roten Punkte stellen die Positionen auf den Schnittbildern dar, die auf das Pixel des jeweiligen Strahls projeziert werden.}
-	\label{TexureSlicing}
-\end{figure}
-\label{sec:TextureSlicing}
-Eines der ersten image-order DVR Verfahren wurde von Neumann und Cullip \cite{cullip1993accelerating} entwickelt. Es wird aufgrund der darin verwendeten Mechanismen meist als Texture Slicing bezeichnet, in manchen Ver\"offentlichungen aber auch als Raycasting. Dieser Begriff wird jedoch auch f\"ur ein anderes Verfahren verwendet, das sp\"ater in dieser Arbeit vorgestellt wird.
-
-Beim Texture Slicing werden mehrere imagin\"are Ebenen parallel zur Bildebene durch den Datensatz gelegt. Die Schnittmenge dieser Ebenen mit dem Datensatz bilden Polygone. Indem Abtastpunkte auf diesen Polygonen ausgewertet werden, lassen sich durch Anwendung der Transferfunktion die Polygone einf\"arben. Das Verfahren dazu ist praktisch identisch zu dem in Abschnitt \ref{sec:Slicing} beschriebenen Slicing. Die entstandenen Schnittbilder werden danach auf die Bildebene projeziert und die Farbwerte der Pixel durch Blending der berechnet. Die f\"ur das Blending verwendete Formel h\"angt von der Reihenfolge ab, in der die Schnitte miteinander kombiniert werden. Wenn die Schnitte mit zunehmender Entfernung zur Kamera (front-to-back) verarbeitet werden, so entspricht das Blending den Formeln
-
-\begin{align}
-	&c = c_{alt} + c_{neu}\cdot(1-\alpha_{alt})\cdot\alpha_{neu}
-	\label{front-to-back-color}\\ 
-	&\alpha = \alpha_{alt} + \alpha_{neu}\cdot(1-\alpha_{alt} 
-	\label{front-to-back-alpha}
-\end{align}
-
-Wobei $c$ die akkumulierte Farbe und $\alpha$ die akkumulierte Opazit\"at ist. Der Index $alt$ gibt an, dass dieser Wert das Ergebnis des vorherigen Blendings ist (oder 0, falls dies das erste ist), der Index $neu$ dass dies der Wert der neu verarbeitenden Schnittfl\"ache ist. Wenn sich der Wert von $\alpha_{alt}$ in Pixeln nah genug an 1 ann\"ahert, so k\"onnen diese in sp\"ateren Blending Schritten \"ubersprungen werden, da der Einfluss dieser Blendings auf die Farbe der Pixel sehr klein ist. Dies setzt jedoch voraus, dass das Blending dahingehend konfigurierbar ist - dies ist nicht in allen Versionen von OpenGL oder anderen Renderingsystemen der Fall. 
-
-Wenn die Schnitte dagegen mit abnehmender Entfernung zur Kamera verarbeitet werden, so ergeben sich f\"ur das Blending die Gleichungen
-
-\begin{align}
-	&c = (1-\alpha_{neu})\cdot c_{alt}+c_{neu}\cdot\alpha_{neu}
-		\label{back-to-front-color}\\ 
-	&\alpha = (1-\alpha_{neu})\cdot\alpha_{alt} + \alpha_{neu}
-	\label{back-to-front-alpha}
-\end{align}
-
-so muss die akkumulierte Opazit\"at der Pixel nicht gespeichert werden, was bei geringer Speicherkapazit\"at ein Vorteil sein kann. Daf\"ur ist fr\"uhzeitiges Terminieren nicht m\"oglich.
-
-Die Laufzeit des Texture Slicings ist haupts\"achlich abh\"angig von der Anzahl der einzuf\"arbenden Pixel und der Nummer der zu berechnenden Schnittbilder. Eine h\"ohere Anzahl von Schnittbildern f\"uhrt jedoch auch zu einer exakteren Repr\"asentation des Datensatzes, da sich dadurch die Chance, dass ein relevanter Teil des Datensatzes von keinem der Schnitte getroffen wird, reduziert. Durch Interaktionen kann es dem Benutzer erm\"oglicht werden, den Tradeoff zwischen Rechenzeit und Bildqualit\"at anzupassen.
-
-Der wichtigste Vorteil des Texture Slicings ist die f\"r image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe Abb. \ref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
-
-\subsubsection{Raycasting}
-\label{sec:Raycasting}
-
-Historisch entwickelte sich das heutige Raycasting aus den Texture Slicing Verfahren. Es versucht, die Probleme des Texture Slicings, die durch die Verwendung der Schnittebenen entstehen, zu Lasten der Laufzeit zu beheben.
-
-Image-order Verfahren k\"onnen mathematisch als die approxmierte Berechnung von Linienintegralen beschrieben werden. Im Folgenden sei ein Beispiel f\"ur ein solches Integral am Beispiel der Erzeugung von transluzenten Bildern gegeben.
-Der Datensatz wird zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{kaufman2005overview}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber die Transferfunktion beschrieben. Das aus Richtung der Strahlen zur Kameraposition hin auf der Bildebene eintreffende Licht entspricht dann dem Integral 
-
-\begin{equation}
-	I(x,r) = \int_{0}^{L} C(s)\mu(s) e^{-\int_{0}^{s}\mu(t)dt}ds
-\end{equation}
-
-Dabei entspricht $x$ der Position auf der Bildebene, $r$ der Richtung der Straphlen, $L$ der L\"ange der Strahlen, bis sie zum letzten Mal einen Voxel schneidet, $C(s)$ dem an Position $s$ emittierten Licht und $\mu(s)$ dem Okklusionskoeffizienten an $s$, also dem Anteil von Licht, das an $s$ absorbiert wird ($\mu(s) \in [0, \dots, 1])$. Einfacher ausgedr\"uckt emittiert jeder Punkt Licht und absorbiert gleichzeitig einen Teil des von Punkten emittierten Lichts, die auf demselben Strahl liegen und weiter von der Kamera entfernt sind. Das absorbierte Licht entspricht der berechneten Opazit\"at des Voxels an diesem Punkt.
-
-Dieses Integral l\"asst sich im allgemeinen Fall nur mit viel Rechenaufwand, wenn \"uberhaupt, automatisch berechnen \cite[S.~136]{kaufman2005overview}. Um dennoch Visualisierungen mit Interaktionen, die keine sp\"urbare Verz\"ogerung hervorrufen, umsetzen zu k\"onnen, wird das Integral vereinfacht. Durch Vereinfachungsschritte (siehe Kaufman et al. \cite[S.~136]{kaufman2005overview} f\"ur Details) ergibt sich die Formel
-
-\begin{equation}
-	I(x,r) = \sum_{i=0}^{L/\Delta s - 1} C(i\Delta s)\alpha(i\Delta s) \prod_{j=0}^{i-1}( 1 - \alpha(j \Delta s))
-\end{equation}
-
-Hier entspricht $\Delta s$ einem Bruchteil von $L$. Desto kleiner $\Delta s$ wird, desto besser wird das Integral approximiert. Die Funktion $\alpha(i \Delta s)$ ermittelt die Opazit\"at an dem Punkt, der $i \Delta s$ von der Kamera entfernt ist und auf dem Strahl liegt.
-
-Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur $i > 0$):
-
-\begin{align}
-	&\alpha_0 = c_0 = 0\\
-	&c_i = C(i\Delta s)\cdot\alpha(i\Delta s)\cdot(1-\alpha_{i-1}) + c_{i-1}\\
-	&\alpha_i = \alpha\cdot(i \Delta s)\cdot(1-\alpha_{i-1}) + \alpha_{i-1} 
-	\label{RaycastingFormula}
-\end{align} 
-
-Diese rekursiven Funktionen entsprechen der Abtastung entlang des Strahls ausgehend von der Kamera (front-to-back). Wenn $\alpha_i$ sich nah genug an 1 ann\"ahert kann die Berechnung fr\"uzeitig terminieren. F\"ur die umgekehrte Richtung (zur Kamera hin, back-to-front) ergibt sich
-
-\begin{align}
-	&\alpha_0 = c_0 = 0\\
-	&c_i = c_{i-1}\cdot(1 - \alpha(i\Delta s)) + C(i\Delta s)\cdot\alpha(i\Delta s)\\
-	&\alpha_i = \alpha_{i-1}\cdot(1 - \alpha(i\Delta s)) + \alpha(i \Delta s) 
-\end{align}
-
-Dies hat jedoch den Nachteil, dass fr\"uhzeitiges Terminieren nicht m\"oglich ist, weshalb diese Variante nur sehr selten benutzt wird.
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.6\textwidth]{pictures/Raycasting}
-	\caption{Schematische Darstellung des Raycastings. Die roten Punkte stellen Abtastpunkte dar, die in regelm\"assigen Abst\"anden auf den Strahlen liegen.}
-	\label{Raycasting}
-\end{figure}
-
-Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Als weitere Optimierung kann der erste Abtastpunkt an der Grenze oder innerhalb des ersten geschnittenen Voxels gesetzt werden. In Abb. \ref{Raycasting} wird Raycasting schematisch dargestellt. 
-Da f\"ur dieses Verfahren Strahlen durch das Volumen berechnet werden, entlang derer abgetastet wird, bezeichnet man es als Raycasting. Die Vorteile des Raycastings liegen der schon angesprochenen M\"oglichkeit zur fr\"urzeitigen Terminierung und der M\"oglichkeit, die Anzahl der Abtastpunkte, auch bezeichnet als ``Abtrastrate'', pro Strahl festzulegen.
-
-\begin{figure}
-	\begin{minipage}{0.5\textwidth}
-		\centering
-		\begin{subfigure}{0.7\textwidth}
-			\includegraphics[width=\textwidth]{pictures/DVR1.png}
-			\subcaption{}
-			\label{SamplingPoints1}
-		\end{subfigure}
-	\end{minipage}
-	\begin{minipage}{0.5\textwidth}
-		\centering
-		\begin{subfigure}{0.7\textwidth}
-			\includegraphics[width=\textwidth]{pictures/DVR2.png}
-			\subcaption{}
-			\label{SamplingPoints2}
-		\end{subfigure}
-	\end{minipage}
-	\caption{Zwei Raycastings desselben Skalarfelds mit unterschiedlichen Abtastraten.}
-	\label{SamplingPoints}
-\end{figure}
-
-Die Qualit\"at eines Raycastings ist stark abh\"angig von der Abtastrate auf den Strahlen und somit vom Abstand zwischen den Abtastpunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Nutzer die Abtastrate selbst ausw\"ahlt, kann er den Tradeoff zwischen Rechenzeit und Bildqualit\"at an seine Bed\"urfnisse anpassen, genau wie schon beim Texture Slicing. In Abb. \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes $f:\mathbb{R}^3\rightarrow\mathbb{R}, f(x, y, z)=cos(x\cdot y\cdot z)$ zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Abtastpunkten erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Abtastpunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Abtastpunkten in \ref{SamplingPoints2} verschwinden diese Artefakte.
-
-
-
-
-\subsubsection{Cell Projection}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.6\textwidth]{pictures/CellProjection}
-	\caption{Schematische Darstellung von Cell Projection. Das gro{\ss}e Dreieck rechts wird auf die Bildeben links projeziert. Die Projektion wird durch das kleinere Dreieck direkt an der Bildebene dargestellt. Die Entfernung der Punkte auf den Schenkeln zur Bildebene gibt die Opazit\"atswerte der jeweiligen Pixel an.}
-	\label{CellProjection}
-\end{figure}
-Cell Projection z\"ahlt zu den object-order Verfahren. Es basiert auf der Arbeit von Lenz, Gudmundsson, Lindskog und Danielsson\cite{lenz86display} sowie der von Frieder, Gordon und Reynolds\cite{frieder1985back}. Die grundlegende Idee der Cell Projection besteht darin, f\"ur jedes Voxel ein zweidimensionales Polygon zu berechnen und dieses auf die Bildebene zu projezieren. Form, Farbe und Transparenz des Polygons werden dabei durch die Form des Voxels sowie die relative Position der Kamera zum Voxel bestimmt. Punkte des Polygons entsprechen Geraden durch das Voxel, deren Richtung von der Kameraposition abh\"angt. Die Opazit\"at an diesen Punkten entspricht dem Integral der Opazit\"at entlang der Linien. Dieses Vorgehen ist vergleichbar mit dem des in einem sp\"ateren Kapitel vorgestellten Continuous Scatterplottings, speziell dem Fall 5. In Abb. \ref{CellProjection} ist das Vorgehen schematisch abgebildet. 
-
-Wenn sich mehrere Projektionen der Voxel auf der Bildebene \"uberschneiden, werden sie mittels Blending kombiniert. Die f\"ur das Blending verwendeten Formeln sind abh\"angig von der Reihenfolge, in der die Voxel verarbeitet werden: Die Formeln \ref{front-to-back-color} und \ref{front-to-back-alpha} im front-to-back Fall und die Formeln \ref{back-to-front-color} und \ref{back-to-front-alpha} im back-to-front Fall. Bei object-order Verfahren ist in der Regel keine fr\"uhzeitige Terminierung m\"oglich. Aus diesem Grund und weil back-to-front die akkumulierte Opazit\"at nicht abspeichern muss wird back-to-front meiste bevorzugt.
-
-\begin{figure}
-
-\end{figure}
-
-\begin{figure}			
-	\begin{subfigure}{0.25\textwidth}
-		\includegraphics[width=\textwidth]{pictures/Split.png}
-		\subcaption{}
-		\label{Split}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{pictures/Classes.png}
-		\subcaption{}
-		\label{Classes}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{pictures/Triangle.png}
-		\subcaption{}
-		\label{Triangle}
-	\end{subfigure}
-	\caption{Teilaufgaben einer beispielhaften Cell Projection: (a) Zerlegung eines quadrischen Voxels in f\"unf tetraedrische Voxel. (b) Klassifizierung von Tetraeder abh\"angig von ihrer Ausrichtung zur Kamera. (c) Zerlegung der Projektion des Tetraeders in Dreiecke.}
-\end{figure}
-
-Cell Projection Verfahren unterscheiden sich stark darin, welche Arten von Voxel als Eingabe dienen k\"onnen und wie die Umwandlung in zweidimensionale Voxel ausgef\"uhrt wird. Diese beiden Teilprobleme werden im Folgenden anhand des von Shirley und Tuchman \cite{shirley1990polygonal} entwickelten Algorithmus erl\"autert.
-
-Im ersten Schritt zerlegt der Algorithmus die Voxel in tetraedrische Teile (siehe Abb. \ref{Split}). Die daraus entstehenden Tetraeder werden anhand der Ausrichtung ihrer Fl\"achen zur Blickrichtung der Kamera klassifiziert. Dazu wird das Skalarprodukt zwischen den Normalen der Fl\"achen (die hier immer als nach au{\ss}en zeigend angenommen werden) und der Blickrichtung berechnet. Die Klassen sind in Abb. \ref{Classes} dargestellt. Die +, - und 0 neben den Klassen geben dabei an, welche Werte die Skalarprodukte jeweils annehmen k\"onnen: Ein + steht f\"ur ein positives, ein - f\"ur ein negatives Skalarprodukt. 0 steht daf\"ur dass das Skalarprodukt 0 ist, also die Normale orthogonal zur Blickrichtung.
-
-Nachdem die Tetraeder klassifiziert sind, werden die von ihnen durch Projektion auf die Bildebene erzeugten Fl\"achen bestimmt. Dazu werden die Eckpunkte projeziert und die entstehenden Polygone in Dreiecke zerlegt (siehe Abb. \ref{Triangle}). Werte f\"ur neu entstandene Eckpunkte der Dreiecke werden durch Interpolation berechnet. Die Dicke des Tetraeders an Punkten im Inneren des Polygons wird durch die Euklidische Distanzformel bestimmt. Die Opazit\"at an diesen Punkten wird abh\"angig von der Dicke des Tetraeders dort und den skalaren Werten entlang der Geraden durch den Tetraeder, die auf den Punkt abgebildet wird, bestimmt.
-
-Schlussendlich werden die Dreiecke auf die Bildebene gerendert. Die Farb- und Opazit\"atswerte im Inneren der Dreiecke ergeben sich durch Interpolation der Werte an ihren Eckpunkten. 
-
-\subsubsection{Splatting}
-\subsubsection{Shear Warp}
 
 \subsection{Continuous Scatterplotting}
 \subsubsection{Scatterplotting}
@@ -953,7 +858,7 @@ Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ 
 		\subcaption{}
 		\label{Case2}
 	\end{subfigure}
-	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an. }
+	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an.}
 	\label{ContinuousScatterplot}
 \end{figure}
 Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
@@ -1082,6 +987,233 @@ Fritzsch schl\"agt zur L\"osung dieses Problems zwei Ans\"atze vor.
 Der erste orientiert sich an Fall 2 und ordnet dem Bildbereich sehr hohe Dichten zu, um die Masseerhaltung zu gew\"ahrleisten. 
 
 Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $rang(M) = 1$ sein). Er kann jedoch auch auf h\"ohere Dimensionen \"ubertragen werden. Ziel ist es, die Dichte an Punkten $p\in\tau(V)$ proportional zur Gesamtmasse der darauf abgebildeten Punkte festzulegen. Dadurch wird zwar die Masseerhaltung nicht erf\"ullt, aber eine interpretierbare Darstellung erzeugt. Dazu werden zun\"acht die Gradienten f\"ur jede Komponente des Bildes von $V$ berechnet. Die Gr\"o{\ss}e der $dim(V) - dim(\tau(V))$-dimensionalen Teilmengen von $V$, die orthogonal zu den durch die Gradienten aufgespannten R\"aumen sind, ist gleich der Masse, die auf die einzelnen Punkte abgebildet wird. Ein Beispiel f\"ur den Fall $dim(V) = 2,~dim(\tau(V)) = 1$ ist in \ref{Case5Solution} zu sehen. Die Dichte an den Punkten von $\tau(V)$ wird dann proportional zur Masse gew\"ahlt.
+
+
+\section{Direct Volume Rendering Verfahren}
+Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} erl\"auterten Ideen umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
+
+\subsection{Texture Slicing}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{pictures/Texture_Slicing}
+	\caption{Schematische Darstellung des Texture Slicings. Die gestrichelten Linien entsprechen Schnittbildern durch den Datensatz. Die roten Punkte stellen die Positionen auf den Schnittbildern dar, die auf das Pixel des jeweiligen Strahls projeziert werden.}
+	\label{TexureSlicing}
+\end{figure}
+\label{sec:TextureSlicing}
+Eines der ersten image-order DVR Verfahren wurde von Neumann und Cullip \cite{cullip1993accelerating} entwickelt. Es wird aufgrund der darin verwendeten Mechanismen meist als Texture Slicing bezeichnet, in manchen Ver\"offentlichungen aber auch als Raycasting. Dieser Begriff wird jedoch auch f\"ur ein anderes Verfahren verwendet, das sp\"ater in dieser Arbeit vorgestellt wird.
+
+Beim Texture Slicing werden mehrere imagin\"are Ebenen parallel zur Bildebene durch den Datensatz gelegt. Die Schnittmenge dieser Ebenen mit dem Datensatz bilden Polygone. Indem Abtastpunkte auf diesen Polygonen ausgewertet werden, lassen sich durch Anwendung der Transferfunktion die Polygone einf\"arben. Das Verfahren dazu ist praktisch identisch zu dem in Abschnitt \ref{sec:Slicing} beschriebenen Slicing. Die entstandenen Schnittbilder werden danach auf die Bildebene projeziert und die Farbwerte der Pixel durch Blending der berechnet. Die f\"ur das Blending verwendete Formel h\"angt von der Reihenfolge ab, in der die Schnitte miteinander kombiniert werden. Wenn die Schnitte mit zunehmender Entfernung zur Kamera (front-to-back) verarbeitet werden, so entspricht das Blending den Formeln
+
+\begin{align}
+&c = c_{alt} + c_{neu}\cdot(1-\alpha_{alt})\cdot\alpha_{neu}
+\label{front-to-back-color}\\ 
+&\alpha = \alpha_{alt} + \alpha_{neu}\cdot(1-\alpha_{alt} 
+\label{front-to-back-alpha}
+\end{align}
+
+Wobei $c$ die akkumulierte Farbe und $\alpha$ die akkumulierte Opazit\"at ist. Der Index $alt$ gibt an, dass dieser Wert das Ergebnis des vorherigen Blendings ist (oder 0, falls dies das erste ist), der Index $neu$ dass dies der Wert der neu verarbeitenden Schnittfl\"ache ist. Wenn sich der Wert von $\alpha_{alt}$ in Pixeln nah genug an 1 ann\"ahert, so k\"onnen diese in sp\"ateren Blending Schritten \"ubersprungen werden, da der Einfluss dieser Blendings auf die Farbe der Pixel sehr klein ist. Dies setzt jedoch voraus, dass das Blending dahingehend konfigurierbar ist - dies ist nicht in allen Versionen von OpenGL oder anderen Renderingsystemen der Fall. 
+
+Wenn die Schnitte dagegen mit abnehmender Entfernung zur Kamera verarbeitet werden, so ergeben sich f\"ur das Blending die Gleichungen
+
+\begin{align}
+&c = (1-\alpha_{neu})\cdot c_{alt}+c_{neu}\cdot\alpha_{neu}
+\label{back-to-front-color}\\ 
+&\alpha = (1-\alpha_{neu})\cdot\alpha_{alt} + \alpha_{neu}
+\label{back-to-front-alpha}
+\end{align}
+
+so muss die akkumulierte Opazit\"at der Pixel nicht gespeichert werden, was bei geringer Speicherkapazit\"at ein Vorteil sein kann. Daf\"ur ist fr\"uhzeitiges Terminieren nicht m\"oglich.
+
+Die Laufzeit des Texture Slicings ist haupts\"achlich abh\"angig von der Anzahl der einzuf\"arbenden Pixel und der Nummer der zu berechnenden Schnittbilder. Eine h\"ohere Anzahl von Schnittbildern f\"uhrt jedoch auch zu einer exakteren Repr\"asentation des Datensatzes, da sich dadurch die Chance, dass ein relevanter Teil des Datensatzes von keinem der Schnitte getroffen wird, reduziert. Durch Interaktionen kann es dem Benutzer erm\"oglicht werden, den Tradeoff zwischen Rechenzeit und Bildqualit\"at anzupassen.
+
+Der wichtigste Vorteil des Texture Slicings ist die f\"r image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe Abb. \ref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
+
+\subsection{Raycasting}
+\label{sec:Raycasting}
+
+Historisch entwickelte sich das heutige Raycasting aus den Texture Slicing Verfahren. Es versucht, die Probleme des Texture Slicings, die durch die Verwendung der Schnittebenen entstehen, zu Lasten der Laufzeit zu beheben.
+
+Image-order Verfahren k\"onnen mathematisch als die approxmierte Berechnung von Linienintegralen beschrieben werden. Im Folgenden sei ein Beispiel f\"ur ein solches Integral am Beispiel der Erzeugung von transluzenten Bildern gegeben.
+Der Datensatz wird zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{hansen2005visualization}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber die Transferfunktion beschrieben. Das aus Richtung der Strahlen zur Kameraposition hin auf der Bildebene eintreffende Licht entspricht dann dem Integral 
+
+\begin{equation}
+I(x,r) = \int_{0}^{L} C(s)\mu(s) e^{-\int_{0}^{s}\mu(t)dt}ds
+\end{equation}
+
+Dabei entspricht $x$ der Position auf der Bildebene, $r$ der Richtung der Straphlen, $L$ der L\"ange der Strahlen, bis sie zum letzten Mal einen Voxel schneidet, $C(s)$ dem an Position $s$ emittierten Licht und $\mu(s)$ dem Okklusionskoeffizienten an $s$, also dem Anteil von Licht, das an $s$ absorbiert wird ($\mu(s) \in [0, \dots, 1])$. Einfacher ausgedr\"uckt emittiert jeder Punkt Licht und absorbiert gleichzeitig einen Teil des von Punkten emittierten Lichts, die auf demselben Strahl liegen und weiter von der Kamera entfernt sind. Das absorbierte Licht entspricht der berechneten Opazit\"at des Voxels an diesem Punkt.
+
+Dieses Integral l\"asst sich im allgemeinen Fall nur mit viel Rechenaufwand, wenn \"uberhaupt, automatisch berechnen \cite[S.~136]{hansen2005visualization}. Um dennoch Visualisierungen mit Interaktionen, die keine sp\"urbare Verz\"ogerung hervorrufen, umsetzen zu k\"onnen, wird das Integral vereinfacht. Durch Vereinfachungsschritte (siehe \cite[S.~136]{hansen2005visualization} f\"ur Details) ergibt sich die Formel
+
+\begin{equation}
+I(x,r) = \sum_{i=0}^{L/\Delta s - 1} C(i\Delta s)\alpha(i\Delta s) \prod_{j=0}^{i-1}( 1 - \alpha(j \Delta s))
+\end{equation}
+
+Hier entspricht $\Delta s$ einem Bruchteil von $L$. Desto kleiner $\Delta s$ wird, desto besser wird das Integral approximiert. Die Funktion $\alpha(i \Delta s)$ ermittelt die Opazit\"at an dem Punkt, der $i \Delta s$ von der Kamera entfernt ist und auf dem Strahl liegt.
+
+Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur $i > 0$):
+
+\begin{align}
+&\alpha_0 = c_0 = 0\\
+&c_i = C(i\Delta s)\cdot\alpha(i\Delta s)\cdot(1-\alpha_{i-1}) + c_{i-1}\\
+&\alpha_i = \alpha\cdot(i \Delta s)\cdot(1-\alpha_{i-1}) + \alpha_{i-1} 
+\label{RaycastingFormula}
+\end{align} 
+
+Diese rekursiven Funktionen entsprechen der Abtastung entlang des Strahls ausgehend von der Kamera (front-to-back). Wenn $\alpha_i$ sich nah genug an 1 ann\"ahert kann die Berechnung fr\"uzeitig terminieren. F\"ur die umgekehrte Richtung (zur Kamera hin, back-to-front) ergibt sich
+
+\begin{align}
+&\alpha_0 = c_0 = 0\\
+&c_i = c_{i-1}\cdot(1 - \alpha(i\Delta s)) + C(i\Delta s)\cdot\alpha(i\Delta s)\\
+&\alpha_i = \alpha_{i-1}\cdot(1 - \alpha(i\Delta s)) + \alpha(i \Delta s) 
+\end{align}
+
+Dies hat jedoch den Nachteil, dass fr\"uhzeitiges Terminieren nicht m\"oglich ist, weshalb diese Variante nur sehr selten benutzt wird.
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{pictures/Raycasting}
+	\caption{Schematische Darstellung des Raycastings. Die roten Punkte stellen Abtastpunkte dar, die in regelm\"assigen Abst\"anden auf den Strahlen liegen.}
+	\label{Raycasting}
+\end{figure}
+
+Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Als weitere Optimierung kann der erste Abtastpunkt an der Grenze oder innerhalb des ersten geschnittenen Voxels gesetzt werden. In Abb. \ref{Raycasting} wird Raycasting schematisch dargestellt. 
+Da f\"ur dieses Verfahren Strahlen durch das Volumen berechnet werden, entlang derer abgetastet wird, bezeichnet man es als Raycasting. Die Vorteile des Raycastings liegen der schon angesprochenen M\"oglichkeit zur fr\"urzeitigen Terminierung und der M\"oglichkeit, die Anzahl der Abtastpunkte, auch bezeichnet als ``Abtrastrate'', pro Strahl festzulegen.
+
+\begin{figure}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\begin{subfigure}{0.7\textwidth}
+			\includegraphics[width=\textwidth]{pictures/DVR1.png}
+			\subcaption{}
+			\label{SamplingPoints1}
+		\end{subfigure}
+	\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+		\centering
+		\begin{subfigure}{0.7\textwidth}
+			\includegraphics[width=\textwidth]{pictures/DVR2.png}
+			\subcaption{}
+			\label{SamplingPoints2}
+		\end{subfigure}
+	\end{minipage}
+	\caption{Zwei Raycastings desselben Skalarfelds mit unterschiedlichen Abtastraten.}
+	\label{SamplingPoints}
+\end{figure}
+
+Die Qualit\"at eines Raycastings ist stark abh\"angig von der Abtastrate auf den Strahlen und somit vom Abstand zwischen den Abtastpunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Nutzer die Abtastrate selbst ausw\"ahlt, kann er den Tradeoff zwischen Rechenzeit und Bildqualit\"at an seine Bed\"urfnisse anpassen, genau wie schon beim Texture Slicing. In Abb. \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes $f:\mathbb{R}^3\rightarrow\mathbb{R}, f(x, y, z)=cos(x\cdot y\cdot z)$ zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Abtastpunkten erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Abtastpunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Abtastpunkten in \ref{SamplingPoints2} verschwinden diese Artefakte.
+
+\subsection{Cell Projection}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{pictures/CellProjection}
+	\caption{Schematische Darstellung von Cell Projection. Das gro{\ss}e Dreieck rechts wird auf die Bildeben links projeziert. Die Projektion wird durch das kleinere Dreieck direkt an der Bildebene dargestellt.}
+	\label{CellProjection}
+\end{figure}
+Cell Projection z\"ahlt zu den object-order Verfahren. Es basiert auf der Arbeit von Lenz, Gudmundsson, Lindskog und Danielsson \cite{lenz86display} sowie der von Frieder, Gordon und Reynolds \cite{frieder1985back}. Die grundlegende Idee der Cell Projection besteht darin, f\"ur jedes Voxel ein zweidimensionales Polygon zu berechnen und dieses auf die Bildebene zu projezieren. Form, Farbe und Transparenz des Polygons werden dabei durch die Form des Voxels sowie die relative Position der Kamera zum Voxel bestimmt. Punkte des Polygons entsprechen Geraden durch das Voxel, deren Richtung von der Kameraposition abh\"angt. Die Opazit\"at an diesen Punkten entspricht dem Integral der Opazit\"at entlang der Linien. Dieses Vorgehen ist vergleichbar mit dem schon vorgestellten Continuous Scatterplotting, speziell dem Fall 5. In Abb. \ref{CellProjection} ist das Vorgehen schematisch abgebildet. Auf jeden Punkt der Bildeben wird ein eindimensionaler Ausschnitt des Voxels abgebildet. Die L\"ange dieses Ausschnitts gibt die Dicke des Voxels in Richtung des Punkts auf der Bildebene an, betrachtet von der Kameraposition aus. Diese Dicke wird in Abb. \ref{CellProjection} durch die Entfernung der Punkte auf den Schenkeln des Dreiecks zur Bildebene ausgedr\"uckt.
+
+Wenn sich mehrere Projektionen der Voxel auf der Bildebene \"uberschneiden, werden sie mittels Blending kombiniert. Die f\"ur das Blending verwendeten Formeln sind abh\"angig von der Reihenfolge, in der die Voxel verarbeitet werden: Die Formeln \ref{front-to-back-color} und \ref{front-to-back-alpha} im front-to-back Fall und die Formeln \ref{back-to-front-color} und \ref{back-to-front-alpha} im back-to-front Fall. Bei object-order Verfahren ist in der Regel keine fr\"uhzeitige Terminierung m\"oglich. Aus diesem Grund und weil back-to-front die akkumulierte Opazit\"at nicht abspeichern muss wird es meistens bevorzugt.
+
+\begin{figure}
+	
+\end{figure}
+
+\begin{figure}			
+	\begin{subfigure}{0.25\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Split.png}
+		\subcaption{}
+		\label{Split}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/Classes.png}
+		\subcaption{}
+		\label{Classes}
+	\end{subfigure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/Triangle.png}
+		\subcaption{}
+		\label{Triangle}
+	\end{subfigure}
+	\caption{Teilaufgaben einer beispielhaften Cell Projection: (a) Zerlegung eines quadrischen Voxels in f\"unf tetraedrische Voxel. (b) Klassifizierung von Tetraeder abh\"angig von ihrer Ausrichtung zur Kamera. (c) Zerlegung der Projektion des Tetraeders in Dreiecke.}
+\end{figure}
+
+Cell Projection Verfahren unterscheiden sich stark darin, welche Arten von Voxel als Eingabe dienen k\"onnen und wie die Umwandlung in zweidimensionale Voxel ausgef\"uhrt wird. Diese beiden Teilprobleme werden im Folgenden anhand des von Shirley und Tuchman \cite{shirley1990polygonal} entwickelten Algorithmus erl\"autert.
+
+Im ersten Schritt zerlegt der Algorithmus die Voxel in tetraedrische Teile (siehe Abb. \ref{Split}). Die daraus entstehenden Tetraeder werden anhand der Ausrichtung ihrer Fl\"achen zur Blickrichtung der Kamera klassifiziert. Dazu wird das Skalarprodukt zwischen den Normalen der Fl\"achen (die hier immer als nach au{\ss}en zeigend angenommen werden) und der Blickrichtung berechnet. Die Klassen sind in Abb. \ref{Classes} dargestellt. Die +, - und 0 neben den Klassen geben dabei an, welche Werte die Skalarprodukte jeweils annehmen k\"onnen: Ein + steht f\"ur ein positives, ein - f\"ur ein negatives Skalarprodukt. 0 steht daf\"ur dass das Skalarprodukt 0 ist, also die Normale orthogonal zur Blickrichtung.
+
+Nachdem die Tetraeder klassifiziert sind, werden die von ihnen durch Projektion auf die Bildebene erzeugten Fl\"achen bestimmt. Dazu werden die Eckpunkte projeziert und die entstehenden Polygone in Dreiecke zerlegt (siehe Abb. \ref{Triangle}). Werte f\"ur neu entstandene Eckpunkte der Dreiecke werden durch Interpolation berechnet. Die Dicke des Tetraeders an Punkten im Inneren des Polygons wird durch die Euklidische Distanzformel bestimmt. Die Opazit\"at an diesen Punkten wird abh\"angig von der Dicke des Tetraeders dort und den skalaren Werten entlang der Geraden durch den Tetraeder, die auf den Punkt abgebildet wird, bestimmt.
+
+Schlussendlich werden die Dreiecke auf die Bildebene gerendert. Die Farb- und Opazit\"atswerte im Inneren der Dreiecke ergeben sich durch Interpolation der Werte an ihren Eckpunkten. 
+
+Der Vorteil der Cell Projection liegt in der sehr exakten Darstellung des Datensatzes: Alle Voxel werden in korrekter Form und mit korrekten Dichtewerten gerendert, was bei den meisten anderen object-order Verfahren nicht der Fall ist. Diese Exaktheit wird durch zus\"atzliche Vorberechnungen erreicht, die die Gesamtrechenzeit des Algorithmus erh\"ohen. Zudem k\"onnen die harten Kanten der projezierten Polygone visuelle Artefakte erzeugen, die bei anderen object-order Verfahren nicht vorkommen.
+
+\subsection{Splatting}
+
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+	
+	
+	\draw(-2.5,0) node{\Large$\frac{1}{273}$};
+	\matrix (mtr) [matrix of nodes,row sep=-\pgflinewidth, nodes={draw, minimum width=0.7cm, minimum height=0.7cm}]
+	{
+		1 & 4 & 7 & 4 & 1\\
+		4 & 16 & 26 & 16 & 4\\
+		7 & 26 & 41 & 26 & 7\\
+		4 & 16 & 26 & 16 & 4\\
+		1 & 4 & 7 & 4 & 1\\
+	};
+	\end{tikzpicture}
+	\caption{Ein diskreter $5\times5$ Gau{\ss} Kern. Die Werte in den Zellen werden mit dem Faktor links multipliziert, so dass die Summe aller Zellen 1 entspricht.}
+	\label{kernel}
+\end{figure}
+
+Splatting basiert auf einem von Westover entwickelten Algorithmus\cite{westover1989interactive}\cite{westover1990footprint}. Wie auch bei der Cell Projection werden f\"ur die Voxel in back-to-front Reihenfolge zweidimensionale Repr\"asentationen gebildet, die auf die Bildebene projeziert und dort mittels Blending kombiniert werden. Im Gegensatz zur Cell Projection wird jedoch nicht versucht den Datensatz so exakt wie m\"oglich darzustellen, sondern das urspr\"ungliche Feld aus den diskreten Werten der Voxel zu so gut wie m\"oglich zu rekonstruieren und darzustellen. 
+
+In der Signalverarbeitung ist die Rekonstruktion von kontinuierlichen Funktionen aus diskreten Funktionen ein zentrales Problem. Dazu wird meisten Faltung verwendet. 
+
+Die Erzeugung einer diskreten Ann\"aherung an das urspr\"ungliche kontinuierliche Feld kann durch Faltung der diskreten Abtastung mit einem diskreten Kern geschehen. Daf\"ur werden eine Reihe unterschiedlicher Kerne benutzt. Einer der beliebtesten davon ist die diskrete Abtastung von Gau{\ss}schen Glockenkurven. Splatting bedient sich dieser Technik, indem es die Projektion der Mittelpunkte der Voxel auf der Bildebene berechnet und diskrete Abtastungen von zweidimensionalen Glockenkurven an diesen platziert. Die Abtastungen werden abh\"angig von Eigenschaften der Voxel skaliert: Ihre Gr\"o{\ss}e, Form und Drehung werden so angepasst, dass sie die Form des Voxels so gut wie m\"oglich wiedergeben. Zus\"atzlich wird die H\"ohe des Maximums so skaliert, dass sie dem Wert des Voxels entspricht. Damit nicht f\"ur jeden Voxel ein neuer Kern berechnet werden muss, wird zu Beginn des Rendering ein einzelner Filterkern berechnet und in einer Lookup-Tabelle abgespeichert. Eine solche Tabelle ist in Abb. \ref{kernel} dargestellt.
+
+Splatting bietet gegen\"uber der Cell Projection und \"ahnlichen Verfahren den Vorteil, dass im entstehenden Bild keine harten Voxelkanten zu sehen sind. Die aus der Signalverarbeitung \"ubernommenen Methoden garantieren eine hohe Bildqualit\"at mit relativ kurzen Rechenzeiten. Splatting ist daher eines der beliebtesten object-order Verfahren.
+Das Fehlen von harten Kanten stellt jedoch auch einen Nachteil von Splatting dar: Die Grenzen des Datensatzes werden weich gezeichnet. Ein zus\"atzliches Problem tritt auf, wenn die Gr\"o{\ss}e der Voxel stark variiert. Wenn beispielsweise einige wenige Voxel sehr viel gr\"o{\ss}er sind als der Rest, k\"onnen die f\"ur diese Voxel erzeugten Kerne deutlich erkennbar sein. Da einzelne Kerne die Form ihrer Voxel nur schlecht wiedergeben k\"onnen, kann dies zu deutlichen visuellen Artefakten im erzeugten Bild f\"uhren.
+
+\subsection{Shear Warp}
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{pictures/ShearWarp1}
+		\caption{}
+		\label{ShearWarp1}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{pictures/ShearWarp2}
+		\caption{}
+		\label{ShearWarp2}
+	\end{subfigure}
+	\caption{Darstellungen der im Shear Warp verwendeten Scherungsoperation auf dem Datensatz und den Sichtstrahlen in (a) paralleler Projektion und (b) perspektivischer Projektion. Entnommen aus \cite{lacroute1994fast}.}
+\end{figure}
+Shear Warp z\"ahlt zu den hybriden Verfahren. Es kombiniert Techniken aus object- und image-order Verfahren, wodurch es typische Vorteile beider Arten kombiniert. Entwickelt wurde Shear Warp von Philipp Lacroute und Marc Levoy, die es 1994 zuerst vorstellten\cite{lacroute1994fast}. 
+
+Der Grundansatz des Shear Warp besteht darin, den volumetrischen Datensatz mittels einer Scherung (engl. `Shear') so zu transformieren, dass von der Kameraposition ausgehende und die Bildebene schneidende Strahlen parallel zu einer der Koordinatenachsen sind. Welche Koordinatenachse daf\"ur gew\"ahlt wird h\"angt von Blickrichtung der Kamera ab, in der Regel wird die Koordinatenachse mit dem geringsten Winkel zur Blickrichtung bevorzugt. Im Folgenden wird diese Achse als `Sichtachse' bezeichnet, die zugeh\"orige Koordinate `Sichtkoordinate'. 
+
+Abh\"angig von der Art der f\"ur die sp\"atere Bilderzeugung gew\"ahlten Projektion muss die Scherung unterschiedlich durchgef\"uhrt werden. Bei paralleler Projektion gen\"ugt eine Verschiebung der Voxelschichten untereinander (siehe Abb. \ref{ShearWarp1}). Dies setzt vorraus, dass die Voxel eine einheitliche Gr\"o{\ss}e und Form haben, in der Regel quaderf\"ormig. Bei perspektivischer Projektion muss zus\"atzlich die Gr\"o{\ss}e der Schichten so skaliert werden, dass sie mit zunehmender Entfernung zur Kamera kleiner werden (siehe Abb. \ref{ShearWarp2}). Wenn durch Verschiebung und Skalierung mehrere Eingabevoxel zum Teil oder ganz auf einen Ausgabevoxel abgebildet werden, m\"ussen die Werte der Voxel gewichtet nach der Gr\"o{\ss}e des Anteils interpoliert werden, um den Datensatz so gut wie m\"oglich darstellen zu k\"onnen.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{pictures/Scanline.png}
+	\caption{Darstellung der optimierten Abbildung von Voxeln auf Pixel. Wenn entweder die Voxel vollst\"andig transparent oder die Zielpixel vollst\"andig opak sind, werden sie \"ubersprungen (`skip'), ansonsten werden die Voxelwerte auf die Pixel abgebildet (`work'). Mit leichten Ver\"anderungen entnommen aus \cite{lacroute1994fast}.}
+	\label{Scanline}
+\end{figure}
+
+Nachdem die Scherung durchgef\"uhrt wurde, wird die Projektion der Voxel auf die Bildebene begonnen. Der Datensatz wird dabei schichtweise verarbeitet. Die Pixel, auf die ein Voxel abgebildet wird, sind durch die Scherung leicht zu bestimmen. Es sind genau die, deren zwei Koordinaten innerhalb der entsprechenden nicht-Sichtkoordinaten des jeweiligen Voxels liegen. Dies erspart teure Projektionsoperatoren wie bei object-order oder schrittweise Abtastung wie bei image-order Verfahren \"ublich. Diese Eigenschaft erlaubt eine Optimierung. Wenn ein Pixel der Bildebene bereits eine hohe Opazit\"at akkumuliert hat (\"ahnlich wie die fr\"uhzeitige Terminierung bei image-order Verfahren), kann dieser \"ubersprungen werden. Implementiert wird dies meistens, indem f\"ur jeden opaken Pixel der Offset zum n\"achsten nicht-opaken Pixel gespeichert wird. Das gleiche Verfahren kann auch bei Voxeln verwendet werden, denen die Transferfunktion eine Opazit\"at von 0, also vollst\"andige Transparenz, zuordnet. Diese enthalten den Offset zum n\"achsten Voxel mit Opazit\"at gr\"o{\ss}er 0. Abbildung \ref{Scanline} zeigt diese Optimierung. Die notwendigen Offsets der Voxel werden f\"ur jede achsenparallele Blickrichtung vorberechnet, also insgesamt dreimal. Optional k\"onnen komplett transparente Voxel auch direkt entfernt und die Offsets in den nicht-transparenten Voxeln gespeichert werden, wodurch sich die bei object-order Verfahren \"ublichen Speicherersparnisse ergeben. Im perspektivischen Fall kann es sein, dass auf einen Pixel zwei oder mehr Voxel abgebildet werden. Dies muss bei der Optimierung ber\"ucksichtigt werden.
+
+Im Gegensatz zu object-order Verfahren werden Voxel beim Shear Warp nicht in Basisfunktionen \"ubersetzt, sondern pro Pixel die jeweiligen Werte durch Interpolation bestimmt. Da die Dicke der Voxel von der Blickrichtung abh\"angt, wird die Opazit\"at mittels einer vorberechneten Tabelle skaliert. 
+
+Zum Abschluss wird eine zur Scherung inverse Verzerrung auf die Bildebene angewendet, um das endg\"ultige Bild zu erzeugen.
+
 
 \section{Umsetzung}
 \label{sec:Umsetzung}
