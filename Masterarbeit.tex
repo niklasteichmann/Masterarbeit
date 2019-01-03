@@ -403,6 +403,7 @@ Da sich die vorliegende Arbeit \"uberwiegend mit symmetrischen, dreidimensionale
 darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind. Dies stimmt mit der Betrachtunsweise von Zobel und Scheuermann \cite{zobel2017extremal} \"uberein.
 
 \subsubsection{Invariantens\"atze} 
+\label{sec:Invariants}
 Mengen von Invarianten werden als Invariantens\"atze bezeichnet.
 Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in `Orthogonal tensor invariants and the analysis of diffusion tensor magnetic resonance images' von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
 
@@ -1077,7 +1078,7 @@ Dies hat jedoch den Nachteil, dass fr\"uhzeitiges Terminieren nicht m\"oglich is
 	\label{Raycasting}
 \end{figure}
 
-Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Als weitere Optimierung kann der erste Abtastpunkt an der Grenze oder innerhalb des ersten geschnittenen Voxels gesetzt werden. In Abb. \ref{Raycasting} wird Raycasting schematisch dargestellt. 
+Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Es ist dabei sinnvoll, Abtastpunkte erst innerhalb des Datensatzes, also im oder am Rand des ersten geschnittenen Voxels zu setzen. In Abb. \ref{Raycasting} wird Raycasting mit dieser Optimierung schematisch dargestellt. 
 Da f\"ur dieses Verfahren Strahlen durch das Volumen berechnet werden, entlang derer abgetastet wird, bezeichnet man es als Raycasting. Die Vorteile des Raycastings liegen der schon angesprochenen M\"oglichkeit zur fr\"urzeitigen Terminierung und der M\"oglichkeit, die Anzahl der Abtastpunkte, auch bezeichnet als ``Abtrastrate'', pro Strahl festzulegen.
 
 \begin{figure}
@@ -1215,6 +1216,7 @@ Im Gegensatz zu object-order Verfahren werden Voxel beim Shear Warp nicht in Bas
 Zum Abschluss wird eine zur Scherung inverse Verzerrung auf die Bildebene angewendet (engl. `warp'), um das endg\"ultige Bild zu erzeugen. Diese Operation ist, wie in Abb. \ref{ShearWarp1} und \ref{ShearWarp2} dargestellt, identisch f\"ur parallele und perspektivische Projektion.
 
 
+
 \section{Umsetzung}
 \label{sec:Umsetzung}
 In diesem Kapitel wird beschrieben, wie die Grundlagen, Technologien und Verfahren aus den vorherigen Kapiteln eingesetzt wurden, um eine interaktive Tensorfeldvisualisierung in FAnToM zu erzeugen.
@@ -1260,8 +1262,23 @@ Zwei Teile der Datenvorbereitung m\"ussen in der gleichen Session stattfinden wi
 
 Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in Abb. \ref{Colormap} beschrieben, ist diese vom Nutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt werden durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
 
-\subsection{Voxelisierung}
+\subsection{Wahl des DVR Verfahrens}
+Die vorgestellten Verfahren unterscheiden sich in Hinsicht auf Laufzeit, Speicherverbrauch, Adaptierbarkeit und Qualit\"at der erzeugten Visualisierung. Zum Abschluss des Kapitels werden sie deshalb anhand dieser Eigenschaften und den aus der Aufgabenstellung resultierenden Anforderungen verglichen und eins der Verfahren zur Umsetzung ausgew\"ahlt.
 
+Object-order Verfahren bieten im Allgemeinen die Vorteile geringen Speicherverbrauchs und relativ geringer Laufzeit. Diese Vorteile werden jedoch durch eine Reihe von Nachteilen erkauft, die sie f\"ur die vorliegende Arbeit ungeeignet machen:
+
+
+\paragraph{Visuelle Artefakte} Aufgrund der typischen Formen der Basisfunktionen sind object-order Verfahren anf\"allig f\"ur die Erzeugung visueller Artefakte. Bei Datens\"atzen mit Voxeln gleichm\"a{\ss}iger Gr\"o{\ss}e sind die Artefakte meist nicht warnehmbar. Wenn einzelne Voxel deutlich gr\"o{\ss}er sind, werden auch die Basisfunktionen sichtbar, womit auch die Sichtbarkeit der Artefakte zunimmt. Durch die Transformation von Voxeln in die Invariantenr\"aume k\"onnen sehr gro{\ss}e Voxel entstehen, weshalb eine Vorverarbeitung und Zerst\"uckelung solcher Voxel notwendig werden w\"urde.
+
+\paragraph{Teilweise Darstellung von Voxeln} Die Anforderungen spezifizieren Interaktionen, durch die Teile des Invariantenraumes und die diesen Teilen entsprechenden Teile des Objektes ausgeblendet werden. Um dies mit object-order Verfahren zu implementieren, m\"ussen komplexe Operationen auf die Basisfunktionen angewendet werden, was die Laufzeit wahrscheinlich deutlich erh\"ohen w\"urde.
+
+\paragraph{Keine fr\"uhzeitige Terminierung} Durch die Anwendung der Prinzipien des Continuous Scatterplottings entstehen m\"oglicherweise Gebiete mit hoher Dichte. Da object-order Verfahren im Allgemeinen keine fr\"uhzeitige Terminierung unterst\"utzen, kann dies nicht ausgenutzt werden um die Laufzeit zu verbessern.
+
+Das Problem der teilweisen Darstellung von Voxeln tritt auch bei Shear Warp auf, weshalb es nicht ohne aufw\"andige \"Uberarbeitung und mit erh\"ohter Laufzeit verwendet werden konnte.
+
+Damit verbleiben als Optionen nur noch die image-order Verfahren. Unterschiede zwischen diesen lassen sich meistens auf einen Tradeoff zwischen Rechenzeit und Bildqualit\"at zur\"uckf\"uhren. Raycasting bietet dabei eine M\"oglichkeit f\"ur den Benutzer diesen Tradeoff selbst zu beeinflussen und, falls hoch eingestellt, die besten Ergebnisse. Auch die teilweise Darstellung von Voxeln ist leicht in Raycasting zu implementieren, indem die Werte der Invarianten an Abtastpunkten interpoliert werden und Punkte mit Werten ausserhalb des gew\"ahlten Bereichs \"ubersprungen werden. Daher wird f\"ur diese Arbeit Raycasting als DVR Verfahren gew\"ahlt.
+
+\subsection{Voxelisierung}
 Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefelder als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
 
 \begin{figure}
@@ -1387,7 +1404,7 @@ F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berec
 \subsection{Umsetzung des Raycastings}
 \label{RaycastingImplementation}
 
-F\"ur die beiden DVR Darstellungen wird eine Variante von \ref{sec:Raycasting} verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
+F\"ur die beiden DVR Darstellungen wird eine Variante von des in Abschnitt \ref{sec:Raycasting} beschriebenen Raycastings verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
 
 Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht der Bildebene in Abb. \ref{sec:Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
 
@@ -1397,17 +1414,15 @@ Der Code basiert auf dem Algorithmus `Volume Renderer GLSL', erweitert diesen ab
 Im Vertex Shader werden lediglich die X- und Y-Koordinaten der Punkte in einer Variable gespeichert und an den Fragment Shader \"ubergeben.
 
 \paragraph{Fragment Shader}
-Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des Inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. 
+Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des Inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. Um Tiefenwahrnehmung zu erm\"oglichen wird f\"ur Projektions-Komponente der MVP Matrix eine perspektivische Projektion verwendet.
 
-Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten hat, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort Schwarz als Farbe des Fragments zur\"uckgegeben werden.
-
-Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. Dem Nutzer steht dabei frei, welche der beiden in Abschnitt \ref{sec:Raycasting} beschriebenen Varianten er bevorzugt. 
+Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallelen Ebenen (der `Bounding Box', kurz BB) und diesem Strahl berechnet. Abh\"angig davon, welche Ebenen der Strahl in welcher Reihenfolge geschnitten hat, kann effizient bestimmt werden, ob die 3D Textur vom Strahl durchquert wird oder nicht. Falls nicht, kann sofort Schwarz als Farbe des Fragments zur\"uckgegeben werden. Falls der Strahl die 3D Textur schneidet, wird der Abstand der Samplepunkte berechnet. 
 
 Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offset erzeugt werden, der die Position des ersten Samplepunkts beeinflusst.
 
 Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formel \ref{RaycastingFormula} zu einem Farbwert kombiniert. 
 
-Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand der 3D Textur, Abbruch nachdem die verbleibende Transparenz einen Grenzwert unterschreitet) sind implementiert.
+Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand des Volumendatensatzes, fr\"uhzeitige Terminierung) sind implementiert.
 
 \begin{figure}
 	\hspace*{\fill}
@@ -1429,11 +1444,9 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 	\label{RaycastingExample}
 \end{figure}
 
-Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegt, wird dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
-
 \begin{algorithm}[t]
 	\KwData{$s$ Strahlvektor der L\"ange 1, $t$ Schrittweite,\\
-		 $T$ 3D Textur, $p_0$ erster Samplepunkt, $B$ ausgew\"ahlter Invariantenbereich}
+		$T$ 3D Textur, $p_0$ erster Samplepunkt, $B$ ausgew\"ahlter Invariantenbereich}
 	\KwResult{akkumulierte Farbe entlang des Strahls}
 	$transparenz\gets 1.0$\;
 	$fragmentfarbe\gets (0, 0, 0, 0)$\;
@@ -1442,13 +1455,13 @@ Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb d
 		$invarianten \gets invarianten(T, p)$\;
 		$dichte \gets dichte(T, p)$\; 
 		\tcp{Nur im Objekt}
-		\If{$invarianten nicht in B$}{
+		\If{$invarianten \notin B$}{
 			$fragmentFarbe \gets fragmentFarbe + (1.0, 1.0, 1.0, 0.05)$\;
 			$transparenz = transparenz - 0.05$\;
 			$continue$\;
 		} 
 		\tcp{Nur im Invariantenraum}
-		\If{$p nicht in B$}{$continue$\;} 
+		\If{$p \notin B$}{$continue$\;} 
 		$voxelFarbe \gets transferfkt(dichte)$\;
 		$fragmentFarbe \gets fragmentFarbe + voxelFarbe \cdot transparenz$\;
 		$transparenz = transparenz - voxelFarbe.transparenz$\;
@@ -1458,9 +1471,33 @@ Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb d
 	\label{RaycastingAlgorithm}
 \end{algorithm}
 
+Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegt, werden dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+
 Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
+
 \subsection{Die Interaktionsfl\"achen}
+Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Preim et al. \cite{preim2015interaktive} stellen an solche Elemente, die sie als ``3D Widgets'' bezeichnen, eine Reihe von Anforderungen:
+
+\paragraph{1. Zerlegung von Interaktionen} Da Tastatur und Maus oft nicht gen\"ugend Freiheisgrade bieten um Interaktionen direkt duch sie umsetzen zu k\"onnen, wird die Interaktion in Teile zerlegt. F\"ur jeden Teil sollte ein Bereich des Widgets reserviert werden, der durch Maus und Tastatur manipuliert werden kann. Preim et al. bezeichnen diese Bereiche als ``Handles'' \cite[S.340]{preim2015interaktive}
+
+\paragraph{2. Visuelle Unterscheidung vom Datensatz} Die Widgets m\"ussen klar von den dargestellten Daten zu unterscheiden sein, um falsche Interpretationen zu vermeiden.
+
+\paragraph{3. Wahrnehmbare Eigenschaften} Die Darstellung des Widgets muss so gew\"ahlt werden, dass der Benutzer die Widgets als Interaktionsm\"oglichkeit wahrnehmen und ein Verst\"andniss f\"ur die Auswirkung der Interaktion entwickeln kann. Preim et al. bezeichnen dies als ``Affordances'' \cite[S.~340]{preim2015interaktive}.
+
+\paragraph{4. Hervorherbung des selektierten Handles} Wenn der Benutzer ein Handle zur Interaktion selektiert hat, so sollte dieses hervorgehoben werden.
+
+Innerhalb dieser Arbeit wurden zwei spezielle Interaktionen implementiert, durch die der Bereich der angezeigten Invarianten manipuliert werden kann. Beide Widgets werden in der Darstellung des Invariantenraumes angezeigt. Sie kombinieren die Konzepte des Cutaways \cite[S.~406f]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen \cite[S.~401]{preim2015interaktive} (siehe dazu auch Abschnitt \ref{sec:Slicing}).
+
+\subsubsection{Quadrisches Interaktionswidget}
+Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum sichtbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so festgelegt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Anforderung 2 erf\"ullt wird.
+
+Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Anforderung 1 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, so dass immer die aktuellen Intervallgrenzen gezeigt werden. Dadurch sind Anforderungen 3 und 4 erf\"ullt: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch immer klar ist welches Handle ausgew\"ahlt ist. Und die Metapher der Interaktionsfl\"achen als Grenzen des angezeigten Intervalls erlauben dem Benutzer ein Verst\"andniss f\"ur die Interaktionen zu entwickeln.
+
+Das quadrische Interaktionswidget kann f\"ur jeden Invariantensatz verwendet werden, ist jedoch besonders f\"ur solche geeignet, bei denen alle drei Invarianten beliebige Werte in $\mathbb{R}$ annehmen k\"onnen (z.B. Eigenwerte, I- und J-Invariantens\"atze).
+
+Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl eine Interaktionsfl\"ache trifft, wird der getroffene Bereich ausgew\"ahlt.  Wenn mehr als eine Interaktionsfl\"ache getroffen wird, wird die n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
+
 \begin{figure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.2\textwidth}
@@ -1493,22 +1530,26 @@ Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, d
 		\label{InteractionPlaneE}
 	\end{subfigure}
 	\hspace*{\fill}
-	\caption{Die Darstellungen der Interaktionsfl\"achen. (a) Eine Interaktionsfl\"ache mit den einzelnen Bereichen. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlen die jeweiligen Invarianten aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionsfl\"achen durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
+	\caption{Die Darstellungen der zylindrischen Interaktionsfl\"achen. (a) Eine Interaktionsfl\"ache mit den einzelnen Bereichen. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlen die jeweiligen Invarianten aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionsfl\"achen durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
 \end{figure}
-Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Diese haben die Form von Halbkreisen und k\"onnen durch die Maus manipuliert werden. Durch Klicken und Halten der mittleren Maustaste k\"onnen untere und obere Schranken der Invariantenbereiche ausgew\"ahlt und durch Bewegung der Maus ihre Werte ver\"andert werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. 
 
-Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft oder nicht, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl eine Interaktionsfl\"ache trifft, wird der getroffene Bereich ausgew\"ahlt. Wenn beide Interaktionsfl\"achen getroffen werden, wird die n\"ahere von beiden bevorzugt.
+\subsubsection{Zylindrisches Interaktionswidget}
+Wie im Abschnitt \ref{sec:Invariants} beschrieben, kann es f\"ur manche Invariantens\"atze (z.B. die K- und R-Invariantens\"atze) sinnvoll sein, sie in einem zylindrischen Koordinatensystem darzustellen. Daf\"ur m\"ussen eigene Interaktionswidgets entwickelt werden, durch die, \"aquivalent zum quadrischen Widget, die Intervallgrenzen der Invarianten manipuliert werden k\"onnen.
 
-Wenn, nachdem ein Bereich ausgew\"ahlt wurde, die Maus bewegt wird, passen die Interaktionsfl\"achen ihre Position entsprechend an. Wenn die 1. Invariante gew\"ahlt wurde, wird die Interaktionsfl\"ache entlang der X-Achse verschoben. Abh\"angig davon welche Interaktionsfl\"ache ausgew\"ahlt wurde, wird dadurch das Minimum oder Maximum der ersten Invariante gew\"ahlt. Die Bereiche k\"onnen auf einer einzelnen Interaktionsfl\"ache eingestellt werden. Die Form der zweiten wird automatisch angepasst. Die Ver\"anderungen der Formen und Positionen sind in Abb. \ref{InteractionPlaneB}, \ref{InteractionPlaneC} und  \ref{InteractionPlaneD} dargestellt. 
+Die implementierten Widget haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Bereichen, die parallel zur yz-Ebene gezeichnet werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. Jeder farbige Bereich markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch werden Bedingungen 1 und 2 erf\"ullt.
+
+Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe Abb. \ref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe Abb. \ref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe Abb. \ref{InteractionPlaneD}). Dies erf\"ullt die Bedingungen 3 und 4, \"ahnlich wie beim quadrischen Widget.
+
+Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus einem Zylinder dar, der den dargestellten Teil des Invariantenraums umfasst. Um diese Eigenschaft zu verdeutlichen, kann ein zus\"atzliches Gitter aus Linien, bezeichnet als ``Wireframe'', gezeichnet werden, die sich auf der Oberfl\"ache dieses Zylinders befinden (siehe Abb. \ref{InteractionPlaneE}).
 
 \subsection{Weitere Interaktionen}
 Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
-\paragraph{Rotation des DVR}
-Indem die linke Maustaste gedr\"uckt und gehalten wird, kann durch die Bewegung der Maus die Visualisierung um das aktuelle Rotationszentrum gedreht werden.
 \paragraph{Bewegung der Kameraposition}
 \"Ahnlich wie bei der Rotation der Szene, kann durch Dr\"ucken und Halten der rechten Maustaste die Kameraposition mittels Bewegung der Maus innerhalb der Szene verschoben werden.
+\paragraph{Rotation des DVR}
+Indem die linke Maustaste gedr\"uckt und gehalten wird, kann durch die Bewegung der Maus die Visualisierung um das aktuelle Rotationszentrum gedreht werden. Die Rotation ist in Form eines sogenannten ``Trackballs'' implementiert. Preim et al. beschreiben den Trackball als das Objekt umschlie{\ss}ende Kugel, die durch Mausbewegung gedreht wird und diese Bewegung auf das dargestellte Objekt, in diesem Fall das DVR und die Interaktionswidgets, \"ubetr\"agt.
 \paragraph{Setzen des Rotationszentrums}
-Das Rotationszentrum des Invariantenfeldes kann mittels doppeltem Linksklick an einen Punkt entlang der X-Achse gesetzt werden.
+Das Rotationszentrum des Trackballs kann, wenn die zylindrischen Interaktionswidgets aktiviert sind, mittels doppeltem Linksklick an einen Punkt entlang der X-Achse gesetzt werden. Wenn dagegen das quadrische Interaktionswidget aktiviert ist, ist das Rotationszentrum immer im Zentrum des Quaders.
 \paragraph{Zur\"ucksetzen von Rotation und Kameraposition}
 Durch Dr\"ucken der `c'-Taste wird die Kameraposition und die Rotation des Feldes zur\"uckgesetzt.
 \paragraph{Zur\"ucksetzen der Invariantenbereiche}
@@ -1549,9 +1590,14 @@ Die Anzahl der Voxel, in die das Feld voxelisiert werden soll, kann f\"ur die ei
 \paragraph{Bounding Box}
 Um die Gr\"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen wei{\ss}e Linien an den Kanten der begrenzenden Fl\"achen eingezeichnet werden, also eine `Bounding Box' dargestellt werden.
 
-\subsection{Optionen des Invariantenraumrenderings}
+\subsubsection{Optionen des Invariantenraumrenderings}
+
+\paragraph{Ausgew\"ahltes Interaktionswidget}
+Der Benutzer kann entscheiden, ob das quadrische oder die zylindrischen Interaktionswidgets angezeigt werden sollen. Dies ist notwendig, da es nicht ohne weiteres m\"oglich ist aus der internen Repr\"asentation eines Feldes in FAnToM zu bestimmen, ob dieses in zylindrischen oder kartesischen Koordinaten liegt.
+
 \paragraph{Wireframe}
-Optional kann ein `Wireframe' angezeigt werden, ein Liniengitter das das Feld begrenzt. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
+Wenn die zylindrischen Interaktionswidgets angezeigt werden, kann optional ein Wireframe angezeigt werden, ein Liniengitter an den Grenzen des maximalen Invariantenintervalls. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
+
 \paragraph{Koordinatenlabel}
 Um die Invariantenbereiche mit der Maus besser einstellen zu k\"onnen, ist es optional m\"oglich, die Werte der Schranken an den Interaktionsfl\"achen anzuzeigen.
 
@@ -1563,6 +1609,9 @@ Die im Fragment Shader der Voxelisiserung durchgef\"uhre Skalierung durch Ziehen
 
 \paragraph{Normalisierung des Feldes}
 Im Invariantenraum kann das Feld beliebige Formen annehmen. Wenn beispielsweise eine Dimension sehr viel kleiner ist als die beiden anderen, kann dies die Betrachtung des Datensatzes erschwereren. Deshalb ist m\"oglich, das Feld durch eine Option zu skalieren. Dabei werden die Begrenzungsfl\"achen des Feldes in allen drei zylindrischen Dimensionen berechnet und die Darstellung des Feldes anschlie{\ss}end so skaliert, dass die Begrenzungsfl\"achen einen Halbzylinder mit fester H\"ohe und Radius von 1 bilden. Zus\"atzlich die Skalierung die Vorteile dass leerer Raum in der Darstellung vermieden und kleine Tetraeder besser sichtbar gemacht werden.
+
+\paragraph{Minimale Dichte}
+Die Dichtewerte der Voxel im Invariantenraum k\"onnen sich extrem unterscheiden. Abh\"angig von der Gr\"o{\ss}e der jeweiligen Voxel traten ist Testdatens\"atzen Werte zwischen $10^{-4}$ und $10^22$ auf. Damit auch Bereiche mit sehr geringer Dichte sichtbar sind, ist es m\"oglich, eine minimale Dichte anzugeben. Wenn die Dichte an einem Abtastpunkt geringer als dieser Wert ist, so wird stattdessen die minimale Dichte verwendet.
 
 \subsection{Das Intervallfenster}
 \begin{figure}
