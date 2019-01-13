@@ -1205,7 +1205,7 @@ Abh\"angig von der Art der f\"ur die sp\"atere Bilderzeugung gew\"ahlten Projekt
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{pictures/Scanline.png}
-	\caption{Darstellung der optimierten Abbildung von Voxeln auf Pixel. Wenn entweder die Voxel vollst\"andig transparent oder die Zielpixel vollst\"andig opak sind, werden sie \"ubersprungen (`skip'), ansonsten werden die Voxelwerte auf die Pixel abgebildet (`work'). Mit leichten Ver\"anderungen entnommen aus \cite{lacroute1994fast}.}
+	\caption{Darstellung der optimierten Abbildung von Voxeln auf Pixel. Wenn entweder die Voxel vollst\"andig transparent oder die Zielpixel vollst\"andig opak sind, werden sie \"ubersprungen (`skip'), ansonsten werden die Voxelwerte auf die Pixel abgebildet (`work'). Erstellt nach einem Bild aus \cite{lacroute1994fast}.}
 	\label{Scanline}
 \end{figure}
 
@@ -1223,11 +1223,6 @@ In diesem Kapitel wird beschrieben, wie die Grundlagen, Technologien und Verfahr
 
 Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im Folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichten in den Zellen der neuen Zellstruktur werden durch Methoden des Continuous Scatterplottings berechnet.
 
-In die Darstellung des zylindrischen Invarianten DVRs werden ausserdem noch Interaktionsfl\"achen in Form von Kreissektoren eingezeichnet. Durch Interaktion mit der Maus k\"onnen die Fl\"achen verschoben sowie ihr Radius und die Winkel der beiden Kreisradienten zur XY Ebene ver\"andert werden.
-Mithilfe der Interaktionsfl\"achen kann der Nutzer Bereiche von Invarianten ausw\"ahlen. Alles, was ausserhalb des ausgew\"ahlten Bereichs liegt, wird im zylindrischen DVR ausgeblendet. Auch in der Darstellung des Objekts werden alle Bereiche ausgeblendet, deren Invarianten ausserhalb des gew\"ahlten Bereichs liegen. 
-
-Zus\"atzlich existieren weitere Optionen, durch die der Nutzer die Darstellungen an seine Problemstellung anpassen kann.
-
 Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden n\"aher erl\"autert.
 
 \subsection{Datenvorbereitung}
@@ -1244,7 +1239,11 @@ Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher 
 
 Als N\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils drei Invarianten. Dazu werden drei Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, das als Eingabe der eigentlichen Visualisierung verwendet wird.
 
-Durch den Algorithmus `Cylindric Coordinates' werden die Werte des Vektorfeldes als Koordinaten von Punkten in einem zylindrischen Koordinatensystems aufgefasst. Ein Punkt ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Aus diesen neuen Punkten werden Tetraederzellen \"aquivalent zum Eingabefeld definiert. Die Ausgabe entspricht also der Zellstruktur der Eingabe, in der alle Punkte auf die neuen Koordinaten `verschoben' wurden.
+Der Algorithmus `Cylindric Coordinates' ist optional. Er interpretiert die Komponenten der Vektoren als zylindrische Koordinaten und berechnet die kartesischen Koordinaten der Punkte. Ein Punkt der Eingabe ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Die Zellstruktur der Eingabe wird beibehalten, lediglich die Positionen der Eckpunkte der Zellen werden ver\"andert.
+
+Ziel des Cylindric Coordinate Algorithmus ist es, eine einheitliche Eingabe in kartesischen Koordinaten f\"ur die eigentliche Visualisierung zu erzeugen. Er ist f\"ur die Anwendung bei Invariantens\"atzen gedacht, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, beispielsweise die I- und J-Invariantens\"atze. Bei anderen Invariantens\"atzen sollte er nicht verwendet werden.
+
+Der Vorteil dieser Vereinheitlichung liegt darin, dass das Format der erzeugten Datens\"atze optimiert werden kann, dass die Laufzeit des Visualisierungsalgorithmus minimiert wird. 
 
 Im n\"achsten Schritt wird das Volumen der Zellen des Objekts und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
 
@@ -1476,27 +1475,47 @@ Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb d
 Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
 
-\subsection{Die Interaktionsfl\"achen}
-Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Preim et al. \cite{preim2015interaktive} stellen an solche Elemente, die sie als ``3D Widgets'' bezeichnen, eine Reihe von Anforderungen:
+\subsection{Die Interaktionswidgets}
+\label{sec:Widget}
+Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Leiner et al. \cite{leiner1997entwicklung} stellen an solche Elemente, die sie als ``3D Widgets'' bezeichnen, eine Reihe von Kriterien:
 
-\paragraph{1. Zerlegung von Interaktionen} Da Tastatur und Maus oft nicht gen\"ugend Freiheisgrade bieten um Interaktionen direkt duch sie umsetzen zu k\"onnen, wird die Interaktion in Teile zerlegt. F\"ur jeden Teil sollte ein Bereich des Widgets reserviert werden, der durch Maus und Tastatur manipuliert werden kann. Preim et al. bezeichnen diese Bereiche als ``Handles'' \cite[S.340]{preim2015interaktive}
+\paragraph{1. Klare Erkennbarkeit der Widgets}
+Widgets m\"ussen leicht als solche erkennbar sein. Unter anderem m\"ussen sie sich leicht von dem nicht-interaktiven Teil der Visualisierung unterscheiden lassen. Dies kann durch die Form, die Farbe oder die Positionierung der Widgets geschehen.
 
-\paragraph{2. Visuelle Unterscheidung vom Datensatz} Die Widgets m\"ussen klar von den dargestellten Daten zu unterscheiden sein, um falsche Interpretationen zu vermeiden.
+\paragraph{2. Zerlegung in Handles}
+Da Tastatur und Maus oft nicht gen\"ugend Freiheisgrade bieten um dreidimensionale Interaktionen direkt durch sie umsetzen zu k\"onnen, wird die Interaktion in Teile zerlegt. F\"ur jeden Teil sollte ein Bereich des Widgets reserviert werden, der durch Maus und Tastatur manipuliert werden kann. Diese Bereiche werden von Leiner et al. als ``Handles'' bezeichnet. Die Interaktion mit einem Widget gliedert sich damit in zwei Teile: Die Selektion des gew\"unschten Handles und die Manipulation des Handles.
 
-\paragraph{3. Wahrnehmbare Eigenschaften} Die Darstellung des Widgets muss so gew\"ahlt werden, dass der Benutzer die Widgets als Interaktionsm\"oglichkeit wahrnehmen und ein Verst\"andniss f\"ur die Auswirkung der Interaktion entwickeln kann. Preim et al. bezeichnen dies als ``Affordances'' \cite[S.~340]{preim2015interaktive}.
+\paragraph{3. Hervorhebung des selektierten Handles}
+Damit der Benutzer sicher sein kann, das korrekte Handle selektiert zu haben, sollte dieses visuell hervorgehoben werden.
 
-\paragraph{4. Hervorherbung des selektierten Handles} Wenn der Benutzer ein Handle zur Interaktion selektiert hat, so sollte dieses hervorgehoben werden.
+Preim et al. \cite[S.~340]{preim2015interaktive} f\"ugen noch ein weiteres Kriterium hinzu:
 
-Innerhalb dieser Arbeit wurden zwei spezielle Interaktionen implementiert, durch die der Bereich der angezeigten Invarianten manipuliert werden kann. Beide Widgets werden in der Darstellung des Invariantenraumes angezeigt. Sie kombinieren die Konzepte des Cutaways \cite[S.~406f]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen \cite[S.~401]{preim2015interaktive} (siehe dazu auch Abschnitt \ref{sec:Slicing}).
+\paragraph{4. Affordances der Handles}
+Mit dem Begriff ``Affordances'' beschreiben Preim et al. \cite[S.~137]{preim2010interaktive} Eigenschaften von Objekten, die auf die Interaktionsm\"oglichkeiten dieser Objekte hinweisen. Beispielsweise sollte ein Stuhl Affordances besitzen, die darauf schlie{\ss}en lassen, dass es m\"oglich ist sich auf diesen zu setzen. Welche Eigenschaften als Affordances erkannt werden, h\"angt von einer Vielzahl von physikalischen und logischen Faktoren ab, sowie davon, welche anderen Interaktionen der Benutzer bereits kennt.
+
+Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget beschrieben ist, wurden im Rahmen dieser Arbeit eigene Widgets entwickelt, durch die Bereiche im Invariantenraum ausgew\"ahlt werden k\"onnen. Da die Invariantenr\"aume meistens in einem von zwei Koordinatensystemen dargestellt werden, den kartesischen und den zylindrischen Koordinaten, wurden f\"ur diese beiden Koordinatensysteme jeweils ein eigenes Widget enwickelt. Die Auswahl des angezeigten Widgets muss dabei der Benutzer treffen, da VTK keine M\"oglichkeit unterst\"utzt, das verwendete Koordinatensystem mit abzuspeichern.
+
+Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406f]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in Abschnitt \ref{sec:Slicing} beschrieben werden. 
 
 \subsubsection{Quadrisches Interaktionswidget}
-Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum sichtbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so festgelegt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Anforderung 2 erf\"ullt wird.
 
-Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Anforderung 1 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, so dass immer die aktuellen Intervallgrenzen gezeigt werden. Dadurch sind Anforderungen 3 und 4 erf\"ullt: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch immer klar ist welches Handle ausgew\"ahlt ist. Und die Metapher der Interaktionsfl\"achen als Grenzen des angezeigten Intervalls erlauben dem Benutzer ein Verst\"andniss f\"ur die Interaktionen zu entwickeln.
+\begin{figure}
+	\includegraphics[width=0.5\textwidth]{pictures/CubicalInteractions.png}
+	\label{CubicalInteractions}
+	\caption{Eine Darstellung des quadrischen Interaktionswidgets. Die drei eingef\"arbten Kanten schneiden sich in dem Punkt dessen Koordinaten die Minima aller drei Invarianten sind. Die Farben dienen der Orientierung im Raum und weisen darauf hin, zu welcher Achse die jewilige Kante parallel ist: Rot zur x-, Gelb zur y- und Blau zur z-Achse.}
+\end{figure}
+
+Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders sind sichtbar, sie werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum erkennbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so festgelegt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Kriterium 1 erf\"ullt wird. Ein Problem kann jedoch auftreten, wenn die Farben der Transferfunktion sich mit denen der Kanten \"uberschneiden. Abbildung \ref{CubicalInteractions} zeigt das quadrische Interaktionswidget.
+
+Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Kriterium 2 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, so dass immer die aktuellen Intervallgrenzen gezeigt werden. Dies erf\"ullt Kriterium 3 zum Teil: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch das ausgew\"ahlte Handle meist erkennbar ist. 
+
+Kriterium 4 ist ebenfalls nur teilweise erf\"llt. Das quadrische Interaktionswidget kann als Bereich des kartesischen dreidimensionalen Raums aufgefasst werden, dessen Seitenfl\"achen bewegt werden k\"onnen. Dies stellt eine Affordance dar. Jedoch muss davon ausgegangen werden, dass diese Affordance nicht ausreicht um Benutzer auf die m\"oglichen Interaktionen mit den Handles hinzuweisen. 
+
+Ob und wie die Widgets ver\"andert werden k\"onnen, um die Kriterien besser zu erf\"ullen, ist Teil der weiteren Forschung und wird sich insbesondere aus Tests mit Anwendern ergeben.
 
 Das quadrische Interaktionswidget kann f\"ur jeden Invariantensatz verwendet werden, ist jedoch besonders f\"ur solche geeignet, bei denen alle drei Invarianten beliebige Werte in $\mathbb{R}$ annehmen k\"onnen (z.B. Eigenwerte, I- und J-Invariantens\"atze).
 
-Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl eine Interaktionsfl\"ache trifft, wird der getroffene Bereich ausgew\"ahlt.  Wenn mehr als eine Interaktionsfl\"ache getroffen wird, wird die n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
+Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl ein Handle trifft, wird der getroffene Bereich ausgew\"ahlt.  Wenn mehr als eine Handle getroffen wird, wird die n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
 
 \begin{figure}
 	\hspace*{\fill}
@@ -1530,17 +1549,22 @@ Die Berechnung, ob ein Mausklick eine Interaktionsfl\"ache trifft, geschieht mit
 		\label{InteractionPlaneE}
 	\end{subfigure}
 	\hspace*{\fill}
-	\caption{Die Darstellungen der zylindrischen Interaktionsfl\"achen. (a) Eine Interaktionsfl\"ache mit den einzelnen Bereichen. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlen die jeweiligen Invarianten aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionsfl\"achen durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
+	\caption{Die Darstellungen der zylindrischen Interaktionswidgets. (a) Ein Widget mit den einzelnen Handles. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlt das Handle der jeweils ersten, zweiten oder dritten Invariante aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionswidgets durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
 \end{figure}
 
 \subsubsection{Zylindrisches Interaktionswidget}
 Wie im Abschnitt \ref{sec:Invariants} beschrieben, kann es f\"ur manche Invariantens\"atze (z.B. die K- und R-Invariantens\"atze) sinnvoll sein, sie in einem zylindrischen Koordinatensystem darzustellen. Daf\"ur m\"ussen eigene Interaktionswidgets entwickelt werden, durch die, \"aquivalent zum quadrischen Widget, die Intervallgrenzen der Invarianten manipuliert werden k\"onnen.
 
-Die implementierten Widget haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Bereichen, die parallel zur yz-Ebene gezeichnet werden. Eine Interaktionsfl\"ache ist in Abb. \ref{InteractionPlaneA} dargestellt. Jeder farbige Bereich markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch werden Bedingungen 1 und 2 erf\"ullt.
+Die implementierten Widgets haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Bereichen, die parallel zur yz-Ebene gezeichnet werden. Ein zylindrisches Interaktionswidget ist in Abb. \ref{InteractionPlaneA} dargestellt. Jeder farbige Bereich markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch wird Kriterium 1 erf\"ullt.
 
-Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe Abb. \ref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe Abb. \ref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe Abb. \ref{InteractionPlaneD}). Dies erf\"ullt die Bedingungen 3 und 4, \"ahnlich wie beim quadrischen Widget.
+Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe Abb. \ref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe Abb. \ref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe Abb. \ref{InteractionPlaneD}). Dies erf\"ullt Kriterium 2.
+
+Kriterien 3 und 4 werden genau wie beim quadrischen Widget nur teilweise erf\"ullt und werden Thema von weiterer Forschung.
 
 Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus einem Zylinder dar, der den dargestellten Teil des Invariantenraums umfasst. Um diese Eigenschaft zu verdeutlichen, kann ein zus\"atzliches Gitter aus Linien, bezeichnet als ``Wireframe'', gezeichnet werden, die sich auf der Oberfl\"ache dieses Zylinders befinden (siehe Abb. \ref{InteractionPlaneE}).
+
+\subsection{Labeling}
+Um die Position der Interaktionshandles im Raum ablesen zu k\"onnen, ist es m\"oglich, die eingestellten Minimal- und Maximalwerte der Invarianten an den Interaktionswidgets einzuzeichnen. Abbildung \ref{Labels} zeigt dies f\"ur beide Interaktionswidgets. Solche Beschriftungen in grafischen Oberfl\"achen werden als `Labels' bezeichnet, als Metapher zu Etiketten an Waren im Einzelhandel.
 
 \subsection{Weitere Interaktionen}
 Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
@@ -1598,14 +1622,14 @@ Der Benutzer kann entscheiden, ob das quadrische oder die zylindrischen Interakt
 \paragraph{Wireframe}
 Wenn die zylindrischen Interaktionswidgets angezeigt werden, kann optional ein Wireframe angezeigt werden, ein Liniengitter an den Grenzen des maximalen Invariantenintervalls. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
 
-\paragraph{Koordinatenlabel}
-Um die Invariantenbereiche mit der Maus besser einstellen zu k\"onnen, ist es optional m\"oglich, die Werte der Schranken an den Interaktionsfl\"achen anzuzeigen.
+\paragraph{Labels einzeichnen}
+Es ist m\"oglich auszuw\"ahlen, ob die Minimal- und Maximalwerte der jeweiligen Invarianten an den Widgets eingezeichnet werden sollen oder nicht.
 
-\paragraph{Interaktionsfl\"achen ausblenden}
-Da die Interaktionsfl\"achen einen gro{\ss}en Teil des Objekts verdecken k\"onnen, besteht die M\"oglichkeit, diese auszublenden. W\"ahrend sie ausgeblendet sind, ist keine Interaktion mit ihnen m\"oglich, die Invariantenbereiche k\"onnen also nicht mit der Maus ver\"andert werden.
+\paragraph{Interaktionswidgets ausblenden}
+Da die Interaktionswidgets einen gro{\ss}en Teil des Objekts verdecken k\"onnen, besteht die M\"oglichkeit, diese auszublenden. W\"ahrend sie ausgeblendet sind, ist keine Interaktion mit ihnen m\"oglich, die Invariantenbereiche k\"onnen also nicht mit der Maus ver\"andert werden.
 
 \paragraph{Wurzelskalierung}
-Die im Fragment Shader der Voxelisiserung durchgef\"uhre Skalierung durch Ziehen der dritten Wurzel kann an- und ausgeschaltet werden.
+Die im Fragment Shader der Voxelisiserung durchgef\"uhrte Skalierung durch Ziehen der dritten Wurzel kann an- und ausgeschaltet werden.
 
 \paragraph{Normalisierung des Feldes}
 Im Invariantenraum kann das Feld beliebige Formen annehmen. Wenn beispielsweise eine Dimension sehr viel kleiner ist als die beiden anderen, kann dies die Betrachtung des Datensatzes erschwereren. Deshalb ist m\"oglich, das Feld durch eine Option zu skalieren. Dabei werden die Begrenzungsfl\"achen des Feldes in allen drei zylindrischen Dimensionen berechnet und die Darstellung des Feldes anschlie{\ss}end so skaliert, dass die Begrenzungsfl\"achen einen Halbzylinder mit fester H\"ohe und Radius von 1 bilden. Zus\"atzlich die Skalierung die Vorteile dass leerer Raum in der Darstellung vermieden und kleine Tetraeder besser sichtbar gemacht werden.
@@ -1657,7 +1681,7 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 
 Der erste Testdatensatz ist ein von FAnToM erzeugtes Tensorfeld. Dabei wird simuliert, dass auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist im der linken H\"alfte der vorderen, quadratischen Seite. 
 
-Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Die L\"angen der Halbachsen entsprechen den Betr\"agen der  Eigenwerte. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionsfl\"achen links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
+Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Die L\"angen der Halbachsen entsprechen den Betr\"agen der  Eigenwerte. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionswidgets links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
 
 In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Verwendet wurde der K-Invariantensatz. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedrigem $K_1$ ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedrigem $K_2$ und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hohem $K_3$ zu sehen. 
 
@@ -2058,6 +2082,8 @@ Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik von der Technischen Univ
 Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"onnte eine lohnenswerte Erweiterung des Systems darstellen. Die Interpretation durch den Nutzer w\"urd erleichtert, da er die Bereiche nicht mehr per Hand einstellen m\"usste und daher weniger Kenntnisse \"uber die Invarianten und ihre Bedeutung notwendig w\"aren. Gleichzeitig w\"aren die Ergebnisse exakter und besser in der Praxis anwendbar. 
 
 Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"are sie ein guter Ansatzpunkt f\"ur Optimierungen. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen.
+
+Zuletzt bieten auch die Interaktionswidgets Raum f\"ur Weiterentwicklung, besonders in Hinblick auf Affordances, Hervorhebung der Handles bei Selektion und der Darstellung der Widgets in abh\"angig von den Farben der Transferfunktion.
  
 Weitere Verbesserungsm\"oglichkeiten werden wahrscheinlich erst sichtbar werden, wenn das System in der Praxis eingesetzt wird. 
 
