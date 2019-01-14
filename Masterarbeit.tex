@@ -1310,7 +1310,7 @@ Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung dur
 
 Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zweite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau vier Punkte pro Primitiv gibt, eignet das Format sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
 
-Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, ist ein Verfahren implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
+Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, wurde ein Verfahren entwickelt und implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
 
 Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
 
@@ -1367,9 +1367,12 @@ Die Dichte innerhalb eines Voxels entspricht im Moment stets der Summe der Tetra
 
 \subsection{Berechnung der maximalen Dichte}
 
-Da Texturen nur Werte im Intervall $[0,\dots,1]$ enthalten k\"onnen, aber vor der fertiggestellten Voxelisierung die maximale Dichte in der 3D Textur nicht bestimmt werden kann, muss ein Verfahren implementiert werden, um das korrekte Maximum zu berechnen.
+Da Texturen nur Werte im Intervall $[0,\dots,1]$ enthalten k\"onnen, aber vor der fertiggestellten Voxelisierung die maximale Dichte in der 3D Textur nicht bestimmt werden kann, musste ein Verfahren entwickelt werden, um das korrekte Maximum zu berechnen. Da die Daten in der 3D Textur nicht geordnet sind und auch keine andere Struktur existiert, durch die die Suche nach dem Maximum vereinfacht werden k\"onnte, musste sie als lineare Suche implementiert werden. Um die potentiell hohe Laufzeit von $O(n)$ zu verringern, wurde die Suche  mithilfe eines `Divide-and-Conquer' Ansatzes parallelisiert. Divide-and-Conquer beschreibt ein h\"aufig angewendetes Verfahren zur L\"osung komplexer Probleme. Dabei werden komplexe Probleme in einfachere Teilprobleme aufgeteilt, deren L\"osungen so kombiniert werden, dass sie eine L\"osung des urspr\"unglichen komplexen Problems darstellen \cite{jordan1994hierarchical}.
 
-Zun\"achst wird die h\"ochste \"uberhaupt m\"ogliche Dichte in einem Voxel berechnet. Diese kommt genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden. Somit entspricht sie der Summe der Dichten aller Tetraeder. Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die berechnete maximal m\"ogliche Dichte geteilt und somit auf das Intervall $[0,\dots,1]$ normalisiert wird. 
+In diesem konkreten Fall wird das komplexe Problem, die Berechnung der maximalen Dichte in der 3D Textur, in einfachere Teilprobleme, die Berechnung der maximalen Dichten f\"ur jede einzelne Schicht, zerlegt. 
+Auf die Berechnung der maximalen Dichte angewendet Dabei wird das eigentliche Problem, die Suche nach dem Maximum der 3D Textur, in Teilprobleme, die Suche nach den jeweiligen Maxima der einzelnen Schichten, zerlegt. Diese Teilprobleme werden parallel gel\"ost
+
+Zun\"achst wird die h\"ochste potentiell m\"ogliche Dichte in einem Voxel berechnet. Diese kommt genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden. Somit entspricht sie der Summe der Dichten aller Tetraeder. Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die berechnete maximal m\"ogliche Dichte geteilt und somit auf das Intervall $[0,\dots,1]$ normalisiert wird. 
 
 Als N\"achstes wird das Maximum der entstandenen 3D Textur gesucht. Da die 3D Textur relativ gro{\ss} werden kann (bis zu mehreren Gigabyte), die \"Ubertragung von Daten von der Grafikkarte zum Arbeitsspeicher relativ langsam ist und das Finden des Maximums gut parallelisiert werden kann, wurde auch dieses Problem durch eine Shaderpipeline gel\"ost. Indem das Maximum (ein Wert zwischen 0 und 1) mit dem gr\"o{\ss}ten m\"oglichen Wert multipliziert wird, erh\"alt man das korrekte Maximum. Dies kann verwendet werden, um die Werte einer weiteren Voxelisierung zu normalisieren. Dadurch wird die Pr\"azision in der 3D Textur erh\"oht.
 
@@ -1500,7 +1503,8 @@ Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406f]{preim2015inte
 \subsubsection{Quadrisches Interaktionswidget}
 
 \begin{figure}
-	\includegraphics[width=0.5\textwidth]{pictures/CubicalInteractions.png}
+	\centering
+	\includegraphics[width=0.55\textwidth]{pictures/QuadricInteractions.png}
 	\label{CubicalInteractions}
 	\caption{Eine Darstellung des quadrischen Interaktionswidgets. Die drei eingef\"arbten Kanten schneiden sich in dem Punkt dessen Koordinaten die Minima aller drei Invarianten sind. Die Farben dienen der Orientierung im Raum und weisen darauf hin, zu welcher Achse die jewilige Kante parallel ist: Rot zur x-, Gelb zur y- und Blau zur z-Achse.}
 \end{figure}
@@ -1564,9 +1568,28 @@ Kriterien 3 und 4 werden genau wie beim quadrischen Widget nur teilweise erf\"ul
 Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus einem Zylinder dar, der den dargestellten Teil des Invariantenraums umfasst. Um diese Eigenschaft zu verdeutlichen, kann ein zus\"atzliches Gitter aus Linien, bezeichnet als ``Wireframe'', gezeichnet werden, die sich auf der Oberfl\"ache dieses Zylinders befinden (siehe Abb. \ref{InteractionPlaneE}).
 
 \subsection{Labeling}
-Um die Position der Interaktionshandles im Raum ablesen zu k\"onnen, ist es m\"oglich, die eingestellten Minimal- und Maximalwerte der Invarianten an den Interaktionswidgets einzuzeichnen. Abbildung \ref{Labels} zeigt dies f\"ur beide Interaktionswidgets. Solche Beschriftungen in grafischen Oberfl\"achen werden als `Labels' bezeichnet, als Metapher zu Etiketten an Waren im Einzelhandel.
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[height=8cm]{pictures/QuadricLabels.png}
+		\subcaption{}
+		\label{QuadricLabels}
+	\end{subfigure}
+	\hspace{2cm}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[height=8cm]{pictures/CylindricalLabels.png}
+		\subcaption{}
+		\label{CylindricalLabels}
+	\end{subfigure}
+	\caption{Labels}
+\end{figure}
+Um die Position der Interaktionshandles im Raum ablesen zu k\"onnen, ist es m\"oglich, die eingestellten Minimal- und Maximalwerte der Invarianten an den Interaktionswidgets einzuzeichnen. Solche Beschriftungen in grafischen Oberfl\"achen werden als `Labels' bezeichnet, als Metapher zu Etiketten an Waren im Einzelhandel.
 
-Bei quadrischen Interaktionen 
+Beim quadrischen Interaktionswidget werden die Labels an den Endpunkten der farbigen Kanten angezeigt. An dem Punkt, an dem sich die drei Kanten schneiden, werden die Labels untereinander angeordnet, mit dem Label der ersten Invariante oben und dem der dritten unten. Abbildung \ref{QuadricLabels} zeigt die Positionierung der Labels.
+
+Die Labels am zylindrischen Interaktionswidget sind an den Handles eingezeichnet. F\"ur die erste Invariante befinden sich die Labels im Zentrum der zugeh\"origen Handles, der gro{\ss}en roten Fl\"achen. Ebenso sind Labels der zweiten Invariante im Mittelpunkt ihrer Handles eingezeichnet, der gelben B\"ogen an der Innen- und Aussenseite der Kreisringausschnitte. F\"ur die Position der Labels der dritten Invariante wurden die \"au{\ss}eren Eckpunkte der geraden Seiten der Kreisringausschnitte gew\"ahlt. Die Positionen sind in Abbildung \ref{CylindricalLabels} zu sehen.
 
 \subsection{Weitere Interaktionen}
 Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
