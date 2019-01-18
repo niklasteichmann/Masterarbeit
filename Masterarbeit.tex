@@ -22,6 +22,7 @@
 \usepackage{svg}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{textcomp}
 \usetikzlibrary{matrix}
 \usepackage{pgfplots}
 \addbibresource{Literatur.bib} % database for references
@@ -471,7 +472,7 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/cylinder}
-	\caption{Darstellung eines zylindrischen Koordinatensystems. $x,y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der X-Achse. }
+	\caption{Darstellung eines zylindrischen Koordinatensystems. $x,y$ und $z$ entsprechen dabei den kartesischen Achsen. Die Koordinaten des Punktes $p$ sind angegeben als $x, r, \theta$. $x$ entspricht der kartesischen Koordinate, $r$ ist die Entfernung zwischen der Projektion von $p$ auf die von $y$ und $z$ Achse aufgespannte Fl\"ache und dem Koordinatenursprung und $\theta$ entspricht dem Winkel zwischen Projektion von $p$, dem Koordinatenursprung und der x-Achse. }
 	\label{cylinderCoords}
 \end{figure}
 
@@ -652,21 +653,192 @@ Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikka
 \subsection{Qt}
 Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen. Darunter sind beliebte Oberfl\"achenelemente wie Kn\"opfe, Textfelder und Ankreuzk\"asten, wodurch die Gestaltung einer Nutzerschnittstelle sehr einfach wird.
 
-FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGL gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren.
+FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um weitere Fenster und Elemente erweitert werden kann. Eine wesentliche F\"ahigkeit von Qt ist dabei, einen OpenGL Kontext zu erzeugen, sodass durch OpenGL gerenderte Bilder angezeigt werden k\"onnen. Diese F\"ahigkeit von Qt wird innerhalb dieser Arbeit verwendet, um mehrere, unabh\"angige Datensichten zu implementieren. 
+
+\subsection{Continuous Scatterplotting}
+\subsubsection{Scatterplotting}
+\begin{figure}
+	\hspace{2cm}
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Scatterplot3D}
+		\caption{}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.30\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Scatterplot2D}
+		\caption{}
+	\end{subfigure}
+	\hspace{2cm}
+	\caption{Zwei Beispiele f\"ur Scatterplottings. In (a) wird ein Objekt mit den Attributwerten $a_1, a_2, a_3$ als roter Punkt in einem dreidimensionalen Scatterplot dargestellt. Um die Attribute besser ablesen zu k\"onnen, wurden gestrichelte Linien eingezeichnet. In (b) wurden mehrere Objekte mit unterschiedlichen Attributen im selben, zweidimensionalen Scatterplot als schwarze Punkte eingezeichnet.}
+	\label{Scatterplots}
+\end{figure}
+
+Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abb. \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
+
+Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
+
+Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ die Projektion auf eine Teilmenge der Attribute notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen. 
+
+Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ bei physikalischen Feldern. Dort sind an jedem der unendlich vielen Punkte Werte definiert. Ein Scatterplot dieser unendlich vielen Elemente ist nun weder in endlicher Laufzeit m\"oglich, noch w\"aren einzelne Punkte in der entstehenden Darstellung erkennbar. Eine Alternative besteht darin, nur den Scatterplot der Eckpunkte der Zellen zu erzeugen, doch damit gehen Informationen \"uber die Punkte innerhalb der Zellen verloren.
+
+
+\subsubsection{Erkl\"arung des Continuous Scatterplottings}
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=0.9\textwidth]{pictures/ContinuousScatterplot}
+		\subcaption{}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=0.9\textwidth]{pictures/Case2}
+		\subcaption{}
+		\label{Case2}
+	\end{subfigure}
+	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an.}
+	\label{ContinuousScatterplot}
+\end{figure}
+Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
+
+Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
+
+\begin{equation}
+M = \int_{V}s(x)d^nx
+\label{Dichtefunktion}
+\end{equation}
+
+Die zweite Annahme besagt, dass die Masse einer Teilmenge $V\subset\mathbb{R}^m$ gleich der Masse ihres Urbildes ist, also $\tau$ die Gesamtdichte nicht beeinflusst. Da $\tau$ in der Regel nicht invertierbar ist, wird $\tau^{-1}(\phi), \phi \subset \mathbb{R}^m$ verwendet, um das Urbild von $\phi$ zu notieren. 
+
+
+F\"ur $\xi \in \Phi$ f\"uhren die Annahmen zu der Gleichung
+
+\begin{equation}
+\int_{\phi}\sigma(\xi)d^m\xi = \int_{\tau^{-1}(\phi) = V}s(x)d^nx
+\end{equation}
+
+Da $\tau$ weder injektiv noch surjektiv ist, gilt der umgekehrte Fall nur, wenn zus\"atzlich $\forall x \in V: f^{-1}(f(x)) \subset V$ gilt\cite [S.~20]{fritzsch2016continuousScatterplot}.
+
+\begin{equation}
+\int_{V}s(x)d^nx = \int_{\phi = \tau(V)}\sigma(\xi)d^m\xi
+\end{equation}
+
+Fritzsch \cite[S.~20~f.]{fritzsch2016continuousScatterplot} definiert zus\"atzlich ein $\sigma_v$, das die Dichtefunktion der Einschr\"ankung von $\tau$ auf $V$ beschreibt, also den `Beitrag' von $V$ zu $\sigma$.
+
+\begin{equation}
+\int_{\phi} \sigma_v(\xi)d^m\xi = \int_{\tau|_V^{-1}(\phi)}s(x)d^nx
+\end{equation}
+
+Mithilfe der $\sigma_v$ stellt Fritzsch fest, dass f\"ur eine Zerlegung des Definitionsbereichs $U$ von $\tau$ in eine Menge von disjunkten Teilmengen $\hat{V} = {V_i | V_i \in U}$ gilt, dass
+
+\begin{equation}
+\begin{split}
+\int_{\phi}\sigma(\xi)d^m\xi 
+&= \int_{\bigcup\limits_{V_i}\tau|_{V_i}^{-1}(\phi)} s(x)d^nx
+\\
+&= \sum_{V_i}\int_{\tau|_{V_i}^{-1}(\phi)} s(x)d^nx
+\\
+&= \sum_{V_i}\int_{\phi}\sigma_{V_i}(\xi)d^m\xi
+\\
+&= \int_{\phi}\sum_{V_i}\sigma_{V_i}(\xi)d^m\xi
+\end{split}
+\end{equation}
+
+Da die Integranden des ersten und letzten Integrals gleich sein m\"ussen, ergibt sich daraus
+
+\begin{equation}
+\sigma(\xi) = \sum_{V_i}\sigma_{V_i}(\xi)
+\label{DensitySum}
+\end{equation}
+
+Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass die gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
+
+Die Berechnung von $\sigma$ h\"angt vom Verh\"altnis von $m$ und $n$ zueinander ab. Da in der vorliegenden Arbeit nur der Fall $m=n=3$ auftritt, beschr\"ankt sich die weitere Er\"auterung auf diesen Fall. F\"ur $m=n$ unterscheiden Bachthaler und Weiskopf folgende F\"alle f\"ur $V \subseteq \mathbb{R}^n$\cite[S.~1430]{bachthaler2008continuous}:
+
+\paragraph{Fall 1: $\tau$ ist differenzierbar und ein Diffeomorphismus}
+Ein Diffeomorphismus ist eine bijektive, stetig differenzierbare Abbildung, deren Umkehrabbildung ebenfalls stetig differenzierbar ist. 
+Wenn $\tau$ ein Diffeomorphismus ist, l\"asst sich durch die Anwendung des Transformationssatzes von Integralen die Gleichung 
+
+\begin{equation}
+\int_{\tau(V)}\sigma(\xi)d^{m=n}\xi = \int_{V}\sigma(\tau(x))|det(J_\tau)(x)|d^nx = \int_{V}s(x)d^nx
+\end{equation}
+
+bilden, wobei $J_\tau$ die Jacobimatrix von $\tau$ ist. Da der Wert der Determinante der Jacobimatrix von der Position abh\"angig ist, wird der jeweilige Punkt $x$ eingesetzt. Durch weitere Umformungen entsteht die Gleichung
+
+\begin{equation}
+\sigma(\xi) = \frac{s(\tau^{-1}(\xi))}{|\det(J_\tau)(\tau^-1(\xi))|}
+\label{Case1Formula}
+\end{equation}
+
+Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt, entspricht der Betrag der Determinanten der Jacobimatrix dem Betrag Expandierung oder Schrumpfung der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
+
+\paragraph{Fall 2: $\tau$ ist differenzierbar und konstant \"uber V, V ist keine Nullmenge}
+Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass ein Bereich aus $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit dem Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
+
+\begin{equation}
+\begin{split}
+\sigma(\xi) &= \sum_{V_i \in V}\delta(\xi - \tau(V_i)) \cdot \int_{V_i}s(x)d^nx\\
+&= \sum_{V_i \in V}\delta(\xi - \tau(V_i)) \cdot Vol(V_i)~~~~~~~~~(da~s(x) = 1)
+\end{split}
+\label{DiracTimesVolume}
+\end{equation}
+
+Aus den Eigenschaften des Dirac Deltas ergibt sich, dass die Masseerhaltung erf\"ullt ist:
+
+\begin{equation}
+\begin{split}
+\int_{\phi}\sigma(\xi)d^n\xi &= \sum_{V_i}\int_{\phi}\delta(\xi - \tau(V_i)) \cdot Vol(V_i)d^n\xi\\
+&= \sum_{\forall V_i~:~\tau(V_i)\in \phi} Vol(V_i)\\
+&= \int_{\tau^-1(\phi)}1~d^nx
+\end{split}
+\end{equation}
+
+Da $s(x) = 1$ festgelegt ist, ist die Bedingung erf\"ullt. In \ref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichten der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss Formel \ref{DiracTimesVolume} entsprechend angepasst werden.
+
+\paragraph{Fall 3: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist Nullmenge}
+Ein weiterer Fall, in dem $det(J_\tau) = 0$ ist, tritt auf wenn $V$ eine Nullmenge ist (also z.B. eine Linie im $\mathbb{R}^3$). Da Integration \"uber Nullmengen immer 0 ergibt, k\"onnen die Nullmengen und ihr Bild bez\"uglich $\tau$ einfach aus dem Scatterplotting entfernt werden, ohne die Masseerhaltung zu verletzen.
+
+\paragraph{Fall 4: $\tau$ ist nicht differenzierbar}
+Wenn im Datensatz Unstetigkeiten auftreten, zum Beispiel zwischen Zellen, ist $\tau$ an diesen nicht differenzierbar. Da die unstetigen Bereiche ebenfalls Nullmengen bilden, kann die gleiche L\"osung wie in Fall 3 gew\"ahlt werden.
+
+\begin{figure}
+	\begin{subfigure}{0.66\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Case5}
+		\subcaption{}
+		\label{Case5}
+	\end{subfigure}
+	\begin{subfigure}{0.33\textwidth}
+		\includegraphics[width=\textwidth]{pictures/Case5-Solution}
+		\subcaption{}
+		\label{Case5Solution}
+	\end{subfigure}
+	\caption{Eine Darstellung des f\"unften Falls. (a) Alle drei Punkte des Dreiecks $V$ im linken Koordinatensystem werden auf eine Gerade abgebildet. Dadurch ist $\tau(V)$ eine Nullmenge. (b) Eine Darstellung des von Fritzsch vorgeschlagenen Ansatzes. Die graue, gestrichelte Linie entspricht dem Gradienten, die L\"ange der blauen Linie ist proportional zur Dichte. }
+\end{figure}
+
+\paragraph{Fall 5: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist keine Nullmenge}\mbox{}\\
+Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016continuousScatterplot}, die in der Praxis eine Rolle spielen. Ein solcher Fall tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe Abb. \ref{Case5}), wenn also entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
+
+Die Jacobimatrix enth\"alt in diesem Fall mindestens eine Nullzeile, wodurch f\"ur ihren Rang gilt $0 < rang(M) < m$. 
+
+Fritzsch schl\"agt zur L\"osung dieses Problems zwei Ans\"atze vor. 
+
+Der erste orientiert sich an Fall 2 und ordnet dem Bildbereich sehr hohe Dichten zu, um die Masseerhaltung zu gew\"ahrleisten. 
+
+Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $rang(M) = 1$ sein). Er kann jedoch auch auf h\"ohere Dimensionen \"ubertragen werden. Ziel ist es, die Dichte an Punkten $p\in\tau(V)$ proportional zur Gesamtmasse der darauf abgebildeten Punkte festzulegen. Dadurch wird zwar die Masseerhaltung nicht erf\"ullt, aber eine interpretierbare Darstellung erzeugt. Dazu werden zun\"acht die Gradienten f\"ur jede Komponente des Bildes von $V$ berechnet. Die Gr\"o{\ss}e der $dim(V) - dim(\tau(V))$-dimensionalen Teilmengen von $V$, die orthogonal zu den durch die Gradienten aufgespannten R\"aumen sind, ist gleich der Masse, die auf die einzelnen Punkte abgebildet wird. Ein Beispiel f\"ur den Fall $dim(V) = 2,~dim(\tau(V)) = 1$ ist in \ref{Case5Solution} zu sehen. Die Dichte an den Punkten von $\tau(V)$ wird dann proportional zur Masse gew\"ahlt.
 
 \subsection{Volumetrische Daten}
 Felder, die Punkten im dreidimensionalen Raum bestimmte Werte zuordnen, sind ein h\"aufig vorkommender Typ von Datens\"atzen, der oft unter dem Begriff ``Volumetrische Datens\"atze'' zusammengefasst wird. Dieser Abschnitt beschreibt einen der verbreitetsten Ans\"atze um solche Felder abzuspeichern.  
 
-Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer mathematischen Funktion, durch die das Feld hinreichend approxmimiert wird, zu speichern. Bei komplexeren Feldern ist dies meistens nicht m\"oglich, da entweder keine hinreichend gut passende Funktion bekannt ist, oder aber die Auswertung der Funktion an einem Punkt sehr viel Rechenzeit ben\"otigen w\"urde (wie z.B. bei aufw\"andigen Simulationen). 
+Das Ergebnis eines Continuos Scatterplottings der Form $m=n=3$ beispielsweise stellt einen volumetrischen Datensatz dar, in dem Punkten ein Dichtewert zugeordnet wird. Da die Visualisierung genau diese Art von Datens\"atzen die zentrale Aufgabe der vorliegenden Arbeit ist, ist die Abspeicherung und das Auslesen von volumetrischen Daten ein wichtiges Teilproblem.
 
-Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels (Mittelpunkt, Eckpunkte, Seitenfl\"achen, \dots) die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt Voxel schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
+Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer mathematischen Funktion, durch die das Feld approxmimiert wird, zu speichern. Bei komplexeren Feldern ist dies meistens nicht m\"oglich, da entweder keine hinreichend gut passende Funktion bekannt ist, oder aber die Auswertung der Funktion an einem Punkt sehr viel Rechenzeit ben\"otigen w\"urde (wie z.B. bei aufw\"andigen Simulationen). 
+
+Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels (Mittelpunkt, Eckpunkte, Seitenfl\"achen, \dots) die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
 
 Voxel haben einen entscheidenden Vorteil gegen\"uber anderen volumetrischen Datens\"atzen: Die Komplexit\"at der Daten, und daraus folgend die Rechenzeit der meisten Algorithmen, die Voxel als Eingabe verwenden, ist nicht abh\"angig von der Anzahl und Komplexit\"at der in der urspr\"unglichen Szene dargstellten Objekte, sondern  nur noch von der Anzahl der Voxel, auf die die Szene abgebildet wurde. Durch Anpassung der Anzahl der Voxel ist es m\"oglich, Rechenzeit und Qualit\"at der Ergebnisse von Algorithmen gegeneinander abzuw\"agen.
 
-In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren. 
+In der Praxis werden Voxel in unterschiedlichen Formen verwendet. Die popul\"arste Variante sind Datens\"atze, die ein quaderf\"ormiges Volumen in gleichgro{\ss}e quaderf\"ormige Voxel zerlegen. Aber auch Datens\"atze mit tetraedrischen Voxeln oder solche, deren Voxel unterschiedliche Formen annehmen, existieren.
 
 \subsection{Volume Visualization}
-In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Solches Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Es werden besondere Verfahren ben\"otigt, um volumetrische Daten darstellen zu k\"onnen. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{hansen2005visualization}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
+In der Computergrafik werden dreidimensionale Objekte \"ublicherweise durch Dreiecke dargestellt, durch die die Oberfl\"achen der Objekte approximiert werden. Dieses Vorgehen entfernt jedoch alle Informationen \"uber Strukturen im Inneren der Objekte, wie beispielsweise Bereiche gleicher Materialien oder Dichte. Um Continous Scatterplots der Form $m=n=3$ visualisieren zu k\"onnen ohne Informationen \"uber innere Strukturen zu verlieren werden deshalb besondere Verfahren zur Darstellung volumetrischer Daten ben\"otigt. Diese werden allgemein unter dem Begriff ``Volume Visualization'' zusammengefasst. Genauer definiert bezeichnet Volume Visualization Methoden der Extraktion von bedeutungsvollen Informationen aus volumetrischen Daten durch interaktive Grafiken und Bildgebung \cite[S.~127]{hansen2005visualization}. Nachfolgend werden einige Volume Visualizations f\"ur skalare Felder  mit Vor- und Nachteilen vorgestellt. Dabei beschr\"anken sich die Erl\"auterungen auf Datens\"atze, die auf (meist quaderf\"ormigen) Voxeln basieren, und der skalare Wert dem Volumen des Voxels zugeordnet ist. F\"ur die meisten Algorithmen existieren jedoch auch Varianten, die mit anderen Formen volumetrischer Daten umgehen k\"onnen.
 
 Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an Speicher (da m\"oglicherweise viele tausende Voxel abgespeichert werden m\"ussen), die aus der diskreten Approximierung entstehenden Artefakte (z.B. Treppeneffekte in Bereichen mit pl\"otzlichen Ver\"anderungen) und das Verlorengehen von Informationen \"uber die urspr\"ungliche Form der abgebildeten Objekte.
 
@@ -729,7 +901,7 @@ Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orient
 
 Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Positionen und Orientierungen zu finden, um interessante Bereiche sichtbar zu machen sowie darin, dass die Form von dreidimensionalen Strukturen relativ schlecht vermittelt wird. 
 
-\subsection{Direct Volume Rendering}
+\subsubsection{Direct Volume Rendering}
 \label{sec:DVR}
 \begin{figure}
 	\begin{minipage}{0.5\textwidth}
@@ -746,6 +918,7 @@ Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Posi
 		\label{Zahn}
 	\end{minipage}
 \end{figure}
+
 Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen kleinen Teil des volumetrischen Datensatzes gleichzeitig dar. Das hat den Vorteil, dass ein Benutzer nur einen Teil der Daten gleichzeitig interpretieren muss, bringt jedoch eine Reihe von Nachteilen mit sich. Erstens wird vorrausgesetzt, dass der Benutzer durch Interaktion unterschiedliche Bereiche ausw\"ahlt, um sich einen \"Uberblick \"uber den Datensatz zu verschaffen, was abh\"angig von Gr\"o{\ss}e und Komplexit\"at viel Zeit und Aufmerksamkeit des Nutzers in Anspruch nehmen kann. Zweitens besteht dabei das Risiko, dass Merkmale des Datensatzes, die nur bei sehr bestimmten Einstellungen sichtbar sind, \"ubersehen werden. Und drittens muss der Benutzer zus\"atzliche mentale Arbeit verrichten, um die jeweils angezeigten Teile in seiner Vorstellung zusammenzusetzten, damit er ein vollst\"andiges Verst\"andnis des Datensatzes entwickeln kann. Dies kann, wiederum abh\"angig von Gr\"o{\ss}e und Komplexit\"at, fast unm\"oglich sein.
 
 Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren. Ein gro{\ss}er Teil der Informationen in diesem Abschnitt stammt aus Buch ``The Visualization Handbook''\cite{hansen2005visualization}, speziell aus den Kapiteln ``Overview of Volume Rendering'' (S. 127-164) von Kaufman und Mueller, ``Volume Rendering Using Splatting'' (S. 175-188) von Crawfis, Xue und Sang, ``Pre-Integrated Volume Rendering'' (S. 211-228) von Kraus und Ertl  sowie ``Hardware Accelerated Volume Rendering'' (S. 229-258) von Pfister.
@@ -791,7 +964,7 @@ Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so
 		\subcaption{}
 		\label{DVR:Translucent}
 	\end{subfigure}
-	\caption{Arten von DVR Visualisierungen: (a) R\"ontenbild, (b) MIP,\\ 
+	\caption{Arten von DVR Visualisierungen: (a) R\"ontgenbild, (b) MIP,\\ 
 		(c) Isof\"ache, (d) Transluzent. Entnommen aus \cite[S.~134]{hansen2005visualization}}
 	\label{DVRModes}
 \end{figure}
@@ -820,178 +993,8 @@ so entsprechen die erzeugten Bilder Isofl\"achen. Da Isofl\"achen komplett opak 
 \paragraph{Transluzent}
 Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, so dass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \ref{DVR:Translucent} zu sehen. 
 
-\subsection{Continuous Scatterplotting}
-\subsubsection{Scatterplotting}
-\begin{figure}
-	\hspace{2cm}
-	\begin{subfigure}{0.30\textwidth}
-		\includegraphics[width=\textwidth]{pictures/Scatterplot3D}
-		\caption{}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{0.30\textwidth}
-		\includegraphics[width=\textwidth]{pictures/Scatterplot2D}
-		\caption{}
-	\end{subfigure}
-	\hspace{2cm}
-	\caption{Zwei Beispiele f\"ur Scatterplottings. In (a) wird ein Objekt mit den Attributwerten $a_1, a_2, a_3$ als roter Punkt in einem dreidimensionalen Scatterplot dargestellt. Um die Attribute besser ablesen zu k\"onnen, wurden gestrichelte Linien eingezeichnet. In (b) wurden mehrere Objekte mit unterschiedlichen Attributen im selben, zweidimensionalen Scatterplot als schwarze Punkte eingezeichnet.}
-	\label{Scatterplots}
-\end{figure}
-
-Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abb. \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
-
-Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
-
-Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ die Projektion auf eine Teilmenge der Attribute notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen. 
-
-Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ bei physikalischen Feldern. Dort sind an jedem der unendlich vielen Punkte Werte definiert. Ein Scatterplot dieser unendlich vielen Elemente ist nun weder in endlicher Laufzeit m\"oglich, noch w\"aren einzelne Punkte in der entstehenden Darstellung erkennbar. Eine Alternative besteht darin, nur den Scatterplot der Eckpunkte der Zellen zu erzeugen, doch damit gehen Informationen \"uber die Punkte innerhalb der Zellen verloren.
-
-
-\subsubsection{Erkl\"arung des Continuous Scatterplottings}
-\begin{figure}
-	\centering
-	\begin{subfigure}{0.45\textwidth}
-		\includegraphics[width=0.9\textwidth]{pictures/ContinuousScatterplot}
-		\subcaption{}
-	\end{subfigure}
-	\begin{subfigure}{0.45\textwidth}
-		\includegraphics[width=0.9\textwidth]{pictures/Case2}
-		\subcaption{}
-		\label{Case2}
-	\end{subfigure}
-	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an.}
-	\label{ContinuousScatterplot}
-\end{figure}
-Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
-
-Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
-
-\begin{equation}
-	M = \int_{V}s(x)d^nx
-	\label{Dichtefunktion}
-\end{equation}
-
-Die zweite Annahme besagt, dass die Masse einer Teilmenge $V\subset\mathbb{R}^m$ gleich der Masse ihres Urbildes ist, also $\tau$ die Gesamtdichte nicht beeinflusst. Da $\tau$ in der Regel nicht invertierbar ist, wird $\tau^{-1}(\phi), \phi \subset \mathbb{R}^m$ verwendet, um das Urbild von $\phi$ zu notieren. 
-
-
-F\"ur $\xi \in \Phi$ f\"uhren die Annahmen zu der Gleichung
-
-\begin{equation}
-	\int_{\phi}\sigma(\xi)d^m\xi = \int_{\tau^{-1}(\phi) = V}s(x)d^nx
-\end{equation}
-
-Da $\tau$ weder injektiv noch surjektiv ist, gilt der umgekehrte Fall nur, wenn zus\"atzlich $\forall x \in V: f^{-1}(f(x)) \subset V$ gilt\cite [S.~20]{fritzsch2016continuousScatterplot}.
-
-\begin{equation}
-	\int_{V}s(x)d^nx = \int_{\phi = \tau(V)}\sigma(\xi)d^m\xi
-\end{equation}
-
-Fritzsch \cite[S.~20~f.]{fritzsch2016continuousScatterplot} definiert zus\"atzlich ein $\sigma_v$, das die Dichtefunktion der Einschr\"ankung von $\tau$ auf $V$ beschreibt, also den `Beitrag' von $V$ zu $\sigma$.
-
-\begin{equation}
-	\int_{\phi} \sigma_v(\xi)d^m\xi = \int_{\tau|_V^{-1}(\phi)}s(x)d^nx
-\end{equation}
-
-Mithilfe der $\sigma_v$ stellt Fritzsch fest, dass f\"ur eine Zerlegung des Definitionsbereichs $U$ von $\tau$ in eine Menge von disjunkten Teilmengen $\hat{V} = {V_i | V_i \in U}$ gilt, dass
-
-\begin{equation}
-\begin{split}
-\int_{\phi}\sigma(\xi)d^m\xi 
-&= \int_{\bigcup\limits_{V_i}\tau|_{V_i}^{-1}(\phi)} s(x)d^nx
-\\
-&= \sum_{V_i}\int_{\tau|_{V_i}^{-1}(\phi)} s(x)d^nx
-\\
-&= \sum_{V_i}\int_{\phi}\sigma_{V_i}(\xi)d^m\xi
-\\
-&= \int_{\phi}\sum_{V_i}\sigma_{V_i}(\xi)d^m\xi
-\end{split}
-\end{equation}
-
-Da die Integranden des ersten und letzten Integrals gleich sein m\"ussen, ergibt sich daraus
-
-\begin{equation}
-	\sigma(\xi) = \sum_{V_i}\sigma_{V_i}(\xi)
-	\label{DensitySum}
-\end{equation}
-
-Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass die gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
-
-Die Berechnung von $\sigma$ h\"angt vom Verh\"altnis von $m$ und $n$ zueinander ab. Da in der vorliegenden Arbeit nur der Fall $m=n=3$ auftritt, beschr\"ankt sich die weitere Er\"auterung auf diesen Fall. F\"ur $m=n$ unterscheiden Bachthaler und Weiskopf folgende F\"alle f\"ur $V \subseteq \mathbb{R}^n$\cite[S.~1430]{bachthaler2008continuous}:
-
-\paragraph{Fall 1: $\tau$ ist differenzierbar und ein Diffeomorphismus}
-Ein Diffeomorphismus ist eine bijektive, stetig differenzierbare Abbildung, deren Umkehrabbildung ebenfalls stetig differenzierbar ist. 
-Wenn $\tau$ ein Diffeomorphismus ist, l\"asst sich durch die Anwendung des Transformationssatzes von Integralen die Gleichung 
-
-\begin{equation}
-	\int_{\tau(V)}\sigma(\xi)d^{m=n}\xi = \int_{V}\sigma(\tau(x))|det(J_\tau)(x)|d^nx = \int_{V}s(x)d^nx
-\end{equation}
-
-bilden, wobei $J_\tau$ die Jacobimatrix von $\tau$ ist. Da der Wert der Determinante der Jacobimatrix von der Position abh\"angig ist, wird der jeweilige Punkt $x$ eingesetzt. Durch weitere Umformungen entsteht die Gleichung
-
-\begin{equation}
-	\sigma(\xi) = \frac{s(\tau^{-1}(\xi))}{|\det(J_\tau)(\tau^-1(\xi))|}
-	\label{Case1Formula}
-\end{equation}
-
-Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt, entspricht der Betrag der Determinanten der Jacobimatrix dem Betrag Expandierung oder Schrumpfung der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
-
-\paragraph{Fall 2: $\tau$ ist differenzierbar und konstant \"uber V, V ist keine Nullmenge}
-Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass ein Bereich aus $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit dem Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
-
-\begin{equation}
-	\begin{split}
-	\sigma(\xi) &= \sum_{V_i \in V}\delta(\xi - \tau(V_i)) \cdot \int_{V_i}s(x)d^nx\\
-				&= \sum_{V_i \in V}\delta(\xi - \tau(V_i)) \cdot Vol(V_i)~~~~~~~~~(da~s(x) = 1)
-	\end{split}
-	\label{DiracTimesVolume}
-\end{equation}
-
-Aus den Eigenschaften des Dirac Deltas ergibt sich, dass die Masseerhaltung erf\"ullt ist:
-
-\begin{equation}
-	\begin{split}
-	\int_{\phi}\sigma(\xi)d^n\xi &= \sum_{V_i}\int_{\phi}\delta(\xi - \tau(V_i)) \cdot Vol(V_i)d^n\xi\\
-								 &= \sum_{\forall V_i~:~\tau(V_i)\in \phi} Vol(V_i)\\
-								 &= \int_{\tau^-1(\phi)}1~d^nx
-	\end{split}
-\end{equation}
-
-Da $s(x) = 1$ festgelegt ist, ist die Bedingung erf\"ullt. In \ref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichten der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss Formel \ref{DiracTimesVolume} entsprechend angepasst werden.
-
-\paragraph{Fall 3: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist Nullmenge}
-Ein weiterer Fall, in dem $det(J_\tau) = 0$ ist, tritt auf wenn $V$ eine Nullmenge ist (also z.B. eine Linie im $\mathbb{R}^3$). Da Integration \"uber Nullmengen immer 0 ergibt, k\"onnen die Nullmengen und ihr Bild bez\"uglich $\tau$ einfach aus dem Scatterplotting entfernt werden, ohne die Masseerhaltung zu verletzen.
-
-\paragraph{Fall 4: $\tau$ ist nicht differenzierbar}
-Wenn im Datensatz Unstetigkeiten auftreten, zum Beispiel zwischen Zellen, ist $\tau$ an diesen nicht differenzierbar. Da die unstetigen Bereiche ebenfalls Nullmengen bilden, kann die gleiche L\"osung wie in Fall 3 gew\"ahlt werden.
-
-\begin{figure}
-	\begin{subfigure}{0.66\textwidth}
-		\includegraphics[width=\textwidth]{pictures/Case5}
-		\subcaption{}
-		\label{Case5}
-	\end{subfigure}
-	\begin{subfigure}{0.33\textwidth}
-		\includegraphics[width=\textwidth]{pictures/Case5-Solution}
-		\subcaption{}
-		\label{Case5Solution}
-	\end{subfigure}
-	\caption{Eine Darstellung des f\"unften Falls. (a) Alle drei Punkte des Dreiecks $V$ im linken Koordinatensystem werden auf eine Gerade abgebildet. Dadurch ist $\tau(V)$ eine Nullmenge. (b) Eine Darstellung des von Fritzsch vorgeschlagenen Ansatzes. Die graue, gestrichelte Linie entspricht dem Gradienten, die L\"ange der blauen Linie ist proportional zur Dichte. }
-\end{figure}
-
-\paragraph{Fall 5: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist keine Nullmenge}\mbox{}\\
-Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016continuousScatterplot}, die in der Praxis eine Rolle spielen. Ein solcher Fall tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe Abb. \ref{Case5}), wenn also entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
-
-Die Jacobimatrix enth\"alt in diesem Fall mindestens eine Nullzeile, wodurch f\"ur ihren Rang gilt $0 < rang(M) < m$. 
-
-Fritzsch schl\"agt zur L\"osung dieses Problems zwei Ans\"atze vor. 
-
-Der erste orientiert sich an Fall 2 und ordnet dem Bildbereich sehr hohe Dichten zu, um die Masseerhaltung zu gew\"ahrleisten. 
-
-Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $rang(M) = 1$ sein). Er kann jedoch auch auf h\"ohere Dimensionen \"ubertragen werden. Ziel ist es, die Dichte an Punkten $p\in\tau(V)$ proportional zur Gesamtmasse der darauf abgebildeten Punkte festzulegen. Dadurch wird zwar die Masseerhaltung nicht erf\"ullt, aber eine interpretierbare Darstellung erzeugt. Dazu werden zun\"acht die Gradienten f\"ur jede Komponente des Bildes von $V$ berechnet. Die Gr\"o{\ss}e der $dim(V) - dim(\tau(V))$-dimensionalen Teilmengen von $V$, die orthogonal zu den durch die Gradienten aufgespannten R\"aumen sind, ist gleich der Masse, die auf die einzelnen Punkte abgebildet wird. Ein Beispiel f\"ur den Fall $dim(V) = 2,~dim(\tau(V)) = 1$ ist in \ref{Case5Solution} zu sehen. Die Dichte an den Punkten von $\tau(V)$ wird dann proportional zur Masse gew\"ahlt.
-
-
 \section{Direct Volume Rendering Verfahren}
-Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} erl\"auterten Ideen umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
+Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} erl\"auterten Konzepte umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
 
 \subsection{Texture Slicing}
 \begin{figure}
@@ -1035,7 +1038,7 @@ Der wichtigste Vorteil des Texture Slicings ist die f\"r image-order Verfahren r
 Historisch entwickelte sich das heutige Raycasting aus den Texture Slicing Verfahren. Es versucht, die Probleme des Texture Slicings, die durch die Verwendung der Schnittebenen entstehen, zu Lasten der Laufzeit zu beheben.
 
 Image-order Verfahren k\"onnen mathematisch als die approxmierte Berechnung von Linienintegralen beschrieben werden. Im Folgenden sei ein Beispiel f\"ur ein solches Integral am Beispiel der Erzeugung von transluzenten Bildern gegeben.
-Der Datensatz wird zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134f]{hansen2005visualization}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber die Transferfunktion beschrieben. Das aus Richtung der Strahlen zur Kameraposition hin auf der Bildebene eintreffende Licht entspricht dann dem Integral 
+Der Datensatz wird zun\"achst als Wolke von Partikeln aufgefasst, wobei die Partikel Licht emmitieren und absorbieren \cite[s.~134~f.]{hansen2005visualization}. Wie viel Licht Partikel in einem Voxel absorbieren und emittieren sowie die Farbe des emitierten Lichts wird \"uber die Transferfunktion beschrieben. Das aus Richtung der Strahlen zur Kameraposition hin auf der Bildebene eintreffende Licht entspricht dann dem Integral 
 
 \begin{equation}
 I(x,r) = \int_{0}^{L} C(s)\mu(s) e^{-\int_{0}^{s}\mu(t)dt}ds
@@ -1055,9 +1058,8 @@ Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur
 
 \begin{align}
 &\alpha_0 = c_0 = 0\\
-&c_i = C(i\Delta s)\cdot\alpha(i\Delta s)\cdot(1-\alpha_{i-1}) + c_{i-1}\\
-&\alpha_i = \alpha\cdot(i \Delta s)\cdot(1-\alpha_{i-1}) + \alpha_{i-1} 
-\label{RaycastingFormula}
+&c_i = C(i\Delta s)\cdot\alpha(i\Delta s)\cdot(1-\alpha_{i-1}) + c_{i-1} \label{RaycastingFormula1}\\
+&\alpha_i = \alpha\cdot(i \Delta s)\cdot(1-\alpha_{i-1}) + \alpha_{i-1} \label{RaycastingFormula2}
 \end{align} 
 
 Diese rekursiven Funktionen entsprechen der Abtastung entlang des Strahls ausgehend von der Kamera (front-to-back). Wenn $\alpha_i$ sich nah genug an 1 ann\"ahert kann die Berechnung fr\"uzeitig terminieren. F\"ur die umgekehrte Richtung (zur Kamera hin, back-to-front) ergibt sich
@@ -1069,6 +1071,8 @@ Diese rekursiven Funktionen entsprechen der Abtastung entlang des Strahls ausgeh
 \end{align}
 
 Dies hat jedoch den Nachteil, dass fr\"uhzeitiges Terminieren nicht m\"oglich ist, weshalb diese Variante nur sehr selten benutzt wird.
+
+Durch Verwendung der rekursiven Gleichungen wird der Farbwert eines Pixels bestimmt ohne Zwischenergebnisse in eine Textur schreiben zu m\"ussen. Daher wird beim Raycasting kein Blending ben\"otigt.
 
 
 \begin{figure}
@@ -1239,7 +1243,7 @@ Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher 
 
 Als N\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils drei Invarianten. Dazu werden drei Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, das als Eingabe der eigentlichen Visualisierung verwendet wird.
 
-Der Algorithmus `Cylindric Coordinates' ist optional. Er interpretiert die Komponenten der Vektoren als zylindrische Koordinaten und berechnet die kartesischen Koordinaten der Punkte. Ein Punkt der Eingabe ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als X-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der X-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die X-Achse mit dem Punkt verbindet, und der XY-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Die Zellstruktur der Eingabe wird beibehalten, lediglich die Positionen der Eckpunkte der Zellen werden ver\"andert.
+Der Algorithmus `Cylindric Coordinates' ist optional. Er interpretiert die Komponenten der Vektoren als zylindrische Koordinaten und berechnet die kartesischen Koordinaten der Punkte. Ein Punkt der Eingabe ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als x-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der x-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die x-Achse mit dem Punkt verbindet, und der Xy-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Die Zellstruktur der Eingabe wird beibehalten, lediglich die Positionen der Eckpunkte der Zellen werden ver\"andert.
 
 Ziel des Cylindric Coordinate Algorithmus ist es, eine einheitliche Eingabe in kartesischen Koordinaten f\"ur die eigentliche Visualisierung zu erzeugen. Er ist f\"ur die Anwendung bei Invariantens\"atzen gedacht, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, beispielsweise die I- und J-Invariantens\"atze. Bei anderen Invariantens\"atzen sollte er nicht verwendet werden.
 
@@ -1310,11 +1314,11 @@ Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung dur
 
 Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zweite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau vier Punkte pro Primitiv gibt, eignet das Format sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
 
-Da die zylindrische Darstellung in Richtung der X-Achse sehr gro{\ss} werden kann, wurde ein Verfahren entwickelt und implementiert, das das Feld entlang der X-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
+Da die zylindrische Darstellung in Richtung der x-Achse sehr gro{\ss} werden kann, wurde ein Verfahren entwickelt und implementiert, das das Feld entlang der x-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
 
 Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
 
-Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Nutzer selbst festgelegt werden. Falls in Richtung der X-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale Ausdehung einer 3D Textur in jede Richtung.
+Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Nutzer selbst festgelegt werden. Falls in Richtung der x-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale Ausdehung einer 3D Textur in jede Richtung.
 
 \paragraph{Vertex Shader}
 Der Vertex Shader bekommt als Eingabe die Eckpunkte der Tetraeder, codiert in Form von Liniensegmenten mit Nachbarschaft. Falls das Feld in mehrere Texturen voxelisiert werden soll, wird eine Verschiebung und Skalierung durchgef\"uhrt, um nur die korrekten Tetraeder zu voxelisieren. Dichten und Invarianten werden als Variablen an den n\"achsten Teil der Shaderpipeline weitergegeben.
@@ -1322,7 +1326,7 @@ Der Vertex Shader bekommt als Eingabe die Eckpunkte der Tetraeder, codiert in Fo
 \paragraph{Geometry Shader}
 Die von FAnToM unterst\"utzte OpenGL Version unterst\"utzt standardm\"a{\ss}ig keine Geometry Shader. Mithilfe einer Erweiterung kann das jedoch umgangen werden.
 
-Der Geometry Shader bekommt als Eingabe alle Punkte eines Primitivs und die vom Vertex Shader \"ubergebenen Variablen f\"ur diese Punkte. Ziel des Geometry Shaders ist es, die Tetraeder mit Ebenen, die parallel zur XY-Ebene verlaufen, zu schneiden und die Schnittfl\"achen als Dreiecke zur\"uck in die Renderpipeline zu \"ubergeben.
+Der Geometry Shader bekommt als Eingabe alle Punkte eines Primitivs und die vom Vertex Shader \"ubergebenen Variablen f\"ur diese Punkte. Ziel des Geometry Shaders ist es, die Tetraeder mit Ebenen, die parallel zur xy-Ebene verlaufen, zu schneiden und die Schnittfl\"achen als Dreiecke zur\"uck in die Renderpipeline zu \"ubergeben.
 
 Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkanten mit der Ebene. Wenn mindestens drei Schnittpunkte existieren, werden  daraus Dreiecke konstruiert und weitergegeben. Wenn vier Schnittpunkte gefunden wurden, m\"ussen sie zuvor noch nach ihrer Position im Raum geordnet werden, um leicht zwei \"uberlappungsfreie Dreiecke konstruieren zu k\"onnen. In Pseudocode \ref{PseudoGeometry} wird das Verfahren dargestellt.
 
@@ -1399,8 +1403,8 @@ F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berec
 	\For{$x \gets 0$ \KwTo $x_{max}$}{
 		\For{$y \gets 0$ \KwTo $y_{max}$}{
 			$p \gets punktAnKoordinaten(\frac{x}{x_{max}},\frac{y}{y_{max}},z)$
-			$voxelDichte = texturwertAnPunkt(T, p)$
-			$max = maximum(max, voxelDichte)$
+			$voxelDichte \gets texturwertAnPunkt(T, p)$
+			$max \gets maximum(max, voxelDichte)$
 		}	
 	}
 	\Return max\;
@@ -1416,8 +1420,10 @@ F\"ur die beiden DVR Darstellungen wird eine Variante von des in Abschnitt \ref{
 
 Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht der Bildebene in Abb. \ref{sec:Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
 
+Um den r\"aumlichen Eindruck des DVR zu erh\"ohen, wird eine perspektivische Projektion mit einem Blickfeld von 90\textdegree verwendet.
+
 \paragraph{Vertex Shader}
-Im Vertex Shader werden lediglich die X- und Y-Koordinaten der Punkte in einer Variable gespeichert und an den Fragment Shader \"ubergeben.
+Im Vertex Shader werden lediglich die x- und y-Koordinaten der Punkte in einer Variable gespeichert und an den Fragment Shader \"ubergeben.
 
 \paragraph{Fragment Shader}
 Die `Model-View-Projection Matrix', kurz MVP, ist eine Matrix, die die Abbildung von Punkten im Raum auf die Bildebene ausdr\"uckt. Dazu geh\"oren Translationen und Rotationen der Szene sowie die perspektivische Projektion von 3D zu 2D. Mithilfe des Inversen der MVP l\"asst sich f\"ur jeden Punkt auf der Bildebene ein Strahl konstruieren, der diesen Punkt und die Kameraposition schneidet. Um Tiefenwahrnehmung zu erm\"oglichen wird f\"ur Projektions-Komponente der MVP Matrix eine perspektivische Projektion verwendet.
@@ -1426,7 +1432,7 @@ Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallele
 
 Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offset erzeugt werden, der die Position des ersten Samplepunkts beeinflusst.
 
-Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formel \ref{RaycastingFormula} zu einem Farbwert kombiniert. 
+Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formeln \ref{RaycastingFormula1} und \ref{RaycastingFormula2} zu einem Farbwert kombiniert. 
 
 Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand des Volumendatensatzes, fr\"uhzeitige Terminierung) sind implementiert.
 
@@ -1462,15 +1468,15 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 		$dichte \gets dichte(T, p)$\; 
 		\tcp{Nur im Objekt}
 		\If{$invarianten \notin B$}{
-			$fragmentFarbe \gets fragmentFarbe + (1.0, 1.0, 1.0, 0.05)$\;
-			$transparenz = transparenz - 0.05$\;
+			$fragmentFarbe \gets fragmentFarbe = (1.0, 1.0, 1.0, 0.05)$\;
+			$transparenz \gets transparenz - 0.05$\;
 			$continue$\;
 		} 
 		\tcp{Nur im Invariantenraum}
 		\If{$p \notin B$}{$continue$\;} 
 		$voxelFarbe \gets transferfkt(dichte)$\;
 		$fragmentFarbe \gets fragmentFarbe + voxelFarbe \cdot transparenz$\;
-		$transparenz = transparenz - voxelFarbe.transparenz$\;
+		$transparenz \gets transparenz - voxelFarbe.transparenz$\;
 	}
 	\vspace{0.5cm}
 	\caption{Die Berechnung der akkumulierten Farbe eines Strahls durch die 3D Textur.}
@@ -1503,7 +1509,7 @@ Mit dem Begriff ``Affordances'' beschreiben Preim et al. \cite[S.~137]{preim2010
 
 Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget beschrieben ist, wurden im Rahmen dieser Arbeit eigene Widgets entwickelt, durch die Bereiche im Invariantenraum ausgew\"ahlt werden k\"onnen. Da die Invariantenr\"aume meistens in einem von zwei Koordinatensystemen dargestellt werden, den kartesischen und den zylindrischen Koordinaten, wurden f\"ur diese beiden Koordinatensysteme jeweils ein eigenes Widget enwickelt. Die Auswahl des angezeigten Widgets muss dabei der Benutzer treffen, da VTK keine M\"oglichkeit unterst\"utzt, das verwendete Koordinatensystem mit abzuspeichern.
 
-Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406f]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in Abschnitt \ref{sec:Slicing} beschrieben werden. 
+Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in Abschnitt \ref{sec:Slicing} beschrieben werden. 
 
 \subsubsection{Quadrisches Interaktionswidget}
 
@@ -1603,7 +1609,7 @@ Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung
 \paragraph{Rotation des DVR}
 Indem die linke Maustaste gedr\"uckt und gehalten wird, kann durch die Bewegung der Maus die Visualisierung um das aktuelle Rotationszentrum gedreht werden. Die Rotation ist in Form eines sogenannten ``Trackballs'' implementiert. Preim et al. beschreiben den Trackball als das Objekt umschlie{\ss}ende Kugel, die durch Mausbewegung gedreht wird und diese Bewegung auf das dargestellte Objekt, in diesem Fall das DVR und die Interaktionswidgets, \"ubetr\"agt.
 \paragraph{Setzen des Rotationszentrums}
-Das Rotationszentrum des Trackballs kann, wenn die zylindrischen Interaktionswidgets aktiviert sind, mittels doppeltem Linksklick an einen Punkt entlang der X-Achse gesetzt werden. Wenn dagegen das quadrische Interaktionswidget aktiviert ist, ist das Rotationszentrum immer im Zentrum des Quaders.
+Das Rotationszentrum des Trackballs kann, wenn die zylindrischen Interaktionswidgets aktiviert sind, mittels doppeltem Linksklick an einen Punkt entlang der x-Achse gesetzt werden. Wenn dagegen das quadrische Interaktionswidget aktiviert ist, ist das Rotationszentrum immer im Zentrum des Quaders.
 \paragraph{Zur\"ucksetzen von Rotation und Kameraposition}
 Durch Dr\"ucken der `c'-Taste wird die Kameraposition und die Rotation des Feldes zur\"uckgesetzt.
 \paragraph{Zur\"ucksetzen der Invariantenbereiche}
@@ -1686,6 +1692,13 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 \subsection{Single Point Load}
 
 \begin{figure}
+		\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=6cm]{pictures/results/SinglePoint_Object.png}
+		\subcaption{}
+		\label{SinglePointObject}
+	\end{subfigure}
+	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/SinglePoint_Ellipsoids.png}
@@ -1695,23 +1708,20 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/SinglePoint_Object.png}
-		\subcaption{}
-		\label{SinglePointObject}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
 		\includegraphics[height=6cm]{pictures/results/SinglePoint_InvariantSpace.png}
 		\subcaption{}
 		\label{SinglePointInvariantSpace}
-	\end{subfigure}	
+	\end{subfigure}
 	\caption{Darstellung des Single Point Load Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
 	\label{SinglePoint}
 \end{figure}
-Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dabei wird simuliert, dass auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von simulierten Datens\"atzen wird auch als Single Point Load bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
+Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als Single Point Load bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
 
-Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionswidgets links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
+Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums ist in Abb. \ref{SinglePointObject} zu sehen. 
+
+Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Durch die \"Uberdeckung der Glyphen ist es schwer zu erkennen an welchen Punkten die Glyphen genau eingezeichnet sind, es scheint jedoch so als ob die Matrizen nahe der Oberfl\"ache stark planar anistrop sind, was durch flache runde Glyphen dargestellt ist. Weiter im Inneren ist die Form der Glyphen eher l\"anglich, was auf lineare Anisotropie hinweist. 
+
+Abb. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionswidgets links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
 
 In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Verwendet wurde der K-Invariantensatz. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedrigem $K_1$ ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedrigem $K_2$ und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hohem $K_3$ zu sehen. 
 
@@ -1768,45 +1778,82 @@ Insgesamt lassen sich aus der Darstellung der Invariantenbereiche eine Reihe von
 	\label{SinglePointInteraction}
 \end{figure}
 
-
-
-\subsection{Metallscheibe}
-Als zweites Beispiel wurde das Ergebnis einer thermo-mechanischen Simulation, durchgef\"uhrt von Dr. Thomas Nagel, verwendet, die auch in der Arbeit von Fritzsch benutzt wurde \cite[S.15, 45 ff.]{fritzsch2016continuousScatterplot}. Fritzsch beschreibt den Datensatz wie folgt:
-
-``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016continuousScatterplot}
-
-Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur Z-Achse sind. Die Z-Achse selbst zeigt nach unten.
-
-Da die Metallscheibe spiegelsymmetrisch zur X- und Y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. F\"ur beide Datens\"atze wurden getrennt voneinander Visualisierungen mit dem K-Invariantensatz erzeugt, die im Folgenden vorgestellt werden.
-
+\clearpage
 
 \begin{figure}
-	\begin{subfigure}{0.3\textwidth}
+	\begin{subfigure}{0.25\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStress_Ellipsoids.png}
+		\includegraphics[height=6cm]{pictures/results/MetalDisk_Object.png}
+		\subcaption{}
+		\label{MetalDiskObject}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.25\textwidth}
+		\centering
+		\includegraphics[height=6cm]{pictures/results/MetalDisk_Stress_Ellipsoids.png}
 		\subcaption{}
 		\label{MetalDiskStressEllipsoids}
 	\end{subfigure}
 	\hspace*{\fill}
+	\begin{subfigure}{0.25\textwidth}
+		\centering
+		\includegraphics[height=6cm]{pictures/results/MetalDisk_Strain_Ellipsoids.png}
+		\subcaption{}
+		\label{MetalDiskStrainEllipsoids}
+	\end{subfigure}
+	\caption{Der Metallscheiben-Datensatz: (a) DVR des Objektes, (b) Tensorglyphen der mechanischen Spannung und (c) Tensorglyphen der mechanischen Verformung.}
+	\label{MetalDisk}
+\end{figure}
+
+\subsection{Metallscheibe}
+
+Als zweites Beispiel wurden die Ergebnisse einer thermo-mechanischen Simulation einer Metallscheibe, durchgef\"uhrt von Dr. Thomas Nagel, verwendet. Dieselben Daten bilden auch die Grundlage f\"ur ein Anwendungsbeispiel in der Arbeit von Fritzsch \cite[S.15,~45~ ff.]{fritzsch2016continuousScatterplot}. Dort werden die Datens\"atze von Fritzsch wie folgt beschrieben:
+
+``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016continuousScatterplot}
+
+Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur z-Achse sind. Die z-Achse selbst zeigt nach unten.
+
+Da die Metallscheibe spiegelsymmetrisch zur x- und y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. Die Metallscheibe sowie Tensorglyphen der beiden Datens\"atze sind in Abb. \ref{MetalDisk} dargestellt. 
+
+Beide Datens\"atze wurden von Fritzsch untersucht. Dabei wurden als Invarianten $I_1$ und $\sqrt{2J}$ verwendet. Da im dreidimensionalen gilt $I_1 = K_1$ und $\sqrt{2J_2} = K_2$ und die Tensoren beider Datens\"atze dreidimensional sind, ist im Folgenden stattdessen vom K-Invariantensatz die Rede. Um die Korrektheit der in der vorliegenden Arbeit implementierten Visualisiserung zu zeigen und die Ergebnisse mit denen von Fritzsch vergleichen zu k\"onnen, werden im Folgenden Visualisierungen des K-Invariantensatzes f\"ur mechanische Spannung und mechanische Verformung vorgestellt und mit den Visualisierungen von Fritzsch verglichen.
+
+Um die visuelle Vergleichbarkeit zu erh\"ohen, wurden auch Bilder mit orthogonalen Projektionen erzeugt. Daf\"ur existiert im implementierten FAnToM Plugin noch keine Option. Da die erzeugten Bilder jedoch einige Vorteile bieten, zum Beispiel die M\"oglichkeit Positionen im Invariantenraum leichter abzulesen, k\"onnte diese Option in Zukunft noch implementiert werden. Die f\"ur die DVRs verwendete Transferfunktion wurde ebenfalls so gew\"ahlt, dass die \"Ahnlichkeit der Visualisierungen deutlich wird.
+
+\begin{figure}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStress_Object.png}
+		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Fritzsch.png}
 		\subcaption{}
-		\label{MetalDiskStressObject}
+		\label{MetalDiskStressFritzsch}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStress_InvariantSpace.png}
+		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Orthogonal.png}
 		\subcaption{}
-		\label{MetalDiskStressInvariantSpace}
+		\label{MetalDiskStressOrthogonal}
 	\end{subfigure}
-	\caption{Darstellung des Metallscheiben-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
-	\label{MetalDiskStress}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Perspective.png}
+		\subcaption{}
+		\label{MetalDiskStressPerspective}
+	\end{subfigure}
+	\caption{Darstellungen des Invariantenraums des K-Invariantensatzes f\"ur den mechanischen Stress in der Simulation der Metallscheibe: (a) Die von Fritzsch vorgestellte Visualisierung \cite[S.~45]{fritzsch2016continuousScatterplot}, (b) ein DVR mit orthogonaler Projektion, (c) ein DVR mit perspektivischer Projektion.}
 \end{figure}
 
 \subsubsection{Spannung}
-Abb. \ref{MetalDiskStressEllipsoids} zeigt die Spannungstensoren der Metallscheibe in Form von Ellipsoidglyphen. Pro Punkt wird eine Glyphe gezeichnet, die sich aber \"uberschneiden k\"onnen, was die Interpretation erschwert. Erkennbar ist jedoch, dass die Glyphen am \"au{\ss}eren Rand der Scheibe eher l\"anglich und die am inneren Rand eher scheibenf\"ormig sind. Das bedeutet, dass die Tensoren am \"ausseren Rand einen einzelnen Eigenwert mit hohem und zwei Eigenwerte mit kleinem Betrag besitzen, wogegen am inneren Rand zwei Eigenwerte hohe und nur einer einen kleinen Betrag hat. In beiden Bereichen ist hohe Anisotropie zu erwarten. Gleichzeitig nimmt die Gr\"o{\ss}e der Glyphen im Bild von unten links nach oben rechts zu. Dies ist darauf zur\"uckzuf\"uhren, dass nach oben rechts hin negative Eigenwerte mit immer gr\"o{\ss}erem Betrag vorkommen. In der Glyphendarstellung gehen Informationen \"uber die Vorzeichen der Eigenwerte verloren.
+Abb. \ref{MetalDiskStressFritzsch} zeigt die von Fritzsch erzeugte Darstellung der f\"ur die Metallscheibe simulierten mechanischen Spannung. Die x-Achse entspricht dabei der Invariante $K_1$ und die y-Achse $K_2$. Der gleiche Datensatz ist in Abb. \ref{MetalDiskStressOrthogonal} als DVR mit orthogonaler Perspektive visualisiert, wobei die x-Achse wiederum $K_1$ und die y-Achse $K_2$ entspricht. Die z-Achse entspricht $K_3$, verschwindet jedoch durch die orthogonale Projektion, da die Blickrichtung der Kamera parallel zur z-Achse ist. In Abb. \ref{MetalDiskStressPerspective} ist derselbe Datensatz noch einmal dargstellt, jedoch mit perspektivischer Projektion.
+
+Die \"Ahnlichkeit zwischen Abb. \ref{MetalDiskStressFritzsch} und \ref{MetalDiskStressOrthogonal} ist offensichtlich. Insbesondere der l\"angliche Bereich hoher Dichte unten mit seiner geschwungenen oberen Kante ist deutlich wiedererkennbar. 
+
+Es gibt jedoch auch deutliche Unterschiede. Der obere Bereich in Abb. \ref{MetalDiskStressOrthogonal} ist deutlich heller als in Abb. \ref{MetalDiskStressFritzsch}. Dies ist darauf zur\"uckzuf\"uhren, dass die z-Koordinaten der Eckpunkte der Tetraeder in diesem Bereich sehr nah beieinander liegen, die Tetraeder also fast Fl\"achen parallel zur xz-Ebene sind. Dadurch schneiden die f\"ur bei der Rasterisierung verwendeten Fl\"achen nur wenige Tetraeder, was zu den komplett weissen Bereichen und den linienf\"ormigen Artefakten im DVR f\"uhrt. Eine m\"ogliche L\"osung dieses Problems w\"are, den Winkel der der Rasterisierung verwendeten Fl\"achen zur xy-Ebene einstellbar zu machen.
+
+Ein weiterer erkennbarer Unterschied sind die verschiedenen F\"arbungen an den rechten Kanten der Darstellungen. Bei der Visualisierung von Fritzsch ist dieser Bereich sehr dunkel, im DVR dagegen in einem mittleren Grau. Der Grund daf\"ur liegt in den unterschiedlichen Berechnungen der Farbwerte. Der Algorithmus von Fritzsch addiert f\"ur jedes Pixel die darauf projezierten Dichtewerte der Tetraeder und berechnet aus dieser Summe den Farbwert des Pixels. Dies entspricht dem Vorgehen beim Erstellen von R\"iontgenbildern, wie in Abschnitt \ref{sec:DVR} beschrieben. Das implementierte DVR dagegen verwendet das Vorgehen zum Erzeugen transluzenter Bilder, das im selben Abschnitt beschrieben wird.
+
+ 
+Abb. \ref{MetalDiskStressEllipsoids} zeigt die Spannungstensoren der Metallscheibe in Form von Ellipsoidglyphen. Erkennbar ist, dass die Glyphen am \"au{\ss}eren Rand der Scheibe eher l\"anglich und die am inneren Rand eher scheibenf\"ormig sind. Das bedeutet, dass die Tensoren am \"ausseren Rand einen einzelnen Eigenwert mit hohem und zwei Eigenwerte mit kleinem Betrag besitzen, wogegen am inneren Rand zwei Eigenwerte hohe und nur einer einen kleinen Betrag hat. In beiden Bereichen ist hohe Anisotropie zu erwarten. Gleichzeitig nimmt die Gr\"o{\ss}e der Glyphen im Bild von unten links nach oben rechts zu. Daraus ist erkennbar, dass der Betrag der Eigenwerte von unten links nach oben rechts zunimmt. Die Informationen \"uber das Vorzeichen der Eigenwerte geht jedoch in der Glyphendarstellung verloren. Deshalb l\"asst sich nicht ablesen, ob die hohen Eigenwertbetr\"age auf Ausdehnung oder Schrumpfen in diesem Bereich hinweist. 
 
 Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}) lassen weitere Interpretationen zu. In Abb. \ref{MetalDiskStressObject1} ist zu sehen, dass die Spur im oberen rechten Teil des Scheibenausschnitts am kleinsten ist, da die negativen Eigenwerte an dieser Stelle den gr\"o{\ss}ten Betrag haben.  Abb. \ref{MetalDiskStressObject2} zeigt, dass die Norm des Deviators am inneren und \"au{\ss}eren Rand der Scheibe gro{\ss} und im Bereich dazwischen eher klein ist, was auf hohe Anisotropie hinweist. Der Modus ist am inneren Rand der Scheibe gro{\ss} und am \"au{\ss}eren klein (Abb. \ref{MetalDiskStressInvariant3} und \ref{MetalDiskStressObject3}).Das bedeutet, dass die Anisotropie am inneren Rand eher planar und am \"ausseren Rand eher linear ist.
 
@@ -1859,34 +1906,6 @@ Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gew
 	\caption{Die mechanische Spannung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit niedrigem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
 	\label{MetalDiskStressInteraction}
 \end{figure}
-
-\clearpage
-
-\begin{figure}[H]
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStrain_Ellipsoids.png}
-		\subcaption{}
-		\label{MetalDiskStrainEllipsoids}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStrain_Object.png}
-		\subcaption{}
-		\label{MetalDiskStrainObject}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDiskStrain_InvariantSpace.png}
-		\subcaption{}
-		\label{MetalDiskStrainInvariantSpace}
-	\end{subfigure}
-	\caption{Darstellung des Metallscheiben-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
-	\label{MetalDiskStrain}
-\end{figure}
-
 
 \subsubsection{Verformung}
 Die Verformungstensoren der Metallscheibensimulation sind in Abb. \ref{MetalDiskStrainEllipsoids} dargestellt. Erkennbar ist, dass die Glyphen am inneren Rand erheblich gr\"o{\ss}er sind als alle anderen. Die Eigenwerte dieser Tensoren haben tats\"achlich einen relativ hohen Betrag, sind jedoch teilweise negativ, was dazu f\"uhrt, dass auch die Spur dort niedrig oder sogar negativ ist. Dies f\"allt auch in Abb. \ref{MetalDiskStrainInvariant1} auf, wo Bereiche niedriger Spur ausgeblendet werden.
@@ -2099,7 +2118,7 @@ Durch die Voxelisierung ist es dem Benutzer m\"oglich, die Aufl\"osung der Darst
 
 Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o{(\ss}enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
 
-Die meisten in \hyperref{sec:Verwandte} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
+Die meisten im Kapitel \hyperref[sec:Verwandte]{Verwandte Arbeiten} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
 
 Durch die in Echtzeit vornehmbaren Interaktionen ist es zudem m\"oglich, Bereiche mit bestimmten Invariantenkombinationen hervorzuheben. Diese explorative Analyse unterscheidet die Visualisierung von den klassischen statischen Ans\"atzen und bietet die M\"oglichkeit, uninteressante Bereiche auszublenden. Auch Zusammeh\"ange zwischen den Verteilungen der Invarianten im Objekt k\"onnen durch die Interaktionen leicht gefunden werden. Selbst kleine Ver\"anderungen der Invarianten \"uber den Datensatz hinweg lassen sich verfolgen.
 
@@ -2111,7 +2130,9 @@ Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik von der Technischen Univ
 
 Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"onnte eine lohnenswerte Erweiterung des Systems darstellen. Die Interpretation durch den Nutzer w\"urd erleichtert, da er die Bereiche nicht mehr per Hand einstellen m\"usste und daher weniger Kenntnisse \"uber die Invarianten und ihre Bedeutung notwendig w\"aren. Gleichzeitig w\"aren die Ergebnisse exakter und besser in der Praxis anwendbar. 
 
-Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"are sie ein guter Ansatzpunkt f\"ur Optimierungen. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen.
+Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"are sie ein guter Ansatzpunkt f\"ur Optimierungen. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen. Auch Probleme wie d\"unne, ebenenparallele Bereiche k\"onnten durch Verbesserungen der Rasterisierung behoben werden.
+
+Wie in den Vergleichen mit den Ergebnissen von Fritzsch erw\"ahnt ist die Implementierung einer Option zum Umschalten auf orthogonale Projektion im DVR eine m\"oglicherweise lohnenswerte Erweiterung. Auch Optionen zur Erstellung von R\"ontgenbildern, MIPs oder Isof\"achen sind vorstellbar.
 
 Zuletzt bieten auch die Interaktionswidgets Raum f\"ur Weiterentwicklung, besonders in Hinblick auf Affordances, Hervorhebung der Handles bei Selektion und der Darstellung der Widgets in abh\"angig von den Farben der Transferfunktion.
  
