@@ -420,8 +420,8 @@ Das charakteristische Polynom $\chi$ einer $3\times3$ Matrix $A$ hat die Form
 \begin{equation}
 	\centering
 	\begin{split}
-	&\chi_A(\lambda) = det(\lambda I - A)\\
-	&\chi_A(\lambda) = -\lambda^3 + I_1\lambda^2 - I_2\lambda + I_3
+	&\chi_A(a) = det(a \cdot I - A)\\
+	&\chi_A(a) = -a^3 + I_1\cdot a^2 - I_2\cdot a + I_3
 	\end{split}
 \end{equation}
 
@@ -434,7 +434,16 @@ Eine weitere Eigenschaft ist, dass die Parameter $I_1, I_2, I_3$ einen Invariant
 	\item $I_2(A) = \frac{1}{2}(tr(A)^2 - tr(A^2))$ (Summe der Hauptminoren von $A$)
 	\item $I_3(A) = det(A)$ (Determinante von $A$)
 \end{itemize}
-Der I Invariantensatz ist jeodch nicht orthogonal.
+
+Der I Invariantensatz ist jedoch nicht orthogonal. Dies wird ersichtlich, wenn man die Darstellung des I-Invariantensatzes durch die Eigenwerte $\lambda_1, \lambda_2, \lambda_3$ betrachtet:
+
+\begin{itemize}
+	\item $I_1(A) = \lambda_1 + \lambda_2 + \lambda_3$
+	\item $I_2(A) = \lambda_1\lambda_2 + \lambda_1\lambda_3 + \lambda_2\lambda_3$
+	\item $I_3(A) = \lambda_1\lambda_2\lambda_3$ 
+\end{itemize}
+
+Wenn zwei der Invarianten als positiv und fest angenommen werden, und die dritte steigt, so steigen auch alle drei Invarianten des I-Invariantensatzes, was die Bedingung der Orthogonalit\"at verletzt.
 
 \paragraph{Der J-Invariantensatz}
  Die Berechnung der J-Invarianten ist identisch zum I-Invariantensatz, nur dass statt $A$ der Deviator von $A$ als Eingabe verwendet wird:
@@ -451,7 +460,7 @@ Dabei ist jedoch zu beachten, dass
 	\begin{split}
 	tr(\tilde{A}) &= tr(A - \frac{1}{3}tr(A)I)\\
 	&= a_{11} - \frac{1}{3} tr(A) + a_{22} - \frac{1}{3} tr(A) + a_{33} - \frac{1}{3} tr(A)\\
-	&= a_{11} + a_{22} + a{33} - tr(A)\\
+	&= a_{11} + a_{22} + a_{33} - tr(A)\\
 	&= tr(A) - tr(A)\\
 	&= 0
 	\end{split}
@@ -1028,9 +1037,11 @@ Wenn die Schnitte dagegen mit abnehmender Entfernung zur Kamera verarbeitet werd
 
 so muss die akkumulierte Opazit\"at der Pixel nicht gespeichert werden, was bei geringer Speicherkapazit\"at ein Vorteil sein kann. Daf\"ur ist fr\"uhzeitiges Terminieren nicht m\"oglich.
 
+Ein Problem des Texture Slicings liegt darin, dass die gew\"ahlte Anzahl der Schnittfl\"achen einen Einfluss auf das erzeugte Bild hat. Wenn innerhalb der gleichen Distanz mehr Schnittfl\"achen berechnet werden, werden im Blending mehr Summanden aufaddiert. Mehr Schnittfl\"achen f\"uhren also zu h\"oheren aufaddierten Opazit\"aten und damit zu anderen Bildern. Eine oft angewendete L\"osung liegt darin, die von der Transferfunktion bestimmte Opazit\"at mit dem Inversen der Anzahl der Schnittfl\"achen zu skalieren.
+
 Die Laufzeit des Texture Slicings ist haupts\"achlich abh\"angig von der Anzahl der einzuf\"arbenden Pixel und der Nummer der zu berechnenden Schnittbilder. Eine h\"ohere Anzahl von Schnittbildern f\"uhrt jedoch auch zu einer exakteren Repr\"asentation des Datensatzes, da sich dadurch die Chance, dass ein relevanter Teil des Datensatzes von keinem der Schnitte getroffen wird, reduziert. Durch Interaktionen kann es dem Benutzer erm\"oglicht werden, den Tradeoff zwischen Rechenzeit und Bildqualit\"at anzupassen.
 
-Der wichtigste Vorteil des Texture Slicings ist die f\"r image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe Abb. \ref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
+Der wichtigste Vorteil des Texture Slicings ist die f\"ur image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe Abb. \ref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
 
 \subsection{Raycasting}
 \label{sec:Raycasting}
@@ -1052,9 +1063,8 @@ Dieses Integral l\"asst sich im allgemeinen Fall nur mit viel Rechenaufwand, wen
 I(x,r) = \sum_{i=0}^{L/\Delta s - 1} C(i\Delta s)\alpha(i\Delta s) \prod_{j=0}^{i-1}( 1 - \alpha(j \Delta s))
 \end{equation}
 
-Hier entspricht $\Delta s$ einem Bruchteil von $L$. Desto kleiner $\Delta s$ wird, desto besser wird das Integral approximiert. Die Funktion $\alpha(i \Delta s)$ ermittelt die Opazit\"at an dem Punkt, der $i \Delta s$ von der Kamera entfernt ist und auf dem Strahl liegt.
-
-Diese Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur $i > 0$):
+Hier entspricht $\Delta s$ einem Bruchteil von $L$. Desto kleiner $\Delta s$ wird, desto besser wird das Integral approximiert. Die Funktion $\alpha(i \Delta s)$ ermittelt die Opazit\"at an dem Punkt des Strahls, der $i \Delta s$ von der Kamera entfernt ist. Um die schon beim Texture Slicing beschriebenen Probleme zu vermeiden, wird die Opazit\"at direkt mit der Entfernung zwischen den Abtastpunkten auf einem Strahl skaliert, die proportional zum Inversen der Anzahl der Abtastpunkte pro Strahl ist.
+Die Gleichung kann in zwei \"aquivalente rekursive Folgen zerlegt werde (f\"ur $i > 0$):
 
 \begin{align}
 &\alpha_0 = c_0 = 0\\
@@ -1694,21 +1704,21 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 \begin{figure}
 		\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/SinglePoint_Object.png}
+		\includegraphics[height=6cm]{pictures/results/SinglePoint/SinglePoint_Object.png}
 		\subcaption{}
 		\label{SinglePointObject}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/SinglePoint_Ellipsoids.png}
+		\includegraphics[height=6cm]{pictures/results/SinglePoint/SinglePoint_Ellipsoids.png}
 		\subcaption{}
 		\label{SinglePointEllipsoids}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/SinglePoint_InvariantSpace.png}
+		\includegraphics[height=6cm]{pictures/results/SinglePoint/SinglePoint_InvariantSpace.png}
 		\subcaption{}
 		\label{SinglePointInvariantSpace}
 	\end{subfigure}
@@ -1721,6 +1731,13 @@ Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums ist in Abb. \ref{Single
 
 Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Durch die \"Uberdeckung der Glyphen ist es schwer zu erkennen an welchen Punkten die Glyphen genau eingezeichnet sind, es scheint jedoch so als ob die Matrizen nahe der Oberfl\"ache stark planar anistrop sind, was durch flache runde Glyphen dargestellt ist. Weiter im Inneren ist die Form der Glyphen eher l\"anglich, was auf lineare Anisotropie hinweist. 
 
+F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das dazugeh\"orende quadrische Interaktionswidget verwendet. 
+
+Die Darstellung wurde gedreht, so dass die durchgef\"uhrten Interaktionen besser sichtbar werden. Durch die Drehung befindet sich der Koordinatenursprung an der vorderen linken unteren Ecke des Interaktionswidgets, erkennbar dadurch dass dort alle drei farbigen Kanten beginnen. Die rote Kante geht vom Koordinatenursprung aus nach hinten, in Richtung der steigenden ersten, die gelbe Kante nach oben in Richtung der steigenden zweiten und die blaue Kante nach links in Richtung der steigenden dritten Invariante. Die Dimensionen des Invariantenraumes wurde durch eine Option des Algorithmus so skaliert, dass die Bereiche 
+
+Die Darstellung des Datensatzes im Invariantenraum 
+
+Interdie Koordinaten der Tetraeder f\"ur das kartesische Koordinatensystem berechnet. Dementsprechend wird auch das quadrische Interaktionswidget angezeigt, dargestellt durch die
 Abb. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionswidgets links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
 
 In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Verwendet wurde der K-Invariantensatz. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedrigem $K_1$ ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedrigem $K_2$ und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hohem $K_3$ zu sehen. 
@@ -1735,42 +1752,42 @@ Insgesamt lassen sich aus der Darstellung der Invariantenbereiche eine Reihe von
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_InvariantSpace1.png}
 		\subcaption{}
 		\label{SinglePointInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_Object1.png}
 		\subcaption{}
 		\label{SinglePointObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_InvariantSpace2.png}
 		\subcaption{}
 		\label{SinglePointInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_Object2.png}
 		\subcaption{}
 		\label{SinglePointObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_InvariantSpace3.png}
 		\subcaption{}
 		\label{SinglePointInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/SinglePoint_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/SinglePoint/SinglePoint_Object3.png}
 		\subcaption{}
 		\label{SinglePointObject3}
 	\end{subfigure}
@@ -1783,21 +1800,21 @@ Insgesamt lassen sich aus der Darstellung der Invariantenbereiche eine Reihe von
 \begin{figure}
 	\begin{subfigure}{0.25\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDisk_Object.png}
+		\includegraphics[height=6cm]{pictures/results/MetalDisk/MetalDisk_Object.png}
 		\subcaption{}
 		\label{MetalDiskObject}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.25\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDisk_Stress_Ellipsoids.png}
+		\includegraphics[height=6cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Ellipsoids.png}
 		\subcaption{}
 		\label{MetalDiskStressEllipsoids}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.25\textwidth}
 		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDisk_Strain_Ellipsoids.png}
+		\includegraphics[height=6cm]{pictures/results/MetalDisk/strain/MetalDisk_Strain_Ellipsoids.png}
 		\subcaption{}
 		\label{MetalDiskStrainEllipsoids}
 	\end{subfigure}
@@ -1822,21 +1839,21 @@ Um die visuelle Vergleichbarkeit zu erh\"ohen, wurden auch Bilder mit orthogonal
 \begin{figure}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Fritzsch.png}
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Fritzsch.png}
 		\subcaption{}
 		\label{MetalDiskStressFritzsch}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Orthogonal.png}
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Orthogonal.png}
 		\subcaption{}
 		\label{MetalDiskStressOrthogonal}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.3\textwidth}
 		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk_Stress_Perspective.png}
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Perspective.png}
 		\subcaption{}
 		\label{MetalDiskStressPerspective}
 	\end{subfigure}
@@ -1864,42 +1881,42 @@ Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gew
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace1_C.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object1.png}
 		\subcaption{}
 		\label{MetalDiskStressObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace2_C.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object2.png}
 		\subcaption{}
 		\label{MetalDiskStressObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace3_C.png}
 		\subcaption{}
 		\label{MetalDiskStressInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStress_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object3.png}
 		\subcaption{}
 		\label{MetalDiskStressObject3}
 	\end{subfigure}
@@ -1916,42 +1933,42 @@ Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datens
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace1_C.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object1.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/MetalDiskStrain_Object1.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject1}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace2_C.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant2}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object2.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/MetalDiskStrain_Object2.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject2}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_InvariantSpace3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace3_C.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant3}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDiskStrain_Object3.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/MetalDiskStrain_Object3.png}
 		\subcaption{}
 		\label{MetalDiskStrainObject3}
 	\end{subfigure}
