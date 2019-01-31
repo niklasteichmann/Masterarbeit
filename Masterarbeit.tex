@@ -45,7 +45,7 @@
 \newcommand{\matrikelnummer}{2878372\xspace}
 \author{Niklas Teichmann}
 \date{\today}
-\newcommand{\kurz}{Die Visualisierung von Tensorfeldern ist trotz vieler Jahrzehnte der Forschung noch immer ein aktives Thema. Komplexe Strukturen innerhalb von Tensorfeldern stellen hohe Anforderungen an Visualisierungssoftware, um die Interpretation durch Nutzer zu erleichtern. Innerhalb dieser Arbeit wurde eine Erweiterung f\"ur die Visualisierungssoftware `FAnToM' entwickelt, die Techniken aus dem Direct Volume Rendering und dem Continuous Scatterplotting verwendet, um Invarianten von symmetrischen Tensoren 2. Grades und ihre Verteilung innerhalb eines Datensatzes darzustellen. Dabei wurde besonderer Wert auf Interaktivit\"at gelegt, um Nutzern die explorative Analyse der Daten zu erm\"oglichen.}
+\newcommand{\kurz}{Die Visualisierung von Tensorfeldern ist trotz vieler Jahrzehnte der Forschung noch immer ein aktives Thema. Komplexe Strukturen innerhalb von Tensorfeldern stellen hohe Anforderungen an Visualisierungssoftware, um die Interpretation durch Nutzer zu erleichtern. Innerhalb dieser Arbeit wurde eine Erweiterung f\"ur die Visualisierungssoftware `FAnToM' entwickelt, die Techniken aus dem Direct Volume Rendering und dem Continuous Scatterplotting verwendet, um Invarianten von symmetrischen Tensoren zweiten Grades und ihre Verteilung innerhalb eines Datensatzes darzustellen. Dabei wurde besonderer Wert auf Interaktivit\"at gelegt, um Nutzern die explorative Analyse der Daten zu erm\"oglichen.}
 
 % renders abstract along with declaration at titlepage with \publishers workaroung
 \publishers{%
@@ -75,12 +75,12 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Einleitung}
-Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Tensoren stellen, vereinfacht ausgedr\"uckt, mathematische Funktionen dar, die eine Menge von Vektoren auf einen skalaren Wert abbilden. Skalare, Vektoren und Matrizen können ebenfalls als Tensoren aufgefasst werden. Die Auswertung der Tensoren ist dann mittels des inneren Produkts möglich. Im Abschnitt \hyperref[sec:Grundlagen] wird dies näher erklärt.
+Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Tensoren stellen, vereinfacht ausgedr\"uckt, mathematische Funktionen dar, die eine Menge von Vektoren auf einen skalaren Wert abbilden. Skalare, Vektoren und Matrizen können ebenfalls als Tensoren aufgefasst werden. Die Auswertung der Tensoren ist dann mittels des inneren Produkts möglich. Im Abschnitt \hyperref[sec:Grundlagen]{3 Grundlagen} wird dies näher erklärt.
 
 Beispiele f\"ur Tensorfelder findet man in der Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder bei Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Dabei stellen sich eine Reihe von Herausforderungen, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016continuousScatterplot}:
 
 \paragraph{Menge an Daten pro Tensor}
-Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Selbst ein Tensor 2. Grades und 3. Dimension, der durch eine $3 \times 3$ Matrix dargestell wird, besteht bereits aus 9 Werten, f\"ur die eine visuelle Codierung gefunden werden muss.
+Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Selbst ein Tensor zweiten Grades und dritter Dimension, der durch eine $3 \times 3$ Matrix dargestell wird, besteht bereits aus neun Werten, f\"ur die eine visuelle Codierung gefunden werden muss.
 
 \paragraph{Menge an Daten pro Datensatz}
 H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was Ansp\"uche an die Skalierbarkeit der Visualisierung stellt. Zus\"atzlich bestehen relevante Merkmale der Datens\"atze oft nur aus einem geringen Anteil der Menge von Tensoren. Bei der Entwicklung der Visualisierung muss daher auch die Sichtbarkeit solch kleiner Merkmale sichergestellt werden.
@@ -92,21 +92,21 @@ Tensoren beschreiben im Allgemeinen Abbildungen zwischen Skalaren, Vektoren und 
 Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besondere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
 
 
-Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren 2. Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Probleme zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
+Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren zweiten Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Herausforderungen zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
 
-Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Kapitel \hyperref[sec:Umsetzung]{5 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{6 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{7 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
+Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Auf eine Reihe von Direct Volume Rendering Verfahren wird in Kapitel \hyperref[sec:DVR]{5 Direct Volume Rendering Verfahren} n\"aher eingegangen. Kapitel \hyperref[sec:Umsetzung]{6 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{7 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{8 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
  
 \section{Verwandte Arbeiten}
 \label{sec:Verwandte}
 Es existiert bereits eine gro{\ss}e Anzahl von Verfahren, die Visualisierungen von Tensorfeldern erzeugen. Nachfolgend werden, ohne Anspruch auf Vollst\"andigkeit, einige der wichtigsten genannt und kurz beschrieben.
 
-Eine relativ einfache Darstellung eines Vektorfelds besteht darin, die einzelnen Komponenten eines Tensor 2. Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Vektors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste von mir gefundene Erw\"ahnung dieses Verfahrens stammt aus einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
+Eine relativ einfache Darstellung eines Tensorfelds besteht darin, die einzelnen Komponenten eines Tensor zweiten Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Tensors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste von mir gefundene Erw\"ahnung dieses Verfahrens stammt aus einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
 
 Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"anken sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Nutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
 
-Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren 2. Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Schl\"auche durch das Vektorfeld. Die Mittellinien dieser Schl\"auche entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
+Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren zweiten Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Tuben durch das Tensorfeld. Die Mittellinien dieser Tuben entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
 
-Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren 2. Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
+Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
 
 \section{Grundlagen}
 \label{sec:Grundlagen}
@@ -116,7 +116,7 @@ In diesem Teil der Arbeit werden mathematische Grundlagen zu Tensoren, Feldern u
 Der Gro{\ss}teil der verwendeten Formeln und Definitionen stammt aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
 
 \subsubsection{Urbild und Bild einer Funktion}
-Zu jeder Funktion $f: A \rightarrow B$, die Objekten aus der Menge $A$ Objekte aus $B$ zuordnet, l\"asst sich das Bild einer Menge $A' \subset A$ als
+Zu jeder Funktion $f: A \rightarrow B$, die Objekten aus der Menge $A$ Objekte aus der Menge  $B$ zuordnet, l\"asst sich das Bild einer Menge $A' \subset A$ als
 
 \begin{equation}
 	f(A'): \{ b \in B | \exists a \in A' : f(a) = b \}
@@ -137,10 +137,16 @@ Gegeben sei eine Funktion $f: A \rightarrow B$. Dann ist $f|_{A'}: A' \rightarro
 	f|_{A'}(a) = f(a) \text{ f\"ur alle } a \in A'
 \end{equation}
 
-und auf allen $a \in A, a \notin A'$ nicht definiert. 
+F\"ur alle $a \in A, a \notin A'$ ist $f|_{A'}$ nicht definiert. 
 
 \subsubsection{Dirac Delta}
-Das Dirac Delta (auch Delta Distribution genannt) ist eine Funktion, die folgende Eigenschaften erf\"ullt:
+Das Dirac Delta (auch Delta Distribution genannt) ist eine stetig lineare Abbildung $\delta$, die einer beliebig oft differenzierbaren Funktion $f$, die auf $\mathbb{R}^n$ oder $\mathbb{C}^n$ definiert ist, den Wert an der Stelle 0 zuordnet.
+
+Formaler ausgedr\"uckt bildet $d$ Funktionen aus $:C^{\infty}(\Omega)$, dem Raum der beliebig oft differenzierbaren Funktionen \"uber $\Omega \subset \mathbb{R}^n$ oder $\Omega \subset \mathbb{C}^n$ mit $0 \in \Omega$, auf ihren Wert an der Stelle 0 ab. Mit 0 sind hierbei auch die entsprechenden h\"oherdimensionale Nullvektoren aus $\mathbb{R}^n$ und $\mathbb{C}^n$ gemeint.
+
+Das Dirac Delta ist formal gesehen keine Funktion. Es kann jedoch mithilfe des Lebesgue Integrals definiert werden. Dies w\"urde hier jedoch zu weit f\"uhren. Genaueres kann in der Arbeit von Kusse et al. \cite[S.~100~ff.]{kusse2010mathematical} nachgelesen werden.
+
+Auf diese Art definiert hat das Dirac Delta zwei wichtige Eigenschaften, die auch in der vorliegenden Arbeit verwendet werden:
 
 \begin{equation}
 	\delta(x)=
@@ -156,36 +162,13 @@ Das Dirac Delta (auch Delta Distribution genannt) ist eine Funktion, die folgend
 	\int_{-\infty}^{+\infty}\delta(x)dx = 1
 \end{equation}
 
-Da diese beiden Eigenschaften f\"ur die vorliegende Arbeit ausreichen, wird auf eine genaue Definition von $\delta$ verzichtet. Diese kann jedoch in \cite[S.~100~ff.]{kusse2010mathematical} nachgelesen werden.
-
-
 \subsubsection{Volumen einer Teilmenge von \texorpdfstring{$\mathbb{R}^n$}{}}
-Das $n$-dimensionale Volumen einer Menge $Vol(A), A \subset \mathbb{R}^n$ wird \"uber das Lebesgue-Stieltjes Ma{\ss} definiert\cite{kusolitsch2014mass}. Intuitiv entspricht es in $\mathbb{R}$ der L\"ange, in $\mathbb{R}^2$ dem Fl\"acheninhalt und in $\mathbb{R}^3$ dem Volumen.
+Das $n$-dimensionale Volumen einer Menge $Vol(A), A \subset \mathbb{R}^n$ wird \"uber das Lebesgue-Stieltjes Ma{\ss} definiert\cite{kusolitsch2014mass}. Intuitiv entspricht das Lebesgue-Stieltjes Ma{\ss} in $\mathbb{R}$ der L\"ange, in $\mathbb{R}^2$ dem Fl\"acheninhalt und in $\mathbb{R}^3$ dem Volumen.
 
 Falls f\"ur eine Menge $A$ gilt $Vol(A)=0$, so bezeichnet man diese als Nullmenge.
 
-\subsubsection{Jacobi Matrix}
-Die Jacobi Matrix $J_f$ einer differenzierbaren Abbildung $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ ist eine $m \times n$ Matrix, deren Komponenten die partiellen ersten Ableitungen von $f$ sind. Formal geschrieben gilt also f\"ur die Koordinaten des Urbilds $x_1, \dots, x_n$ und Abbildungen $f_1, ..., f_n$ der einzelnen Komponenten
-
-\begin{equation}
-	J_f(a) := 
-	\begin{pmatrix}
-		\frac{\partial f_1}{\partial x_1}(a) & \dots & \frac{\partial f_1}{\partial x_n}(a)  \\
-		\vdots & \ddots & \vdots \\
-		\frac{\partial f_m}{\partial x_1}(a) & \dots & \frac{\partial f_m}{\partial x_n}(a) 
-	\end{pmatrix}
-\end{equation}
-
-Sie entspricht damit der ersten Ableitung in der mehrdimensionalen Analysis. Die Determinante der Jacobi-Matrix $det(J_f)$ wird auch als Funktionaldeterminante bezeichnet, und beschreibt einige Eigenschaften der Funktion $f$. Die f\"ur diese Arbeit wichtigste Rolle spielt der absolute Wert $|det(J_f)|$ an einem Punkt $p$, die die Expansion bzw. das Schrumpfen der Funktion in der N\"ahe von $p$ beschreibt.  F\"ur eine lineare Funktion $f: \mathbb{R}^n\rightarrow \mathbb{R}^n$, deren Funktionaldeterminante in jedem Punkt $p_n \in \mathbb{R}$ gleich ist, bedeutet das mit dem $n$-dimensionalen euklidischen Abstand $||p_1, p_2||_n$
-
-\begin{equation}
-	||f(p_1), f(p_2)||_n = det(J_f)\cdot||p_1, p_2||_n
-\end{equation}
-
-Indem man das Lebesgue-Stieltjes Ma{\ss} in $\mathbb{R}^n$ mittels des euklidischen Abstands definiert, lassen sich so auch Volumen\"anderungen ausdr\"ucken.
-
 \subsubsection{Lineare Abbildungen}
-Seien $V,U$ zwei Vektorr\"aume \"uber demselben K\"orper $K$. Eine lineare Abbildung $\varphi: V \rightarrow U$ ist eine Funktion, so dass f\"ur alle $\lambda \in K$, $v \in V$ und $u \in U$ gilt\cite[S.~85]{bowen2008introduction}:
+Seien $V,U$ zwei Vektorr\"aume \"uber demselben K\"orper $K$. Eine lineare Abbildung $\varphi: V \rightarrow U$ ist eine Funktion, sodass f\"ur alle $\lambda \in K$, $v \in V$ und $u \in U$ gilt\cite[S.~85]{bowen2008introduction}:
 
 \begin{align}
 	&\varphi(u+v) = \varphi(u) + \varphi(v) \\
@@ -193,7 +176,7 @@ Seien $V,U$ zwei Vektorr\"aume \"uber demselben K\"orper $K$. Eine lineare Abbil
 \end{align}
 
 \subsubsection{Vektorraum}
-Sei $V$ eine Menge, $(K, +, \cdot )$ ein K\"orper, $\oplus$ eine Abbildung $V \times V \rightarrow V$  Vektoraddition und $\odot$ eine Abbildung $K \times V \rightarrow V$ genannt Skalarmultiplikation. $(V, \oplus, \odot)$ wird dann als Vektorraum bezeichnet, wenn zus\"atzlich fuer die Vektoraddition die folgenden Eigenschaften gelten: 
+Sei $V$ eine Menge, $(K, +, \cdot )$ ein K\"orper, $\oplus$ eine Abbildung $V \times V \rightarrow V$  Vektoraddition und $\odot$ eine Abbildung $K \times V \rightarrow V$ genannt Skalarmultiplikation. $(V, \oplus, \odot)$ wird dann als Vektorraum bezeichnet, wenn zus\"atzlich f\"ur die Vektoraddition die folgenden Eigenschaften gelten: 
 
 \begin{align}
 	\forall u,v,w \in V&: u \oplus (v \oplus w ) = (u \oplus v ) \oplus w 	\tag{Assoziativit\"at) (\addtocounter{equation}{1}\theequation}\\
@@ -212,15 +195,15 @@ und f\"ur die Skalarmultiplikation folgende Eigenschaften:
 \end{align}
 
 \subsubsection{Dualraum}
-Sei $V$ ein $n$-dimensionaler Vektorraum und $K$ sein zugrundeliegender K\"orper. Die lineare Abbildung $\varphi: V \rightarrow K$ eines Vektors $v = (v_1, ..., v_n) \in V$ auf den skalaren Wert $k \in K$ hat dann die Form
+Gegeben seien ein $n$-dimensionaler Vektorraum  $V$ und sein zugrundeliegender K\"orper $K$. Die lineare Abbildung $\varphi: V \rightarrow K$ eines Vektors $v = (v_1, ..., v_n) \in V$ auf den skalaren Wert $k \in K$ hat dann die Form
 
 \begin{equation}
-	\varphi(v_1, ..., v_n) = \varphi_1 \cdot v_1 + ... + \varphi_n \cdot v_n = k
+	\varphi(v_1, ..., v_n) = \varphi_1 \cdot v_1 + ... + \varphi_n \cdot v_n = k.
 \end{equation}
 
-Die $\varphi_1, ..., \varphi_n$ k\"onnen wiederum als Vektor geschrieben werden. Der durch die Menge aller $\varphi$ \"uber $V$  erzeugte, $n$-dimensionalen Vektorraum $V^*$ wird \textbf{Dualraum} genannt\cite[S.~203]{bowen2008introduction}.
+Die $\varphi_1, ..., \varphi_n$ k\"onnen wiederum als Vektor geschrieben werden. Der durch die Menge aller $\varphi$ \"uber $V$  erzeugte, $n$-dimensionalen Vektorraum $V^*$ wird Dualraum genannt\cite[S.~203]{bowen2008introduction}.
 
-Vektoren aus $V$ werden als \textbf{kovariant} bezeichnet, Vektoren aus $V^*$ als \textbf{kontravariant}\cite[S.~205]{bowen2008introduction}.
+Vektoren aus $V$ werden als kovariant bezeichnet, Vektoren aus $V^*$ als kontravariant\cite[S.~205]{bowen2008introduction}.
 
 \subsubsection{Multilineare Funktionen}
 Multilineare Funktionen \"uber Vektorr\"aumen sind Funktionen der Form $\varphi: V_1 \times \dots \times V_n \rightarrow K$, wobei jedes $V_i$ ein Vektorraum \"uber $K$ ist, und zus\"atzlich 
@@ -238,7 +221,7 @@ mit $\lambda, \mu \in K$, $v_i, v'_i \in V_i$ gilt (f\"ur jede weitere Variable 
 \subsubsection{Tensor}
 Multilineare Funktionen der Form $T: V^*\times\dots\times V^*\times V \times \dots \times V \rightarrow K$, wobei $V$ ein Vektorraum \"uber $K$ und $V^*$ sein Dualraum ist, werden als Tensoren bezeichnet\cite[S.~218]{bowen2008introduction}. Der Grad des Tensors ist definiert als die Anzahl an Variablen der Funktion. Die Tensoren \"uber $V$ bilden wiederum einen Vektorraum \cite[S.~220]{bowen2008introduction}. Durch diese Defintion ist ein Tensor immer invariant zur Basis des Vektorraums seiner Variablen. Egal in welche Basis er umgerechnet wird, er dr\"uckt stets dasselbe aus.
 
-In der vorliegenden Arbeit werden ausschlie{\ss}lich Tensoren 2. Grades verwendet, die in kartesischen, dreidimensionalen Koordinatensystemen erzeugt wurden. Dabei ist zu beachten, dass in kartesischen Koordinaten die Basis eines Vektorraumes $V$ und seines Dualraumes $V^*$ die gleiche Darstellung haben, also $V$ und $V^*$ austauschbar sind. Wenn in einen Tensor 2. Grades $T$ die Basisvektoren $e_{1,..,d}$ des zugrundeliegenden Vektorraumes $V$ bzw $V^*$ der Dimension $d$ in jeder m\"oglichen Kombination eingesetzt werden, ergeben sich f\"ur $1\leq i,j\leq d$ folgende Komponenten:
+In der vorliegenden Arbeit werden ausschlie{\ss}lich Tensoren zweiten Grades in kartesischen, dreidimensionalen Koordinaten verwendet. Dabei ist zu beachten, dass in kartesischen Koordinaten die Basis eines Vektorraumes $V$ und seines Dualraumes $V^*$ die gleiche Darstellung haben, also $V$ und $V^*$ austauschbar sind. Wenn in einen Tensor zweiten Grades $T$ die Basisvektoren $e_{1,..,d}$ des zugrundeliegenden Vektorraumes $V$ bzw $V^*$ der Dimension $d$ in jeder m\"oglichen Kombination eingesetzt werden, ergeben sich f\"ur $1\leq i,j\leq d$ folgende Komponenten:
 
 \begin{equation}
 	c_{i,j} = \sum_{i=1}^{d} \sum_{j=1}^{d} T(e_i, e_j),  
@@ -251,6 +234,40 @@ Diese basisabh\"angige Darstellung des Tensors bildet eine $d\times d$ Matrix. A
 \end{equation} 
 
 eine Abbildung auf einen Vektor $u$ desselben Vektorraumes wie $v$ ausgedr\"uckt werden kann, lassen sich mithilfe von Tensoren Abbildungen zwischen Vektorr\"aumen unabh\"angig von der Basis des Raumes formulieren.
+
+\subsubsection{Jacobi Matrix}
+Die Jacobi Matrix $J_f$ einer differenzierbaren Abbildung $f: \mathbb{R}^n \rightarrow \mathbb{R}^m$ ist eine $m \times n$ Matrix, deren Komponenten die partiellen ersten Ableitungen von $f$ sind. Formal geschrieben gilt also f\"ur die Koordinaten des Urbilds $x_1, \dots, x_n$ und Abbildungen $f_1, ..., f_n$ der einzelnen Komponenten
+
+\begin{equation}
+J_f(a) := 
+\begin{pmatrix}
+\frac{\partial f_1}{\partial x_1}(a) & \dots & \frac{\partial f_1}{\partial x_n}(a)  \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m}{\partial x_1}(a) & \dots & \frac{\partial f_m}{\partial x_n}(a) 
+\end{pmatrix}
+\end{equation}
+
+Sie entspricht damit der ersten Ableitung in der mehrdimensionalen Analysis. Die Determinante der Jacobi-Matrix $det(J_f)$ wird auch als Funktionaldeterminante bezeichnet, und beschreibt einige Eigenschaften der Funktion $f$. 
+
+\subsubsection{Determinante einer Matrix}
+Die Determinante einer Matrix ist eine aus den Eintr\"agen der Matrix berechnete Kennzahl. F\"ur alle $m\times n$ Matrizen mit $n \neq m$ ist die Determinante 0. F\"ur quadratische Matrizen $m \in \mathbb{K}^{n\times n}$ \"uber dem K\"orper $\mathbb{K}$ ist die Funktion $det: \mathbb{K}^{n\times n} \rightarrow \mathbb{K}$, die die Determinante von m bestimmt, durch die Leibniz-Formel definiert:
+
+\begin{equation}
+	det(m) = \sum_{\sigma \in S_n} \left( sgn(\sigma) \prod_{i=1}^{n} m_{i,\sigma(i)}\right)
+\end{equation}
+
+Dabei ist $S_n$ die Menge aller Permutationen einer Menge mit $n$ Elementen, $sgn(\sigma)$ das Signum der Permutation $\sigma$ und $m_{ij}$ der Eintrag in der i-ten Zeile und j-ten Spalte der Matrix.
+
+\subsubsection{Determinante der Jacobimatrix}
+Die Determinante einer Matrix hat eine Reihe von interessanten Eigenschaften. Besonders relevant f\"ur die vorliegende Arbeit ist die folgende:
+
+Sei $|det(J_f)|$ die Determinante der Jacobi-Matrix der Funktion $f$ an einem Punkt $p$. Die Determinante kann dann als Wert der Expansion bzw. des Schrumpfens der Funktion in der N\"ahe von $p$ aufgefasst werden. F\"ur eine lineare Funktion $f: \mathbb{R}^n\rightarrow \mathbb{R}^n$, deren Funktionaldeterminante in jedem Punkt $p_n \in \mathbb{R}$ gleich ist, bedeutet das mit dem $n$-dimensionalen euklidischen Abstand $||p_1, p_2||_n$
+
+\begin{equation}
+||f(p_1), f(p_2)||_n = det(J_f)\cdot||p_1, p_2||_n
+\end{equation}
+
+Indem man das Lebesgue-Stieltjes Ma{\ss} in $\mathbb{R}^n$ mittels des euklidischen Abstands definiert, lassen sich so Volumen\"anderungen ausdr\"ucken.
 
 \subsubsection{Rang einer Matrix}
 Der Zeilenraum einer Matrix ist der Raum, der aus Linearkombinationen ihrer Zeilenvektoren aufgespannt wird. Die Dimension des Zeilenraumes ist gleich der Anzahl linear unabh\"angiger Zeilenvektoren, und wird als Zeilenrang der Matrix bezeichnet. Analog l\"asst sich der Spaltenrang einer Matrix definieren. Es l\"asst sich zeigen, dass Zeilen- und Spaltenrang einer Matrix immer gleich sind und deshalb kurz als Rang $rang(M)$ der Matrix $M$ bezeichnet werden.
@@ -285,7 +302,7 @@ Eine in kartesischen Koordinaten h\"aufig eingesetzte Norm ist die euklidische N
 Die euklidische Norm wird auch als `Frobeniusnorm' bezeichnet.
 
 \subsubsection{Deviator einer Matrix}
-Eine Matrix $A$ kann in ihren isotropen Anteil $\bar{A}$ und ihren anisotropen Anteil $\tilde{A}$ wie folgt zerlegt werde:
+Eine Matrix $A$ kann wie folgt in ihren isotropen Anteil $\bar{A}$ und ihren anisotropen Anteil $\tilde{A}$ zerlegt werden:
 
 \begin{equation}
 \tilde{A} = A - \bar{A}
@@ -313,31 +330,31 @@ wobei $I$ die Matrixdarstellung des Einheitstensors ist, also
 Eigenvektoren $v_i$, $1\leq i\leq n$ einer n $\times$ n Matrix $M$ sind vom Nullvektor verschiedene Vektoren, f\"ur die gilt
 
 \begin{equation}
-	M \cdot v_i = \lambda_i v_i
+	M \cdot v_i = \lambda_i v_i.
 \end{equation}
 
-Intuitiv bedeutet das, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet.
+Intuitiv sind die Eigenvektoren dadurch definiert, dass sich durch Multiplikation mit $M$ ihre Richtung nicht ver\"andert. Die zugeh\"origen $\lambda_i$ werden als Eigenwerte bezeichnet.
 Falls der Rang einer $n\times n$ Matrix $M$ kleiner ist als $n$, so hat diese Matrix $n - rang(M)$ Eigenwerte, die 0 sind.
 
 \subsubsection{Fraktionale Anisotropie einer Matrix}
-Die fraktionale Anisotropie $FA(M)$ einer Matrix, mit $\bar{\lambda}$ als Mittelwert der Eigenwerte, ist definiert als
+Die fraktionale Anisotropie $\text{FA}(M)$ einer Matrix, mit $\bar{\lambda}$ als Mittelwert der Eigenwerte, ist definiert als
 
 \begin{equation}
-	FA(M) = \sqrt{\frac{3((\lambda_1 - \bar{\lambda})^2 + (\lambda_2 - \bar{\lambda})^2 + (\lambda_3 - \bar{\lambda})^2)}{2(\lambda_1^2 + \lambda_2^2 + \lambda_3^2)}}
+	\text{FA}(M) = \sqrt{\frac{3((\lambda_1 - \bar{\lambda})^2 + (\lambda_2 - \bar{\lambda})^2 + (\lambda_3 - \bar{\lambda})^2)}{2(\lambda_1^2 + \lambda_2^2 + \lambda_3^2)}}.
 \end{equation}
 
-sie entspricht also der Standardabweichung der Eigenwerte, dividiert durch den Mittelwert ihrer Quadrate. Dadurch wird die Standardabweichung auf das Intervall $[0,\dots,1]$ normiert. Bei Matrizen mit hoher $FA$ (nahe 1) ist ein Eigenwert um ein Vielfaches gr\"o{\ss}er als die anderen beiden. Dies kann beispielsweise in Aufnahmen der Diffusions-MRT ein Hinweis auf die Position und Richtung von Nervenbahnen sein. Niedrige $FA$ dagegen dr\"uckt aus, dass die Eigenwerte etwa die gleichen Werte annehmen. In der Kontinuumsmechanik ist dies beispielsweise in Bereichen isotroper Verformung (also gleichm\"a{\ss}iger Ausdehnung / gleichm\"a{\ss}igem Schrumpfen in alle Richtungen) der Fall.
+Sie entspricht also der Standardabweichung der Eigenwerte, dividiert durch den Mittelwert ihrer Quadrate. Dadurch wird die Standardabweichung auf das Intervall $[0;1]$ normiert. Bei Matrizen mit hoher $\text{FA}$ (nahe 1) ist ein Eigenwert um ein Vielfaches gr\"o{\ss}er als die anderen beiden. Hohe FA tritt in der Kontinuumsmechanik zum Beispiel in Bereichen auf, in denen das Material in die Richtung eines Eigenvektors auseinandergezogen wird, w\"arend es in Richtung der anderen Eigenvektoren gleich bleibt oder sogar schrumpft. Eine niedrige $\text{FA}$ dagegen dr\"uckt aus, dass die Eigenwerte etwa die gleichen Werte annehmen. In der Kontinuumsmechanik ist dies beispielsweise in Bereichen isotroper Verformung, also gleichm\"a{\ss}iger Ausdehnung / gleichm\"a{\ss}igem Schrumpfen in alle Richtungen, der Fall.
 
 \subsubsection{Modus einer Matrix}
 Der Verformungs-Modus \cite{criscione2000invariant} einer Matrix $A$, im Folgenden kurz Modus genannt, ist definiert als
 
 \begin{equation}
-	mode(A) = 3\sqrt{6}~det(A\backslash norm(A))
+	mode(A) = 3\sqrt{6}~det(A\backslash norm(A)).
 \end{equation}
 
-wobei $det()$ die Determinante ist. Im Folgenden wird meistens der Modus des Deviators von $A$ verwendet.
+Im Folgenden wird meistens der Modus des Deviators von $A$ verwendet.
 
-Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte der Matrix zueinander aus:
+Der Modus liegt im Intervall $[-1;1]$ und dr\"uckt das Verh\"altnis der Eigenwerte der Matrix zueinander aus:
 
 \begin{itemize}
 	\item $mode(A) = 1$: ein hoher, zwei gleiche niedrige Eigenwerte; lineare Anisotropie
@@ -348,7 +365,7 @@ Der Modus liegt im Bereich $[-1,1]$ und dr\"uckt das Verh\"altnis der Eigenwerte
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/001.png}
-	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die fraktionale Anisotropie nimmt mit gr\"o{\ss}erer werdender Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
+	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die fraktionale Anisotropie nimmt mit gr\"o{\ss}erer werdender Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr\"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
 	\label{Modus}
 \end{figure}
 Um die Intuition hinter Modus und fraktionaler Anisotropie zu verdeutlichen, sind in Abb. \ref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere soll damit gezeigt werden, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
@@ -379,7 +396,7 @@ also als Vektor aller partiellen Ableitungen in die Richtungen $x_i$. Analog ist
 wobei $a_{ij}$ die Komponenten der Matrizen sind.
 
 \subsubsection{Orthogonalit\"at von Matrizen}
-Zwei Matrizen $U,V$ werden als orthogonal zueinander bezeichnet, wenn \cite{ennis2006orthogonal}
+Zwei Matrizen $U,V$ werden als orthogonal zueinander bezeichnet, wenn \cite{ennis2006orthogonal} gilt:
 
 \begin{equation}
 tr(U,V^{T}) = 0
@@ -389,7 +406,7 @@ tr(U,V^{T}) = 0
 \label{Matrixinvarianten}
 Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
 
-Da sich die vorliegende Arbeit \"uberwiegend mit symmetrischen, dreidimensionalen Tensoren 2. Grades und ausschlie{\ss}lich orthogonale Transformationen besch\"aftigt, beschr\"nkt sich auch die Betrachtung der Invarianten auf diese. Dabei gilt f\"ur solche Tensoren insbesondere, dass die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert werden. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
+Da sich die vorliegende Arbeit \"uberwiegend mit symmetrischen, dreidimensionalen Tensoren zweiten Grades und ausschlie{\ss}lich orthogonale Transformationen besch\"aftigt, beschr\"ankt sich auch die Betrachtung der Invarianten im folgenden auf diese Art von Tensoren. Dabei gilt f\"ur solche Tensoren insbesondere, dass die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert werden. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
 
 \begin{equation}
 	\Psi:
@@ -406,9 +423,9 @@ darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind
 \subsubsection{Invariantens\"atze} 
 \label{sec:Invariants}
 Mengen von Invarianten werden als Invariantens\"atze bezeichnet.
-Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in `Orthogonal tensor invariants and the analysis of diffusion tensor magnetic resonance images' von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
+Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in den Arbeiten von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt es zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
 
-F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens 3 Invarianten. In der Praxis spielt eine Vielzahl solcher Invariantens\"atze eine Rolle, von denen im Folgenden einige erl\"autert werden:
+F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens drei Invarianten. In der Praxis spielt eine Vielzahl solcher Invariantens\"atze eine Rolle, von denen im Folgenden einige erl\"autert werden:
 
 \paragraph{Die Eigenwerte}
 
@@ -421,7 +438,7 @@ Das charakteristische Polynom $\chi$ einer $3\times3$ Matrix $A$ hat die Form
 	\centering
 	\begin{split}
 	&\chi_A(a) = det(a \cdot I - A)\\
-	&\chi_A(a) = -a^3 + I_1\cdot a^2 - I_2\cdot a + I_3
+	&\chi_A(a) = -a^3 + I_1\cdot a^2 - I_2\cdot a + I_3,
 	\end{split}
 \end{equation}
 
@@ -435,15 +452,9 @@ Eine weitere Eigenschaft ist, dass die Parameter $I_1, I_2, I_3$ einen Invariant
 	\item $I_3(A) = det(A)$ (Determinante von $A$)
 \end{itemize}
 
-Der I Invariantensatz ist jedoch nicht orthogonal. Dies wird ersichtlich, wenn man die Darstellung des I-Invariantensatzes durch die Eigenwerte $\lambda_1, \lambda_2, \lambda_3$ betrachtet:
+Der I-Invariantensatz ist jedoch nicht orthogonal. Die Beweise oder Wiederlegungen der Orthogonalit\"atseigenschaft aller hier vorgestellter Invariantens\"atze sind in \cite[S.~144]{ennis2006orthogonal} aufgef\"uhrt.
 
-\begin{itemize}
-	\item $I_1(A) = \lambda_1 + \lambda_2 + \lambda_3$
-	\item $I_2(A) = \lambda_1\lambda_2 + \lambda_1\lambda_3 + \lambda_2\lambda_3$
-	\item $I_3(A) = \lambda_1\lambda_2\lambda_3$ 
-\end{itemize}
-
-Wenn zwei der Invarianten als positiv und fest angenommen werden, und die dritte steigt, so steigen auch alle drei Invarianten des I-Invariantensatzes, was die Bedingung der Orthogonalit\"at verletzt.
+W\"ahrend f\"ur $I_1$ in der Mechanik eine Interpretation als Ma{\ss} f\"ur den isotropen Anteil des Tensors existiert, fehlen eindeutige Interpretationen f\"ur $I_2$ und $I_3$. Es gibt zwar einen Zusammenhang zwischen $I_2$ und dem deviatorischen Anteil des Tensors, dieser ist jedoch nicht eindeutig genug um aus hohem $I_2$ auf hohe Anisotropie schlie{\ss}en zu k\"onnen. F\"ur $I_3$ existiert in der Mechanik keine verbreitete Interpretation. 
 
 \paragraph{Der J-Invariantensatz}
  Die Berechnung der J-Invarianten ist identisch zum I-Invariantensatz, nur dass statt $A$ der Deviator von $A$ als Eingabe verwendet wird:
@@ -469,12 +480,12 @@ Dabei ist jedoch zu beachten, dass
 weshalb statt $J_1$ in der Regel $I_1$ als Teil des Invariantensatzes verwendet wird. \"Ahnlich wie I ist auch J nicht orthogonal.
 
 \paragraph{Der K-Invariantensatz}
-Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ und $K_3$. Diese sind f\"ur eine Matrix $A$ definiert als
+Der K-Invariantensatz ist orthogonal und ist f\"ur eine Matrix $A$ definiert als
 
 \begin{itemize}
 	\item $K_1(A)=tr(A)$ (Spur von $A$)
 	\item $K_2(A)=norm(\tilde{A})$ (Norm des Deviators von A)
-	\item $K_3(A)=mode(\tilde{A})$ (Modus des Deviators von A)
+	\item $K_3(A)=mode(\tilde{A})$ (Modus des Deviators von A).
 \end{itemize}
 
 
@@ -485,33 +496,33 @@ Der K-Invariantensatz ist orthogonal und besteht aus den Invarianten $K_1, K_2$ 
 	\label{cylinderCoords}
 \end{figure}
 
-Da $K_1 \in [-\infty, \infty]$, $K_2 \in [0,\infty]$, $K_3 \in [-1,1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abb. \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
+Da $K_1 \in [-\infty; \infty]$, $K_2 \in [0;\infty]$, $K_3 \in [-1;1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abb. \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
 
-Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der absoluten `Gr\"o{\ss}e' der Matrix , $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
+Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der St\"arke des iostropen Anteils der Matrix, $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
 
 
 \paragraph{Der R-Invariantensatz}
-Der orthogonale R-Invariantensatz verwendet die Invarianten $R_1, R_2$ und $R_3$. F\"ur eine Matrix $A$ sind sie definiert als
+Die Invarianten des orthogonale R-Invariantensatz sind f\"ur eine Matrix $A$ definiert als
 
 \begin{itemize}
 	\item $R_1(A)=norm(A)$ (Norm von $A$)
 	\item $R_2(A)=\sqrt{\frac{3}{2}} \frac{norm(\tilde{A})}{norm(A)}$ (fraktionale Anisotropie)
-	\item $R_3(A)=mode(A)$ (Modus von $A$)
+	\item $R_3(A)=mode(A)$ (Modus von $A$).
 \end{itemize}
 
-Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invariantensatz kann auch R in einem zylindrischen Koordinatensystem dargestellt werden.
+Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-Invariantensatz k\"onnen auch die R-Invarianten in einem zylindrischen Koordinatensystem dargestellt werden.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{pictures/000.png}
-	\caption{Dargestellt sind Isofl\"achen der K und R Invarianten von diagonalisierten $3\times 3$ Matrizen (alle Werte ausserhalb der Hauptdiagonale sind 0). Die Koordinatenachsen entsprechen den drei Eigenwerten der Matrizen. Entnommen aus \cite[S.~139]{ennis2006orthogonal}}
+	\caption{Dargestellt sind Isofl\"achen der K- und R-Invarianten von diagonalisierten $3\times 3$ Matrizen (alle Werte ausserhalb der Hauptdiagonale sind 0). Die Koordinatenachsen entsprechen den drei Eigenwerten der Matrizen. Entnommen aus \cite[S.~139]{ennis2006orthogonal}}
 	\label{KRInvariants}
 \end{figure}
 
-Genauso wie f\"ur den K-Invariantensatz existiert auch f\"ur den R-Satz eine Interpretation in der Kontinuumsmechanik. 
+Genauso wie f\"ur den K-Invariantensatz existiert auch f\"ur den R-Invariantensatz eine Interpretation in der Kontinuumsmechanik. 
 
-Sowohl K als auch R beschreiben die Verteilung, die Gr\"o{\ss}e und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
+Sowohl K- als auch R-Invarianten beschreiben die Verteilung, die ``Gr\"o{\ss}e'' und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
 
 \subsubsection{Faltung}
 Die kontinuierliche Faltung $*_c$ zweier Funktionen $f,g:\mathbb{R}^n\rightarrow\mathbb{C}$ ist definiert als
@@ -581,7 +592,7 @@ Die Variablen $\mu_x$ und $\mu_y$ dienen dabei dazu, die Positionen der Kurven i
 
 \subsection{Mechanische Grundlagen}
 \subsubsection{Physikalisches Feld}
-Ein physikalisches Feld ist eine physikalische Gr\"o{\ss}e, die an verschiedenen Positionen im Raum unterschiedliche Werte annimmt\cite[1–2 Electric and magnetic fields]{feynman2011feynman}. Abstrahiert kann es als Funktion $\mathbb{R}^n \rightarrow V$ beschrieben werden, wobei $V$ eine beliebige Menge ist. H\"aufig wird f\"ur $V$ jedoch $\mathbb{R}$ (z.B. bei Temperaturen), $\mathbb{R}^n$ (z.B. bei Str\"omungen) oder $\mathbb{R}^{m\times n}$ (z.B. bei Verformungen) eingesetzt. Andere Beispiele f\"ur physikalische Felder sind elektromagnetische Felder oder Gravitationsfelder. Felder werden meist abh\"angig von ihrem Bild klassifiziert, so z.B. in Skalar-, Vektor- oder Tensorfelder.
+Ein physikalisches Feld ist eine physikalische Gr\"o{\ss}e, die an verschiedenen Positionen im Raum unterschiedliche Werte annimmt\cite[1–2 Electric and magnetic fields]{feynman2011feynman}. Abstrahiert kann es als Funktion $\mathbb{R}^n \rightarrow V$ beschrieben werden, wobei $V$ eine beliebige Menge ist. H\"aufig wird f\"ur $V$ jedoch $\mathbb{R}$, z.B. bei Temperaturen, $\mathbb{R}^n$, z.B. bei Str\"omungen, oder $\mathbb{R}^{m\times n}$, z.B. bei Verformungen, eingesetzt. Andere Beispiele f\"ur physikalische Felder sind elektromagnetische Felder oder Gravitationsfelder. Felder werden meist abh\"angig von ihrem Bild klassifiziert, so z.B. in Skalar-, Vektor- oder Tensorfelder.
 
 Wenn Felder nicht in Form einer kontinuierlichen Funktion beschrieben werden k\"onnen, z.B. weil nur f\"ur endlich viele Punkte Messwerte vorhanden sind, kann ein Feld auf einem Gitter, das aus diesen Messpunkten besteht, definiert werden. Die Werte innerhalb der Zellen lassen sich dann durch Interpolation der Werte an den Eckpunkten berechnen.
 
@@ -607,7 +618,7 @@ Jede Spalte des Cauchy Tensors entspricht dabei einem der Vektoren. Wie aus der 
 Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\"arke der Spannung (Hookesches Gesetz). Durch einen Verformungstensor (auch Verzerrungstensor, engl. strain tensor) l\"asst sich die Verformung an einem Punkt durch Kraftanwendung angeben:
 
 \begin{equation}
-	\   =  
+	\epsilon  =  
 	\begin{bmatrix}
 		\epsilon_x & \frac{1}{2}\gamma_{xy} & \frac{1}{2}\gamma_{xz}\\
 		\frac{1}{2}\gamma_{xy} & \epsilon_y & \frac{1}{2}\gamma_{yz}\\
@@ -703,10 +714,10 @@ Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ 
 		\subcaption{}
 		\label{Case2}
 	\end{subfigure}
-	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind ein Bereich des Urbilds, der durch $\tau$ verformt wird. Zu erkennen ist, dass eine Streckung eines Bereichs zur Verringerung der Dichte und eine Stauchung zur Erh\"ohung der Dichte f\"uhrt. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte in den jeweiligen Bereichen an.}
+	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind Teilmengen des Urbilds, die durch $\tau$ verformt werden. Zu erkennen ist, dass die Streckung des Vierecks zur Erh\"ohung der Entfernung zwischen den Punkten f\"uhrt, was einer Verringerung der Dichte im Viereck entspricht. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte an Punkten innerhalb der Dreiecke an.}
 	\label{ContinuousScatterplot}
 \end{figure}
-Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Bereiche verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
+Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Mengen verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
 
 Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
 
@@ -777,10 +788,10 @@ bilden, wobei $J_\tau$ die Jacobimatrix von $\tau$ ist. Da der Wert der Determin
 \label{Case1Formula}
 \end{equation}
 
-Wie schon in \hyperref[sec:Grundlagen]{3 Grundlagen} erw\"ahnt, entspricht der Betrag der Determinanten der Jacobimatrix dem Betrag Expandierung oder Schrumpfung der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
+Wie schon in Kapitel \hyperref[sec:Grundlagen]{3} erw\"ahnt, entspricht der Betrag der Determinanten der Jacobimatrix dem Betrag Expandierung oder Schrumpfung der Funktion in der N\"ahe des jeweiligen Punktes. Wenn die Funktion expandiert nimmt die Dichte ab, wenn sie schrumpft nimmt die Dichte zu.
 
 \paragraph{Fall 2: $\tau$ ist differenzierbar und konstant \"uber V, V ist keine Nullmenge}
-Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass ein Bereich aus $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit dem Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
+Wenn $det(J_\tau) = 0$, dann ist $\tau$ kein Diffeomorphismus und $\sigma$ kann nicht so wie in Fall 1 definiert werden. Das ist z.B. der Fall, wenn $\tau$ Bereiche mit konstanten Werten enth\"alt und f\"uhrt dazu, dass eine nicht leere Teilmenge von $\mathbb{R}^n$ auf einen einzelnen Punkt $\xi$ abgebildet wird. Eine M\"oglichkeit die unendlich hohe Dichte an $\xi$ darzustellen und dennoch die Gesamtmasse nicht zu ver\"andern ist es, bei $\xi$ ein Dirac-Delta einzuf\"ugen, das mit dem Volumen aller konstanten Bereiche $V_i \in V$, die nach $\xi$ abgebildet werden, skaliert wird:
 
 \begin{equation}
 \begin{split}
@@ -838,9 +849,9 @@ Felder, die Punkten im dreidimensionalen Raum bestimmte Werte zuordnen, sind ein
 
 Das Ergebnis eines Continuos Scatterplottings der Form $m=n=3$ beispielsweise stellt einen volumetrischen Datensatz dar, in dem Punkten ein Dichtewert zugeordnet wird. Da die Visualisierung genau diese Art von Datens\"atzen die zentrale Aufgabe der vorliegenden Arbeit ist, ist die Abspeicherung und das Auslesen von volumetrischen Daten ein wichtiges Teilproblem.
 
-Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer mathematischen Funktion, durch die das Feld approxmimiert wird, zu speichern. Bei komplexeren Feldern ist dies meistens nicht m\"oglich, da entweder keine hinreichend gut passende Funktion bekannt ist, oder aber die Auswertung der Funktion an einem Punkt sehr viel Rechenzeit ben\"otigen w\"urde (wie z.B. bei aufw\"andigen Simulationen). 
+Bei sehr einfachen Feldern kann es ausreichen, die Stringrepr\"asentation einer mathematischen Funktion, durch die das Feld approxmimiert wird, zu speichern. Bei komplexeren Feldern ist dies meistens nicht m\"oglich, da entweder keine hinreichend gut passende Funktion bekannt ist, oder aber die Auswertung der Funktion an einem Punkt sehr viel Rechenzeit ben\"otigen w\"urde, wie z.B. bei aufw\"andigen Simulationen. 
 
-Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels (Mittelpunkt, Eckpunkte, Seitenfl\"achen, \dots) die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
+Eine beliebte M\"oglichkeit zur Modellierung von volumetrischen Datens\"atzen besteht darin, den Raum, in dem sich das Objekt befindet, in Volumenelemente, genannt ``Voxel'', zu zerlegen, denen Werte zugeordnet werden. Welchem Teil des Voxels, z.B. Mittelpunkt, Eckpunkte, oder Seitenfl\"achen, die Werte zugewiesen werden, ist vom Anwendungsfall abh\"angig. Im einfachsten Fall geben diese Werte bin\"ar an, ob das Voxel ein Objekt schneidet oder nicht. Komplexere Beispiele sind Eigenschaften von Objektst\"ucken oder Teilen des Raums innerhalb des Voxels. Beispiele f\"ur solche Werte sind die Farbe und Opazti\"at eines durchsichtigen Objektes, die Dichte einer Gesteinsschicht oder die von einem Volumen abgegebene Energie bei einer Magnetresonanztomographie. Im Allgemeinen bilden Voxel ein dreidimensionales \"Aquivalent zu Pixeln.
 
 Voxel haben einen entscheidenden Vorteil gegen\"uber anderen volumetrischen Datens\"atzen: Die Komplexit\"at der Daten, und daraus folgend die Rechenzeit der meisten Algorithmen, die Voxel als Eingabe verwenden, ist nicht abh\"angig von der Anzahl und Komplexit\"at der in der urspr\"unglichen Szene dargstellten Objekte, sondern  nur noch von der Anzahl der Voxel, auf die die Szene abgebildet wurde. Durch Anpassung der Anzahl der Voxel ist es m\"oglich, Rechenzeit und Qualit\"at der Ergebnisse von Algorithmen gegeneinander abzuw\"agen.
 
@@ -870,7 +881,7 @@ Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an S
 
 Volumetrische Datens\"atze beinhalten oft komplexe Strukturen. Die Position und Form sowie die Datenwerte innerhalb dieser Strukturen gut zu vermitteln stellt oft ein zentrales Ziel der Volume Visualization dar. Eine M\"oglichkeit diese Informationen zu vermitteln stellt die Berechnung und Darstellung von Isofl\"achen dar. Die Isofl\"ache einer Funktion $f: \mathbb{R}^3\rightarrow\mathbb{R}$ und eines Isowerts $i \in \mathbb{R}$ ist definiert als eine Oberfl\"ache, die den $\mathbb{R}^3$ in zwei Regionen $R_0, R_1$ teilt, wobei f\"ur jeden Punkt $r_0 \in R_0$ gilt $f(r_0) < i$ und f\"ur jeden Punkt $r_1 \in R_1$ gilt $f(r_1) > i$ \cite[S.~7]{hansen2005visualization}. Die Isofl\"ache muss dabei nicht zusammenh\"angend sein. Auf der Isofl\"ache selbst ist $f$ gleich dem Isowert. 
 
-In Abb. \ref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1,1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
+In Abb. \ref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1;1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
 
 Die Berechnung von Isofl\"achen stellt einige Herausforderungen, besonders bez\"uglich der Korrektheit des Verlaufs der Isofl\"achen innerhalb eines Voxels und der ben\"otigten Rechenzeit. In der Vergangenheit wurden einige Verfahren entwickelt, die sich in Hinblick auf Korrektheit und Geschwindigkeit start unterscheiden. Der wohl einflussreichste davon ist ``Marching Cubes''. Marching Cubes kategorisiert Voxel abh\"angig davon, welche der Werte ihrer Eckpunkte gr\"o{\ss}er oder kleiner als der Isowert sind. F\"ur jede so gebildete Kategorie von Voxeln existiert eine vordefinierte Menge von Dreiecken, die den Verlauf der Isolinie innerhalb dieser Voxel ann\"ahernd beschreiben. F\"ur jedes Voxel werden die Dreiecke der jeweiligen Kategorie korrekt rotiert und zur Isofl\"ache hinzugef\"ugt.
 
@@ -890,7 +901,7 @@ Isofl\"achen haben jedoch auch Nachteile. So kann es passieren, dass eine Isof\"
 \label{sec:Slicing}
 Ein einfacher Ansatz um einen volumetrischen Datensatz zu visualisieren ist das sogenannte ``Slicing''\cite{munzner2014visualization}. Dabei wird der Schnitt zwischen dem Datensatz und einer Ebene berechnet, und dieser Schnitt durch eine Menge von verbundenen, texturierten Dreiecken, einem sogenannten ``Dreieckszug'' (engl. ``Triangle Strip'') dargestellt. Form und Position des Dreieckzuges entsprechen dabei der Schnittebene. Mithilfe von Interpoltion werden die Werte des volumetrischen Datensatzes an Punkten auf der Oberfl\"ache der Dreiecke, bezeichnet als Abtastpunkte, berechnet. Das Festlegen und Auswerten von Abtastpunkten wird im Folgenden als ``Abtastung'' bezeichnet. Um aus den Abtastpunkten die F\"arbungen der Dreiecke zu berechnen, gibt es zwei Verfahren, bezeichnet als Pr\"aklassifizierung und Postklassifizierung.
 
-Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Abtastpunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Opazit\"at, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Opazit\"atswerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Opazit\"at zugeordnet. Dabei ist zu beachten, dass Opazit\"at im allgemeinen Fall bei Slicing nicht verwendet wird. Um die Farben an allen anderen Punkten der Schnittfl\"ache zu bestimmen, werden die Farben der Abtastpunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0, 1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
+Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Abtastpunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Opazit\"at, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Opazit\"atswerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Opazit\"at zugeordnet. Dabei ist zu beachten, dass Opazit\"at im allgemeinen Fall bei Slicing nicht verwendet wird. Um die Farben an allen anderen Punkten der Schnittfl\"ache zu bestimmen, werden die Farben der Abtastpunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0;1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
 
 \begin{equation}
 	f(x)= 
@@ -932,7 +943,7 @@ Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen
 
 Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren. Ein gro{\ss}er Teil der Informationen in diesem Abschnitt stammt aus Buch ``The Visualization Handbook''\cite{hansen2005visualization}, speziell aus den Kapiteln ``Overview of Volume Rendering'' (S. 127-164) von Kaufman und Mueller, ``Volume Rendering Using Splatting'' (S. 175-188) von Crawfis, Xue und Sang, ``Pre-Integrated Volume Rendering'' (S. 211-228) von Kraus und Ertl  sowie ``Hardware Accelerated Volume Rendering'' (S. 229-258) von Pfister.
 
-\"Ahnlich wie beim Slicing wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0,\dots 1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt (siehe Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{sec:Slicing}). Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Ein Beispiel f\"ur ein durch Direct Volume Rendering erzeugtes Bild zeigt Abb. \ref{Zahn}. 
+\"Ahnlich wie beim Slicing wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0;1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt (siehe Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{sec:Slicing}). Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Ein Beispiel f\"ur ein durch Direct Volume Rendering erzeugtes Bild zeigt Abb. \ref{Zahn}. 
 
 \begin{figure}
 	\centering
@@ -941,7 +952,7 @@ Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Ver
 	\label{image-order}
 \end{figure}
 
-DVR Verfahren gliedern sich in 4 Gruppen, die als image-order, object-order, hybride und Domain-Verfahren bezeichent werden.
+DVR Verfahren gliedern sich in vier Gruppen, die als image-order, object-order, hybride und Domain-Verfahren bezeichent werden.
 
 Allen image-order Verfahren ist gemein, dass sie eine Position im Raum als ``Kameraposition'' festlegen, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt (siehe Abb. \ref{image-order}). Indem Positionen der Bildebene auf Pixel des Bildschirms abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe eines Pixels ergibt sich dabei, indem ein Strahl berechnet wird, der sowohl durch die Position des Mittelpunkts des Pixels auf der Bildebene als auch durch die Kameraposition verl\"auft. Entlang des Strahls werden Abtastpunkte gew\"ahlt, an denen die Transferfunktion ausgewertet wird. Genau wie beim Slicing k\"onnen dabei Pr\"a- und Postklassifizierung verwendet werden. Abh\"angig davon, wie die Farb- und Opazit\"atswerte der Abtastpunkte kombiniert werden, k\"onnen unterschiedliche Darstellungen entstehen. Eine Reihe davon wird sp\"ater im Text vorgestellt. Da die Kombination von Farb- und Opazit\"atwerten in OpenGL fast immer durch die Funktion des Blendings implementiert wird, verwenden ich den Begriff `Blending' im Folgenden synonym dazu. Bei manchen Varianten ist es m\"oglich, die Berechnung der Farbe eines Pixels zu fr\"uhzeitig zu beenden, wenn die berechneten Farb- und Opazit\"atswerte bestimmte Werte annehmen. In diesem Fall wird davon ausgegangen, dass der Einfluss der noch zu berechnenden Abtastpunkte zu klein ist, um vom Benutzer noch wahrgenommen zu werden. Diese fr\"uhzeitige Terminierung ist einer der wichtigsten Vorteile der image-order Verfahren. 
 
@@ -977,7 +988,7 @@ Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so
 		(c) Isof\"ache, (d) Transluzent. Entnommen aus \cite[S.~134]{hansen2005visualization}}
 	\label{DVRModes}
 \end{figure}
-Es existieren 4 popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In Abb. \ref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
+Es existieren vier popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In Abb. \ref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
 
 \paragraph{R\"ontgenbilder}
 Die Bezeichung ``R\"ontgenbilder'' stammt aus der \"Ahnlichkeit der entstehenden Bilder zu denen, die beim klassischen R\"ontgen in der bildgebenden Medizin erzeugt werden. Die F\"arbung eines Pixels ergibt sich in diesem Verfahren dadurch, dass die ermittelten Farb- und Transparenzwerte aller zur F\"arbung dex Pixels beitragenden Voxel aufaddiert werden. Damit sind die Voxel gemeint, die zum Beispiel vom selben Strahl durch den Mittelpunkt des Pixels geschnitten (image-order) werden oder deren Basisfunktionen sich in diesem Pixel \"uberschneiden (object-order). Das Blending entspricht in diesem Fall einer Addition, die die Farbe eines Voxels auf die bisher bestimmte Farbe eines Pixels aufaddiert. Ein Beispiel f\"ur ein so erzeugtes Bild ist in Abb. \ref{DVR:Xray} zu sehen. 
@@ -1000,7 +1011,7 @@ T_O(s) =
 so entsprechen die erzeugten Bilder Isofl\"achen. Da Isofl\"achen komplett opak sind, wird die Berechnung abgebrochen, sobald f\"ur einen Pixel der zur Kamera n\"aheste Voxel, der Teil einer Isofl\"ache ist, gefunden wurde. Blending entsprich hier einer Minimumsfunktion, die anstelle der Farbwerte die Distanz zur Kamera zur Entscheidung verwendet. Abh\"angig vom Verfahren kann auch sofort terminiert werden wenn ein opakes Voxel gefunden wurde, dies erschwert jedoch das sp\"atere Hinzuf\"ugen von z.B. Schatten. Durch geschickte Wahl der Reihenfolge, in der die Voxel verarbeitet werden (z.B. mit zunehmender Entfernung zur Kamera), kann weitere Beschleunigung erreicht werden. In Abb. \ref{DVR:Isosurface} ist eine so erzeugte Isofl\"ache dargestellt.
 
 \paragraph{Transluzent}
-Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, so dass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \ref{DVR:Translucent} zu sehen. 
+Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, sodass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \ref{DVR:Translucent} zu sehen. 
 
 \section{Direct Volume Rendering Verfahren}
 Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} erl\"auterten Konzepte umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
@@ -1055,7 +1066,7 @@ Der Datensatz wird zun\"achst als Wolke von Partikeln aufgefasst, wobei die Part
 I(x,r) = \int_{0}^{L} C(s)\mu(s) e^{-\int_{0}^{s}\mu(t)dt}ds
 \end{equation}
 
-Dabei entspricht $x$ der Position auf der Bildebene, $r$ der Richtung der Straphlen, $L$ der L\"ange der Strahlen, bis sie zum letzten Mal einen Voxel schneidet, $C(s)$ dem an Position $s$ emittierten Licht und $\mu(s)$ dem Okklusionskoeffizienten an $s$, also dem Anteil von Licht, das an $s$ absorbiert wird ($\mu(s) \in [0, \dots, 1])$. Einfacher ausgedr\"uckt emittiert jeder Punkt Licht und absorbiert gleichzeitig einen Teil des von Punkten emittierten Lichts, die auf demselben Strahl liegen und weiter von der Kamera entfernt sind. Das absorbierte Licht entspricht der berechneten Opazit\"at des Voxels an diesem Punkt.
+Dabei entspricht $x$ der Position auf der Bildebene, $r$ der Richtung der Straphlen, $L$ der L\"ange der Strahlen, bis sie zum letzten Mal einen Voxel schneidet, $C(s)$ dem an Position $s$ emittierten Licht und $\mu(s)$ dem Okklusionskoeffizienten an $s$, also dem Anteil von Licht, das an $s$ absorbiert wird ($\mu(s) \in [0;1])$. Einfacher ausgedr\"uckt emittiert jeder Punkt Licht und absorbiert gleichzeitig einen Teil des von Punkten emittierten Lichts, die auf demselben Strahl liegen und weiter von der Kamera entfernt sind. Das absorbierte Licht entspricht der berechneten Opazit\"at des Voxels an diesem Punkt.
 
 Dieses Integral l\"asst sich im allgemeinen Fall nur mit viel Rechenaufwand, wenn \"uberhaupt, automatisch berechnen \cite[S.~136]{hansen2005visualization}. Um dennoch Visualisierungen mit Interaktionen, die keine sp\"urbare Verz\"ogerung hervorrufen, umsetzen zu k\"onnen, wird das Integral vereinfacht. Durch Vereinfachungsschritte (siehe \cite[S.~136]{hansen2005visualization} f\"ur Details) ergibt sich die Formel
 
@@ -1181,7 +1192,7 @@ Der Vorteil der Cell Projection liegt in der sehr exakten Darstellung des Datens
 		1 & 4 & 7 & 4 & 1\\
 	};
 	\end{tikzpicture}
-	\caption{Ein diskreter $5\times5$ Gau{\ss} Kern. Die Werte in den Zellen werden mit dem Faktor links multipliziert, so dass die Summe aller Zellen 1 entspricht.}
+	\caption{Ein diskreter $5\times5$ Gau{\ss} Kern. Die Werte in den Zellen werden mit dem Faktor links multipliziert, sodass die Summe aller Zellen 1 entspricht.}
 	\label{kernel}
 \end{figure}
 
@@ -1235,7 +1246,7 @@ Zum Abschluss wird eine zur Scherung inverse Verzerrung auf die Bildebene angewe
 \label{sec:Umsetzung}
 In diesem Kapitel wird beschrieben, wie die Grundlagen, Technologien und Verfahren aus den vorherigen Kapiteln eingesetzt wurden, um eine interaktive Tensorfeldvisualisierung in FAnToM zu erzeugen.
 
-Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVRs zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im Folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichten in den Zellen der neuen Zellstruktur werden durch Methoden des Continuous Scatterplottings berechnet.
+Die Grundidee der entwickelten Visualisierung besteht darin, zwei DVR zu erzeugen. Das erste stellt die Zellen des ursp\"unglichen Feldes dar, \"uber die eine konstante Dichte angenommen wird. Da das Zielgebiet der Anwendung die Materialforschung ist, wird das urspr\"ungliche Feld im Folgenden als `Objekt' bezeichnet. F\"ur das zweite DVR werden die 3 Invarianten eines Invariantensatzes der an den Eckpunkten der Zellen definierten Tensoren berechnet und diese als Koordinaten interpretiert. Die Zellstruktur wird somit in einen `Invariantenraum' \"uberf\"uhrt. Wegen der Popularit\"at der K- und R-Invariantens\"atze werden die Koordinaten zus\"atzlich in ein zylindrisches Koordinatensystem \"uberf\"uhrt. Dieses Feld wird deshalb im Folgenden als `Feld im Invariantenraum' bezeichnet. Die Dichten in den Zellen der neuen Zellstruktur werden durch Methoden des Continuous Scatterplottings berechnet.
 
 Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden n\"aher erl\"autert.
 
@@ -1253,7 +1264,7 @@ Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher 
 
 Als N\"achstes werden die Invarianten der Tensoren berechnet. Da die Datens\"atze aus $3\times3$ Matrizen bestehen, enthalten die zugeh\"origen Invariantens\"atze jeweils drei Invarianten. Dazu werden drei Instanzen des Algorithmus `Tensor Invariants' verwendet, von denen jeder ein Skalarfeld auf derselben Tetraederzellstruktur berechnet, dessen Werte die Invarianten der Tensoren an den Eckpunkten sind. F\"ur jeden Algorithmus kann eine eigene Invariante aus den genannten Invariantens\"atzen ausgew\"ahlt werden. Die drei Skalarfelder werden von `Combine Scalar to Vector' zu einem Vektorfeld kombiniert, dessen Komponenten den Werten der Skalare entspricht. Eine Kopie des Vektorfeldes wird direkt als VTK Datei abgespeichert. Dies ist das erste von zwei Feldern, das als Eingabe der eigentlichen Visualisierung verwendet wird.
 
-Der Algorithmus `Cylindric Coordinates' ist optional. Er interpretiert die Komponenten der Vektoren als zylindrische Koordinaten und berechnet die kartesischen Koordinaten der Punkte. Ein Punkt der Eingabe ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als x-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der x-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die x-Achse mit dem Punkt verbindet, und der Xy-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1,\dots,1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Die Zellstruktur der Eingabe wird beibehalten, lediglich die Positionen der Eckpunkte der Zellen werden ver\"andert.
+Der Algorithmus `Cylindric Coordinates' ist optional. Er interpretiert die Komponenten der Vektoren als zylindrische Koordinaten und berechnet die kartesischen Koordinaten der Punkte. Ein Punkt der Eingabe ist durch die drei Komponenten des Vektors dann wie folgt beschrieben: Die erste Komponente wird als x-Koordinate interpretiert, die zweite Komponente als minimaler Abstand zwischen dem Punkt und der x-Achse und die dritte als Winkel zwischen dem k\"urzesten Liniensegment, das die x-Achse mit dem Punkt verbindet, und der Xy-Ebene. Die letzte Komponente wird dabei auf das Intervall $[-1;1]$ normiert, wobei -1 ein Liniensegment in negative Y Richtung beschreibt, 0 ein Liniensegment in positive Z Richtung und 1 ein Liniensegment in positive Y Richtung. Die Zellstruktur der Eingabe wird beibehalten, lediglich die Positionen der Eckpunkte der Zellen werden ver\"andert.
 
 Ziel des Cylindric Coordinate Algorithmus ist es, eine einheitliche Eingabe in kartesischen Koordinaten f\"ur die eigentliche Visualisierung zu erzeugen. Er ist f\"ur die Anwendung bei Invariantens\"atzen gedacht, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, beispielsweise die I- und J-Invariantens\"atze. Bei anderen Invariantens\"atzen sollte er nicht verwendet werden.
 
@@ -1363,9 +1374,9 @@ Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkant
 \end{algorithm}
 
 \paragraph{Fragment Shader}
-Der Fragment Shader normalisiert die Invarianten auf das Intervall $[0,\dots,1]$, wobei 0 dem niedrigsten und 1 dem h\"ochsten vorkommenden Wert entspricht. Damit wird sichergestellt, dass die Invarianten mit maximal m\"oglicher Pr\"azision in der Textur gespeichert werden.
+Der Fragment Shader normalisiert die Invarianten auf das Intervall $[0;1]$, wobei 0 dem niedrigsten und 1 dem h\"ochsten vorkommenden Wert entspricht. Damit wird sichergestellt, dass die Invarianten mit maximal m\"oglicher Pr\"azision in der Textur gespeichert werden.
 
-Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Nutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise um mehr als 10 Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter der 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt auch das kein Problem dar. 
+Zudem wird die Dichte der Voxel modifiziert. Zum einen wird sie mit einem vom Nutzer gew\"ahlten Faktor (standardm\"a{\ss}ig 1) multipliziert. Zum anderen wird, wenn vom Nutzer ausgew\"ahlt, die dritte Wurzel der Dichte berechnet. Dies hat sich als sinnvoll erwiesen, da in den verwendeten Datens\"atzen gro{\ss}e Unterschiede in der Dichte der Voxel auftreten, teilweise um mehr als zehn Gr\"o{ss}enordnungen. Durch das Ziehen der dritten Wurzel n\"ahern sich die Werte weiter der 1 an. Da die Dichtewerte nicht direkt abgelesen werden m\"ussen, stellt auch das kein Problem dar. 
 
 Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiecke auf dieselben Voxel abgebildet. Die Kombination der Werte pro Voxel erfolgt durch die schon mehrmals erw\"ahnte von OpenGL bereitgestellte Funktion des Blendings. Im Objekt k\"onnen Tetraeder nicht \"uberlappen, weshalb die Invariantenwerte in der Textur davon nicht betroffen sind. Durch das Blending wird $sigma_{V_i}$ f\"ur jeden Tetraeder $V_i$ berechnet und korrekt pro Voxel aufaddiert. Damit ist die zweite H\"alfte des Continuos Scatterplottings implementiert.
 
@@ -1380,13 +1391,13 @@ Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich F
 Die Dichte innerhalb eines Voxels entspricht im Moment stets der Summe der Tetraeder, die das Voxel schneiden, unabh\"angig davon, wie viel des Voxels vom Tetraeder eingenommen wird. Dadurch enth\"alt die 3D Textur insgesamt mehr Masse als das urspr\"ungliche Feld, was gegen einen Grundsatz des Continuous Scatterplottings, die Masseerhaltung, verst\"o{\ss}t. Eine M\"oglichkeit diesen Fehler zu reduzieren oder sogar komplett zu vermeiden w\"are es, pro Voxel die Werte an mehreren Samplepoints zu berechnen und die Dichte auf den Mittelwert der Samplepunkte zu setzen. OpenGL bietet standardm\"a{\ss}ig eine Option dieses Supersampling zu implementieren. Da aber Supersampling die Rechenzeit der Voxelisierung stark erh\"ohen w\"urde und die Voxelisierung schon einen Gro{\ss}teil der Rechenzeit der Visualisierung ausmacht, wurde dies noch nicht implementiert.
 
 \subsection{Berechnung der maximalen Dichte}
-Texturen k\"onnen nur Werte im Intervall $[0,\dots,1]$ enthalten. Um andere Werte darstellen zu k\"onnen, muss ein Faktor $f$ ermittelt werden, durch den die Werte, die in der Textur gespeichert werden sollen, geteilt werden. Wenn wiederum aus der Textur gelesen werden soll, werden die in der Textur gespeicherten Werte mit diesem Faktor multipliziert, um die urspr\"unglichen Werte zu ermitteln.
+Texturen k\"onnen nur Werte im Intervall $[0;1]$ enthalten. Um andere Werte darstellen zu k\"onnen, muss ein Faktor $f$ ermittelt werden, durch den die Werte, die in der Textur gespeichert werden sollen, geteilt werden. Wenn wiederum aus der Textur gelesen werden soll, werden die in der Textur gespeicherten Werte mit diesem Faktor multipliziert, um die urspr\"unglichen Werte zu ermitteln.
 
 Um die Pr\"azision der Textur m\"oglichst gut auszunutzen, sollte $f$ dem Maximum der in der Textur gespeicherten Werte entsprechen. Dies stellt die Voxelisierung vor ein Problem: Das Maximum der 3D Textur kann erst bestimmt werden nachdem die Voxelisierung abgeschlossen ist, ist jedoch n\"otig, um die Voxelisierung korrekt durchzuf\"uhren. Um dieses Problem zu l\"osen wurde in dieser Arbeit ein Verfahren entwickelt, um das korrekte Maximum schon im Vorraus zu berechnen.
 
 In einem Vorverarbeitungsschritt wird die h\"ochste potentiell m\"ogliche Dichte in einem Voxel berechnet. Diese k\"ame genau dann vor, wenn alle Tetraeder $V_i, i=1,\dots,n$ sich in einem Voxel \"uberschneiden w\"urden. Somit entspricht sie der Summe der Dichten aller Tetraeder. 
 
-Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die berechnete maximal m\"ogliche Dichte geteilt und somit garantiert in das Intervall $[0,\dots,1]$ abgebildet wird. 
+Danach wird die Voxelisierung einmal ausgef\"uhrt, wobei jeder Dichtewert durch die berechnete maximal m\"ogliche Dichte geteilt und somit garantiert in das Intervall $[0;1]$ abgebildet wird. 
 
 Als N\"achstes wird das Maximum der gerade erzeugten 3D Textur gesucht. Da die 3D Textur relativ gro{\ss} werden kann (bis zu mehreren Gigabyte), die \"Ubertragung von Daten aus der Grafikkarte zum Arbeitsspeicher relativ langsam ist und das Finden des Maximums gut parallelisiert werden kann, wurde auch dieses Problem durch eine Shaderpipeline gel\"ost. 
 
@@ -1493,7 +1504,7 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 	\label{RaycastingAlgorithm}
 \end{algorithm}
 
-Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb des ausgew\"ahlten Bereichs liegt, werden dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Bereichs liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb der ausgew\"ahlten Intervalle liegt, werden dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Intervalls liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
 
 Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
@@ -1501,13 +1512,13 @@ Die Implementierung basiert auf dem FAnToM Algorithmus `Volume Renderer GLSL', v
 
 \subsection{Die Interaktionswidgets}
 \label{sec:Widget}
-Um in der Darstellung des Feldes im Invariantenraum Bereiche ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Leiner et al. \cite{leiner1997entwicklung} stellen an solche Elemente, die sie als ``3D Widgets'' bezeichnen, eine Reihe von Kriterien:
+Um in der Darstellung des Feldes im Invariantenraum Intervalle von Invarianten ausw\"ahlen zu k\"onnen, wurden Interaktionfl\"achen implementiert. Leiner et al. \cite{leiner1997entwicklung} stellen an solche Elemente, die sie als ``3D Widgets'' bezeichnen, eine Reihe von Kriterien:
 
 \paragraph{1. Klare Erkennbarkeit der Widgets}
 Widgets m\"ussen leicht als solche erkennbar sein. Unter anderem m\"ussen sie sich leicht von dem nicht-interaktiven Teil der Visualisierung unterscheiden lassen. Dies kann durch die Form, die Farbe oder die Positionierung der Widgets geschehen.
 
 \paragraph{2. Zerlegung in Handles}
-Da Tastatur und Maus oft nicht gen\"ugend Freiheisgrade bieten um dreidimensionale Interaktionen direkt durch sie umsetzen zu k\"onnen, wird die Interaktion in Teile zerlegt. F\"ur jeden Teil sollte ein Bereich des Widgets reserviert werden, der durch Maus und Tastatur manipuliert werden kann. Diese Bereiche werden von Leiner et al. als ``Handles'' bezeichnet. Die Interaktion mit einem Widget gliedert sich damit in zwei Teile: Die Selektion des gew\"unschten Handles und die Manipulation des Handles.
+Da Tastatur und Maus oft nicht gen\"ugend Freiheisgrade bieten um dreidimensionale Interaktionen direkt durch sie umsetzen zu k\"onnen, wird die Interaktion in Teile zerlegt. F\"ur jeden Teil sollte eine Komponente des Widgets reserviert werden, der durch Maus und Tastatur manipuliert werden kann. Diese Komponenten werden von Leiner et al. als ``Handles'' bezeichnet. Die Interaktion mit einem Widget gliedert sich damit in zwei Teile: Die Selektion des gew\"unschten Handles und die Manipulation des Handles.
 
 \paragraph{3. Hervorhebung des selektierten Handles}
 Damit der Benutzer sicher sein kann, das korrekte Handle selektiert zu haben, sollte dieses visuell hervorgehoben werden.
@@ -1517,7 +1528,7 @@ Preim et al. \cite[S.~340]{preim2015interaktive} f\"ugen noch ein weiteres Krite
 \paragraph{4. Affordances der Handles}
 Mit dem Begriff ``Affordances'' beschreiben Preim et al. \cite[S.~137]{preim2010interaktive} Eigenschaften von Objekten, die auf die Interaktionsm\"oglichkeiten dieser Objekte hinweisen. Beispielsweise sollte ein Stuhl Affordances besitzen, die darauf schlie{\ss}en lassen, dass es m\"oglich ist sich auf diesen zu setzen. Welche Eigenschaften als Affordances erkannt werden, h\"angt von einer Vielzahl von physikalischen und logischen Faktoren ab, sowie davon, welche anderen Interaktionen der Benutzer bereits kennt.
 
-Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget beschrieben ist, wurden im Rahmen dieser Arbeit eigene Widgets entwickelt, durch die Bereiche im Invariantenraum ausgew\"ahlt werden k\"onnen. Da die Invariantenr\"aume meistens in einem von zwei Koordinatensystemen dargestellt werden, den kartesischen und den zylindrischen Koordinaten, wurden f\"ur diese beiden Koordinatensysteme jeweils ein eigenes Widget enwickelt. Die Auswahl des angezeigten Widgets muss dabei der Benutzer treffen, da VTK keine M\"oglichkeit unterst\"utzt, das verwendete Koordinatensystem mit abzuspeichern.
+Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget beschrieben ist, wurden im Rahmen dieser Arbeit eigene Widgets entwickelt, durch die Intervalle von Invarianten im Invariantenraum ausgew\"ahlt werden k\"onnen. Da die Invariantenr\"aume meistens in einem von zwei Koordinatensystemen dargestellt werden, den kartesischen und den zylindrischen Koordinaten, wurden f\"ur diese beiden Koordinatensysteme jeweils ein eigenes Widget enwickelt. Die Auswahl des angezeigten Widgets muss dabei der Benutzer treffen, da VTK keine M\"oglichkeit unterst\"utzt, das verwendete Koordinatensystem mit abzuspeichern.
 
 Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in Abschnitt \ref{sec:Slicing} beschrieben werden. 
 
@@ -1530,17 +1541,19 @@ Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015in
 	\label{CubicalInteractions}
 \end{figure}
 
-Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders sind sichtbar, sie werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum erkennbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so festgelegt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Kriterium 1 erf\"ullt wird. Ein Problem kann jedoch auftreten, wenn die Farben der Transferfunktion sich mit denen der Kanten \"uberschneiden. Abb. \ref{CubicalInteractions} zeigt das quadrische Interaktionswidget.
+Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders sind sichtbar, sie werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum erkennbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so gew\"ahlt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Koordinaten des Schnittpunkts der drei farbigen Kanten entsprechen den Minima der einzelnen Invarianten: Die x- dem der ersten, die y- dem der zweiten und die z-Koordinaten dem der dritten Invariante. Entsprechend verlaufen die farbigen Kanten von diesem Schnittpunkt aus in Richtung der steigenden Invarianten: Die rote in Richtung der ersten, die gelbe in Richtung der zweiten und die blaue Kante in Richtung der dritten Invariante. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. 
 
-Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Kriterium 2 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, so dass immer die aktuellen Intervallgrenzen gezeigt werden. Dies erf\"ullt Kriterium 3 zum Teil: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch das ausgew\"ahlte Handle meist erkennbar ist. 
+Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Kriterium 1 erf\"ullt wird. Ein Problem kann jedoch auftreten, wenn die Farben der Transferfunktion sich mit denen der Kanten \"uberschneiden. Abb. \ref{CubicalInteractions} zeigt das quadrische Interaktionswidget.
 
-Kriterium 4 ist ebenfalls nur teilweise erf\"llt. Das quadrische Interaktionswidget kann als Bereich des kartesischen dreidimensionalen Raums aufgefasst werden, dessen Seitenfl\"achen bewegt werden k\"onnen. Dies stellt eine Affordance dar. Jedoch muss davon ausgegangen werden, dass diese Affordance nicht ausreicht um Benutzer auf die m\"oglichen Interaktionen mit den Handles hinzuweisen. 
+Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Kriterium 2 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, sodass immer die aktuellen Intervallgrenzen gezeigt werden. Dies erf\"ullt Kriterium 3 zum Teil: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch das ausgew\"ahlte Handle meist erkennbar ist. 
+
+Kriterium 4 ist ebenfalls nur teilweise erf\"llt. Das quadrische Interaktionswidget kann als Teilmenge des kartesischen dreidimensionalen Raums aufgefasst werden, dessen Seitenfl\"achen bewegt werden k\"onnen. Dies stellt eine Affordance dar. Jedoch muss davon ausgegangen werden, dass diese Affordance nicht ausreicht um Benutzer auf die m\"oglichen Interaktionen mit den Handles hinzuweisen. 
 
 Ob und wie die Widgets ver\"andert werden k\"onnen, um die Kriterien besser zu erf\"ullen, ist Teil der weiteren Forschung und wird sich insbesondere aus Tests mit Anwendern ergeben.
 
 Das quadrische Interaktionswidget kann f\"ur jeden Invariantensatz verwendet werden, ist jedoch besonders f\"ur solche geeignet, bei denen alle drei Invarianten beliebige Werte in $\mathbb{R}$ annehmen k\"onnen (z.B. Eigenwerte, I- und J-Invariantens\"atze).
 
-Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl ein Handle trifft, wird der getroffene Bereich ausgew\"ahlt.  Wenn mehr als eine Handle getroffen wird, wird die n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
+Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl ein Handle trifft, wird die jeweilige Intervallschranke ausgew\"ahlt.  Wenn mehr als ein Handle getroffen wird, wird das n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
 
 \begin{figure}
 	\hspace*{\fill}
@@ -1574,13 +1587,13 @@ Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Pick
 		\label{InteractionPlaneE}
 	\end{subfigure}
 	\hspace*{\fill}
-	\caption{Die Darstellungen der zylindrischen Interaktionswidgets. (a) Ein Widget mit den einzelnen Handles. Ein Klick auf die Bereiche 1,2 und 3 w\"ahlt das Handle der jeweils ersten, zweiten oder dritten Invariante aus. Die Bereich 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionswidgets durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
+	\caption{Die Darstellungen der zylindrischen Interaktionswidgets. (a) Ein Widget mit den einzelnen Handles. Ein Klick auf die Komponenten 1,2 und 3 des Interaktionswidgets w\"ahlt das Handle der jeweils ersten, zweiten oder dritten Invariante aus. Die Komponenten 2a und 3a sind dabei die Minima der Invariante, 2b und 3b die Maxima. (b) bis (d) zeigen ver\"anderte Positionen und Formen der Interaktionswidgets durch gew\"ahlte Invariantenbereiche. In (e) ist der Wireframe dargestellt.}
 \end{figure}
 
 \subsubsection{Zylindrisches Interaktionswidget}
 Wie im Abschnitt \ref{sec:Invariants} beschrieben, kann es f\"ur manche Invariantens\"atze (z.B. die K- und R-Invariantens\"atze) sinnvoll sein, sie in einem zylindrischen Koordinatensystem darzustellen. Daf\"ur m\"ussen eigene Interaktionswidgets entwickelt werden, durch die, \"aquivalent zum quadrischen Widget, die Intervallgrenzen der Invarianten manipuliert werden k\"onnen.
 
-Die implementierten Widgets haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Bereichen, die parallel zur yz-Ebene gezeichnet werden. Ein zylindrisches Interaktionswidget ist in Abb. \ref{InteractionPlaneA} dargestellt. Jeder farbige Bereich markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch wird Kriterium 1 erf\"ullt.
+Die implementierten Widgets haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Komponenten, die parallel zur yz-Ebene gezeichnet werden. Ein zylindrisches Interaktionswidget ist in Abb. \ref{InteractionPlaneA} dargestellt. Jede farbige Komponente markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch wird Kriterium 1 erf\"ullt.
 
 Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe Abb. \ref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe Abb. \ref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe Abb. \ref{InteractionPlaneD}). Dies erf\"ullt Kriterium 2.
 
@@ -1645,7 +1658,7 @@ Ein Slider erm\"oglicht die Einstellung der Helligkeit des Volume Renderings una
 Durch einen weiteren Slider kann ein Faktor festgelegt werden, mit dem die Dichte der Voxel multipliziert wird. Alternativ existiert daf\"ur auch ein Textfeld, falls exakte Werte oder Werte ausserhalb der Reichweite des Sliders ben\"otigt werden.
 
 \paragraph{Offset}
-Der dritte Slider legt einen Grenzwert f\"ur die Dichtewerte fest. Bereiche, deren Dichte unterhalb dieses Grenzwerts liegt, werden als komplett transparent angenommen.
+Der dritte Slider legt einen Grenzwert f\"ur die Dichtewerte fest. Voxel, deren Dichte unterhalb dieses Grenzwerts liegt, werden als komplett transparent angenommen.
 
 \paragraph{Lineare Interpolation}
 Standardm\"a{\ss}ig misst das Sampling die Dichtewerte der Textur an einem vorgegebenen Punkt. Da die Texur durch Rasterisierung enstanden ist, kann dies zu visuellen Artefakten f\"uhren, die die Darstellung `blockig' erscheinen lassen. Es wurde eine Option implementiert, durch die stattdessen lineare Interpolation verwendet werden kann, um die Dichte an einem Punkt zu bestimmen. Dabei wird neben der Dichte des Voxels selbst auch die Dichte der angrenzenden Voxel verwendet, und zwischen diesen der Wert f\"ur den Punkt interpoliert.
@@ -1691,13 +1704,13 @@ Die Dichtewerte der Voxel im Invariantenraum k\"onnen sich extrem unterscheiden.
 	\caption{Das Intervall-Fenster.}
 	\label{IntervalWindow}
 \end{figure}
-Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0,\dots,1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVRs angewendet.
+Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0;1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVR angewendet.
 
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
-Die Visualisierung wurde auf eine Reihe von Testdatens\"atzen angewendet, um die Korrektheit und Qualit\"at der Darstellung zu bewerten. In diesem Abschnitt werden die Datens\"atze vorgestellt, die Ergebnisse der Visualisierungen gezeigt und m\"ogliche Interpretationen vorgestellt.
+Die Visualisierung wurde auf eine Reihe von Testdatens\"atzen angewendet, um die Korrektheit und Qualit\"at der Darstellung zu bewerten. In diesem Abschnitt werden die Datens\"atze vorgestellt, die Ergebnisse der Visualisierungen gezeigt und mit bestehenden Visualisierungen verglichen sowie m\"ogliche Interpretationen erl\"autert.
 
-Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Datens\"atze zu vermitteln, wurde f\"ur jeden Datensatz eine Visualisierung der Tensoren als Ellipsoidglyphen erzeugt. Die Glyphen werden abh\"angig von den Eigenwerten des jeweiligen Tensors unterschiedlich dargestellt. Die L\"ange der Achsen eines Ellipsoids entspricht den Eigenwerten und die l\"angste Achse zeigt in Richtung des dazugeh\"origen Eigenvektors.
+Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Datens\"atze zu vermitteln, wurde f\"ur die ersten beiden Datens\"atze eine Visualisierung der Tensoren als Ellipsoidglyphen erzeugt. Die Glyphen werden abh\"angig von den Eigenwerten des jeweiligen Tensors unterschiedlich dargestellt. Die L\"ange der Achsen eines Ellipsoids entspricht den Eigenwerten und die l\"angste Achse zeigt in Richtung des dazugeh\"origen Eigenvektors.
 
 \subsection{Single Point Load}
 
@@ -1725,28 +1738,26 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 	\caption{Darstellung des Single Point Load Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
 	\label{SinglePoint}
 \end{figure}
-Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als Single Point Load bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
+Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als ``Single Point Load'' bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
 
-Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums ist in Abb. \ref{SinglePointObject} zu sehen. 
+Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwirkungspunktes der Kraft ist in Abb. \ref{SinglePointObject} zu sehen. Diese Darstellung soll vor allem als Vergleichspunkt f\"ur die sp\"ater gezeigten Visualisierungen des Halbraums dienen, bei denen Teile abh\"angig von den gew\"ahlten Invarianten ausgeblendet wurden.
 
 Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Durch die \"Uberdeckung der Glyphen ist es schwer zu erkennen an welchen Punkten die Glyphen genau eingezeichnet sind, es scheint jedoch so als ob die Matrizen nahe der Oberfl\"ache stark planar anistrop sind, was durch flache runde Glyphen dargestellt ist. Weiter im Inneren ist die Form der Glyphen eher l\"anglich, was auf lineare Anisotropie hinweist. 
 
-F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das dazugeh\"orende quadrische Interaktionswidget verwendet. 
+F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. 
 
-Die Darstellung wurde gedreht, so dass die durchgef\"uhrten Interaktionen besser sichtbar werden. Durch die Drehung befindet sich der Koordinatenursprung an der vorderen linken unteren Ecke des Interaktionswidgets, erkennbar dadurch dass dort alle drei farbigen Kanten beginnen. Die rote Kante geht vom Koordinatenursprung aus nach hinten, in Richtung der steigenden ersten, die gelbe Kante nach oben in Richtung der steigenden zweiten und die blaue Kante nach links in Richtung der steigenden dritten Invariante. Die Dimensionen des Invariantenraumes wurde durch eine Option des Algorithmus so skaliert, dass die Bereiche 
+Durch die Normalisierungsfunktion wurden die Dimensionen des Invariantenraumes so skaliert, dass die Intervalle der drei Invarianten gleich gro{\ss} dargestellt werden. Tats\"achlich sind die Intervalle jedoch wie folgt:
 
-Die Darstellung des Datensatzes im Invariantenraum 
+\begin{itemize}
+	\item $I_1$: Spur, im Intervall $[0,00916;44,035]$
+	\item $I_2$: Summe der Hauptminoren, im Intervall $[-3,195;345,12]$
+	\item $I_3$: Determinante, im Intervall $[-3,301;751,25]$
+\end{itemize}
 
-Interdie Koordinaten der Tetraeder f\"ur das kartesische Koordinatensystem berechnet. Dementsprechend wird auch das quadrische Interaktionswidget angezeigt, dargestellt durch die
-Abb. \ref{SinglePointInvariantSpace} zeigt die Darstellung des Datensatzes im Invariantenraum in gr\"un mit Interaktionswidgets links und rechts davon. Das DVR des Objekts ist in Abb. \ref{SinglePointObject} zu sehen.
+Die Form des DVR im Invariantenraum ist l\"anglich und befindet sich entlang einer imagin\"aren Gerade. Scheinbar besteht im Datensatz eine starke lineare Abh\"angigkeit zwischen den drei Invarianten. Dies ist teilweise durch die fehlende Orthogonalit\"at des I-Invariantensatzes zu erkl\"aren: Desto h\"oher die Eigenwerte einer Matrix, desto h\"oher sind auch die Werte der I-Invarianten.  
 
-In Abb. \ref{SinglePointInteraction} wurden verschiedene Invariantenbereiche ausgew\"ahlt. Verwendet wurde der K-Invariantensatz. Bei \ref{SinglePointInvariant1} und \ref{SinglePointObject1} sind die Bereiche mit niedrigem $K_1$ ausgeblendet, in \ref{SinglePointInvariant2} und \ref{SinglePointObject2} die Bereiche mit niedrigem $K_2$ und in \ref{SinglePointInvariant3} und \ref{SinglePointObject3} sind nur noch Bereiche mit sehr hohem $K_3$ zu sehen. 
+Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, beschr\"ankt sich die Demonstration der Funktion des Interaktionswidgets in diesem Datensatz auf $I_1$.
 
-Aus diesen Darstellungen l\"asst sich ein starker Zusammenhang zwischen der ersten (Spur) und zweiten (Norm des Deviators) Invariante im Datensatz herleiten. Das Ausblenden niedriger Bereiche f\"ur die erste und zweite Invariante f\"uhrt zu sehr \"ahnlichen Effekten im DVR des Objekts.  
-
-Aus der Darstellung von Bereichen mit hohem Modus (\ref{SinglePointInvariant3} und \ref{SinglePointObject3}) l\"asst sich ableiten, dass die einwirkende Kraft Tensoren mit einem einzelnen Eigenwert mit hohem Betrag erzeugt, die sich in einem kegelf\"ormigen Bereich ausgehend vom Auftrittspunkt der Kraft befinden.
-
-Insgesamt lassen sich aus der Darstellung der Invariantenbereiche eine Reihe von Informationen ziehen, die aus klassischen Visualisierungen nicht oder nur mit gro{\ss}em Aufwand abgelesen werden k\"onnen. Der funktionale Zusammenhang zwischen $K_1$ und $K_2$ ist mithilfe der Interaktionen leicht zu sehen, eine Eigenschaft des Datensatzes, die beispielsweise in der Glyphendarstellung in \ref{SinglePointEllipsoids} nur schwer erkennbar ist. Auch Bereiche, in keine oder sehr kleine Glyphen gezeichnet wurden, lassen sich leichter analysieren, wie z.B. die Bereiche mit hohem Modus zeigen. 
 
 
 \begin{figure}
@@ -1798,31 +1809,50 @@ Insgesamt lassen sich aus der Darstellung der Invariantenbereiche eine Reihe von
 \clearpage
 
 \begin{figure}
+	\hspace*{\fill}
 	\begin{subfigure}{0.25\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/MetalDisk/MetalDisk_Object.png}
 		\subcaption{}
 		\label{MetalDiskObject}
 	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.25\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Ellipsoids.png}
-		\subcaption{}
-		\label{MetalDiskStressEllipsoids}
-	\end{subfigure}
-	\hspace*{\fill}
+	\hspace{2cm}
 	\begin{subfigure}{0.25\textwidth}
 		\centering
 		\includegraphics[height=6cm]{pictures/results/MetalDisk/strain/MetalDisk_Strain_Ellipsoids.png}
 		\subcaption{}
 		\label{MetalDiskStrainEllipsoids}
 	\end{subfigure}
-	\caption{Der Metallscheiben-Datensatz: (a) DVR des Objektes, (b) Tensorglyphen der mechanischen Spannung und (c) Tensorglyphen der mechanischen Verformung.}
+	\hspace*{\fill}
+	\caption{Der Metallscheiben-Datensatz: (a) DVR des Objektes, (b)Tensorglyphen der mechanischen Verformung.}
 	\label{MetalDisk}
 \end{figure}
 
 \subsection{Metallscheibe}
+
+\begin{figure}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/strain/MetalDisk_Strain_Fritzsch.png}
+		\subcaption{}
+		\label{MetalDiskStrainFritzsch}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/strain/MetalDisk_Strain_Orthogonal.png}
+		\subcaption{}
+		\label{MetalDiskStrainOrthogonal}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[height=4cm]{pictures/results/MetalDisk/strain/MetalDisk_Strain_Perspective.png}
+		\subcaption{}
+		\label{MetalDiskStrainPerspective}
+	\end{subfigure}
+	\caption{Darstellungen des Invariantenraums des K-Invariantensatzes f\"ur die mechanische Verformung in der Simulation der Metallscheibe: (a) Die von Fritzsch vorgestellte Visualisierung \cite[S.~45]{fritzsch2016continuousScatterplot}, (b) ein DVR mit orthogonaler Projektion in kartesischen Koordinaten, (c) ein DVR mit perspektivischer Projektion in zylindrischen Koordinaten.}
+\end{figure}
 
 Als zweites Beispiel wurden die Ergebnisse einer thermo-mechanischen Simulation einer Metallscheibe, durchgef\"uhrt von Dr. Thomas Nagel, verwendet. Dieselben Daten bilden auch die Grundlage f\"ur ein Anwendungsbeispiel in der Arbeit von Fritzsch \cite[S.15,~45~ ff.]{fritzsch2016continuousScatterplot}. Dort werden die Datens\"atze von Fritzsch wie folgt beschrieben:
 
@@ -1830,110 +1860,38 @@ Als zweites Beispiel wurden die Ergebnisse einer thermo-mechanischen Simulation 
 
 Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur z-Achse sind. Die z-Achse selbst zeigt nach unten.
 
-Da die Metallscheibe spiegelsymmetrisch zur x- und y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. Die Metallscheibe sowie Tensorglyphen der beiden Datens\"atze sind in Abb. \ref{MetalDisk} dargestellt. 
+Da die Metallscheibe spiegelsymmetrisch zur x- und y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. 
 
-Beide Datens\"atze wurden von Fritzsch untersucht. Dabei wurden als Invarianten $I_1$ und $\sqrt{2J}$ verwendet. Da im dreidimensionalen gilt $I_1 = K_1$ und $\sqrt{2J_2} = K_2$ und die Tensoren beider Datens\"atze dreidimensional sind, ist im Folgenden stattdessen vom K-Invariantensatz die Rede. Um die Korrektheit der in der vorliegenden Arbeit implementierten Visualisiserung zu zeigen und die Ergebnisse mit denen von Fritzsch vergleichen zu k\"onnen, werden im Folgenden Visualisierungen des K-Invariantensatzes f\"ur mechanische Spannung und mechanische Verformung vorgestellt und mit den Visualisierungen von Fritzsch verglichen.
+Beide Datens\"atze wurden von Fritzsch untersucht. Dabei wurden als Invarianten $I_1$ und $\sqrt{2J}$ verwendet. Da im bei symmetrischen Tensoren gilt $I_1 = K_1$ und $\sqrt{2J_2} = K_2$ und die Tensoren beider Datens\"atze dreidimensional sind, ist im Folgenden stattdessen vom K-Invariantensatz die Rede. Um die Korrektheit der in der vorliegenden Arbeit implementierten Visualisiserung zu zeigen und die Ergebnisse mit denen von Fritzsch vergleichen zu k\"onnen, werden im Folgenden Visualisierungen des K-Invariantensatzes f\"ur die mechanische Verformung gezeigt und denen von Fritzsch gegen\"ubergestellt. Das bedeutet, dass f\"ur die Erstellung des DVR als dritte Koordinate $K_3$ verwendet wurde.
 
-Um die visuelle Vergleichbarkeit zu erh\"ohen, wurden auch Bilder mit orthogonalen Projektionen erzeugt. Daf\"ur existiert im implementierten FAnToM Plugin noch keine Option. Da die erzeugten Bilder jedoch einige Vorteile bieten, zum Beispiel die M\"oglichkeit Positionen im Invariantenraum leichter abzulesen, k\"onnte diese Option in Zukunft noch implementiert werden. Die f\"ur die DVRs verwendete Transferfunktion wurde ebenfalls so gew\"ahlt, dass die \"Ahnlichkeit der Visualisierungen deutlich wird.
+Ein DVR der Metallscheibe ist in Abb. \ref{MetalDiskObject} in blau dargestellt. Abb. \ref{MetalDiskStrainEllipsoids} zeigt eine Darstellung der Verformungstensoren als Ellipsoidglyphen. Am inneren Rand der Scheibe, insbesondere im oberen Bereich, sind die Ellipsoide am gr\"o{\ss}ten. Dies l\"asst auf hohe Betr\"age der Eigenwerte dort schlie{\ss}en. Das Vorzeichen der Eigenwerte l\"asst sich jedoch nicht ableiten. Zum \"ausseren Rand hin nimmt die Gr\"o{\ss}e der Ellipsoide ab. Eine weitere Eigenschaft l\"asst sich aus der Form der Ellipsoide ablesen. Diese scheint am unteren Ende des Scheibenausschnitts eher l\"anglich, am oberen Ende eher rund zu sein. Scheinbar ist die Verformung am oberen Ende st\"arker isotrop als am oberen. Ebenfalls nimmt die Gr\"o{\ss}e der Ellipsoide von oben rechts nach unten links zu.
 
-\begin{figure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Fritzsch.png}
-		\subcaption{}
-		\label{MetalDiskStressFritzsch}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Orthogonal.png}
-		\subcaption{}
-		\label{MetalDiskStressOrthogonal}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[height=4cm]{pictures/results/MetalDisk/stress/MetalDisk_Stress_Perspective.png}
-		\subcaption{}
-		\label{MetalDiskStressPerspective}
-	\end{subfigure}
-	\caption{Darstellungen des Invariantenraums des K-Invariantensatzes f\"ur den mechanischen Stress in der Simulation der Metallscheibe: (a) Die von Fritzsch vorgestellte Visualisierung \cite[S.~45]{fritzsch2016continuousScatterplot}, (b) ein DVR mit orthogonaler Projektion, (c) ein DVR mit perspektivischer Projektion.}
-\end{figure}
+Abb. \ref{MetalDiskStrainFritzsch} zeigt die von Fritzsch erzeugte Visualisierung der mechanischen Verformung. Die x-Achse entspricht dem Wert von $K_1$, die y-Achse dem von $K_2$. 
 
-\subsubsection{Spannung}
-Abb. \ref{MetalDiskStressFritzsch} zeigt die von Fritzsch erzeugte Darstellung der f\"ur die Metallscheibe simulierten mechanischen Spannung. Die x-Achse entspricht dabei der Invariante $K_1$ und die y-Achse $K_2$. Der gleiche Datensatz ist in Abb. \ref{MetalDiskStressOrthogonal} als DVR mit orthogonaler Perspektive visualisiert, wobei die x-Achse wiederum $K_1$ und die y-Achse $K_2$ entspricht. Die z-Achse entspricht $K_3$, verschwindet jedoch durch die orthogonale Projektion, da die Blickrichtung der Kamera parallel zur z-Achse ist. In Abb. \ref{MetalDiskStressPerspective} ist derselbe Datensatz noch einmal dargstellt, jedoch mit perspektivischer Projektion.
+Damit die \"Ahnlichkeit zwischen der Darstellung von Fritzsch und den Ergebnissen der vorgestellten Arbeit deutlich werden, wurde ein DVR mit orthogonaler Projektion in kartesischen Koordinaten erzeugt, das in Abb. \ref{MetalDiskStrainOrthogonal} zu sehen ist. F\"ur die Verwendung von orothogonaler Projektion existiert im implementierten FAnToM Plugin noch keine Option, diese k\"onnte jedoch in Zukunft hinzugef\"ugt werden. Auch die verwendete Transferfunktion wurde absichtlich so gew\"ahlt, um die Darstellung des DVR an die von Fritzsch anzugleichen. Die x- und y-Achse entsprechen beim orthogonalen DVR jeweils $K_1$ und $K_2$, wie auch bei der Darstellung von Fritzsch. Die z-Achse entspricht zus\"atzlich $K_3$.
 
-Die \"Ahnlichkeit zwischen Abb. \ref{MetalDiskStressFritzsch} und \ref{MetalDiskStressOrthogonal} ist offensichtlich. Insbesondere der l\"angliche Bereich hoher Dichte unten mit seiner geschwungenen oberen Kante ist deutlich wiedererkennbar. 
+Die Abbildungen \ref{MetalDiskStrainFritzsch} und \ref{MetalDiskStrainOrthogonal} \"ahneln sich stark, weisen jedoch eine Reihe deutlicher Unterschiede auf. Zun\"achst ist die Abb. \ref{MetalDiskStrainFritzsch} deutlich breiter, was an einer unterschiedlichen Skalierung in Richtung der x-Achse liegt. Desweiteren ist der rechte obere Teil von Abb. \ref{MetalDiskStrainOrthogonal} deutlich heller als der von \ref{MetalDiskStrainFritzsch}. Das ist darauf zur\"uckzuf\"uhren, dass die Tetraeder in diesem Bereich sehr flach und fast parallel zur xy-Ebene sind. Dadurch werden sie nur von wenigen oder gar keiner der bei der Rasterisierung verwendeten Schnittebenen getroffen, wodurch nur wenige Voxel Dichtewerte erhalten. Durch die Skalierung der Dichte mit der Anzahl der Abtastpunkte wird der Bereich deutlich heller als in der Darstellung von Fritzsch. Ein weiterer wichtiger Faktor ist, dass das von Fritzsch implementierte Verfahren die Dichtewerte der projezierten Tetraeder einfach aufaddiert. Im DVR w\"urde dies dem R\"ontgenbildverfahren entsprechen. Da stattdessen ein transluzentes Verfahren implementiert wurde, erscheinen dichte Bereiche wie z.B. an der unteren Kante des DVR heller als dieselben Stellen in der Darstellung von Fritzsch. 
 
-Es gibt jedoch auch deutliche Unterschiede. Der obere Bereich in Abb. \ref{MetalDiskStressOrthogonal} ist deutlich heller als in Abb. \ref{MetalDiskStressFritzsch}. Dies ist darauf zur\"uckzuf\"uhren, dass die z-Koordinaten der Eckpunkte der Tetraeder in diesem Bereich sehr nah beieinander liegen, die Tetraeder also fast Fl\"achen parallel zur xz-Ebene sind. Dadurch schneiden die f\"ur bei der Rasterisierung verwendeten Fl\"achen nur wenige Tetraeder, was zu den komplett weissen Bereichen und den linienf\"ormigen Artefakten im DVR f\"uhrt. Eine m\"ogliche L\"osung dieses Problems w\"are, den Winkel der der Rasterisierung verwendeten Fl\"achen zur xy-Ebene einstellbar zu machen.
+Der K-Invariantensatz eignet sich f\"ur die Darstellung in zylindrischen Koordinaten. Daher bietet sich die mechanische Verformung der Metallscheibe an, um das zylindrische Interaktionswidget zu demonstrieren. Abb. \ref{MetalDiskStrainPerspective} zeigt ein DVR desselben Datensatzes wie Abb. \ref{MetalDiskStrainOrthogonal}, bei dem jedoch die Koordinaten der Eckpunkte der Tetraeder als Zylinderkoordinaten interpretiert wurden.
 
-Ein weiterer erkennbarer Unterschied sind die verschiedenen F\"arbungen an den rechten Kanten der Darstellungen. Bei der Visualisierung von Fritzsch ist dieser Bereich sehr dunkel, im DVR dagegen in einem mittleren Grau. Der Grund daf\"ur liegt in den unterschiedlichen Berechnungen der Farbwerte. Der Algorithmus von Fritzsch addiert f\"ur jedes Pixel die darauf projezierten Dichtewerte der Tetraeder und berechnet aus dieser Summe den Farbwert des Pixels. Dies entspricht dem Vorgehen beim Erstellen von R\"iontgenbildern, wie in Abschnitt \ref{sec:DVR} beschrieben. Das implementierte DVR dagegen verwendet das Vorgehen zum Erzeugen transluzenter Bilder, das im selben Abschnitt beschrieben wird.
+F\"ur alle vom Invariantenraum der Metallscheibe erzeugten DVR wurden die Koordinaten durch die Option normalisiert. Dadurch werden die Intervalle von Invarianten gleich gro{\ss} dargestellt, obwohl dies in den Daten nicht notwendig der Fall ist.
 
- 
-Abb. \ref{MetalDiskStressEllipsoids} zeigt die Spannungstensoren der Metallscheibe in Form von Ellipsoidglyphen. Erkennbar ist, dass die Glyphen am \"au{\ss}eren Rand der Scheibe eher l\"anglich und die am inneren Rand eher scheibenf\"ormig sind. Das bedeutet, dass die Tensoren am \"ausseren Rand einen einzelnen Eigenwert mit hohem und zwei Eigenwerte mit kleinem Betrag besitzen, wogegen am inneren Rand zwei Eigenwerte hohe und nur einer einen kleinen Betrag hat. In beiden Bereichen ist hohe Anisotropie zu erwarten. Gleichzeitig nimmt die Gr\"o{\ss}e der Glyphen im Bild von unten links nach oben rechts zu. Daraus ist erkennbar, dass der Betrag der Eigenwerte von unten links nach oben rechts zunimmt. Die Informationen \"uber das Vorzeichen der Eigenwerte geht jedoch in der Glyphendarstellung verloren. Deshalb l\"asst sich nicht ablesen, ob die hohen Eigenwertbetr\"age auf Ausdehnung oder Schrumpfen in diesem Bereich hinweist. 
+Abb. \ref{MetalDiskStrainInteraction} demonstriert die Funktionsweise des zylindrischen Interaktionswidgets. Abb. \ref{MetalDiskStrainInvariant1}, \ref{MetalDiskStrainInvariant2} und \ref{MetalDiskStrainInvariant3} zeigen Darstellungen der Metallscheibe im Invariantenraum. Links und rechts des DVR sind die Interaktionswidgets eingeblendet. Durch Interaktion wurden die Intervalle der anzuzeigenden Invarianten begrenzt, was durch Position und Form der Interaktionswidgets angezeigt wird. Allgemein entspricht der Teil des Invariantenraums, der innerhalb der ausgew\"ahlten Invariantenintervalle liegt, dem Bereich zwischen den roten Teilen der zylindrischen Interaktionswidgets. Teile der DVR, die ausserhalb der Intervalle liegen, werden ausgeblendet. Abb. \ref{MetalDiskStrainObject1}, \ref{MetalDiskStrainObject2} und \ref{MetalDiskStrainObject3} zeigen DVR der Metallscheibe in blau, bei denen die Bereiche mit Invarianten ausserhalb des ausgew\"ahlten Bereichs in einem transparenten Grau dargestellt werden.
 
-Die Darstellungen der Invariantenbereiche (Abb. \ref{MetalDiskStressInteraction}) lassen weitere Interpretationen zu. In Abb. \ref{MetalDiskStressObject1} ist zu sehen, dass die Spur im oberen rechten Teil des Scheibenausschnitts am kleinsten ist, da die negativen Eigenwerte an dieser Stelle den gr\"o{\ss}ten Betrag haben.  Abb. \ref{MetalDiskStressObject2} zeigt, dass die Norm des Deviators am inneren und \"au{\ss}eren Rand der Scheibe gro{\ss} und im Bereich dazwischen eher klein ist, was auf hohe Anisotropie hinweist. Der Modus ist am inneren Rand der Scheibe gro{\ss} und am \"au{\ss}eren klein (Abb. \ref{MetalDiskStressInvariant3} und \ref{MetalDiskStressObject3}).Das bedeutet, dass die Anisotropie am inneren Rand eher planar und am \"ausseren Rand eher linear ist.
+In \ref{MetalDiskStrainInvariant1} wurde das linke Interaktionswidget nach rechts bewegt, wodurch die untere Schranke des Intervalls von $K_1$ erh\"oht wurde w\"ahrend die obere Schranke gleich blieb. Die L\"ange des Intervalls wurde insgesamt um 40\% reduziert. Der Teil des DVR ausserhalb des eingeschr\"ankten Intervalls, also links vom linken Interaktionswidget, ist ausgeblendet. Abb. \ref{MetalDiskStrainObject1} zeigt die Darstellung der Bereiche der Metallscheibe, deren Invarianten innerhalb des eingeschr\"ankten Intervalls liegen: die untere H\"alfte der Metallscheibe sowie der innere Rand. Da $K_1$ als Ma{\ss} des isotropen Anteils der Verformungstensoren interpretiert werden kann, l\"asst sich daraus schlussfolgern, dass in diesen Bereichen starke isotrope Verformung stattfindet. Ein interessantes Detail ist, dass auf der R\"uckseite der Metallscheibe der angezeigte Bereich leicht gr\"o{\ss}er zu sein scheint.
 
-Eine weitere Information, die aus der Visualisierung der Invariantenbereiche gewonnen werden kann, ist, dass sowohl der isotrope als auch der anisotrope Anteil der Spannung auf der R\"uckseite der Scheibe h\"oher ist als auf der Vorderseite. Das ist darauf zur\"uckzuf\"uhren, dass die R\"uckseite erhitzt wird, sich also das Material ausdehnt. Aus der Darstellung der Glyphen in Abb. \ref{MetalDiskStressEllipsoids} ist dies nur schwer abzulesen, da weder die Form noch die Gr\"o{\ss}e der Glyphen auf Vorder- und R\"uckseite stark voneinander abweicht. Zu\"satzlich erlauben die DVRs auch die Analyse von Tensoren im Inneren der Metallscheibe, was in der Glyphendarstellung durch \"Uberlagerung der Glyphen nicht m\"oglich ist.
+Abb. \ref{MetalDiskStrainInvariant2} zeigt die Einschr\"ankung des Intervalls der zweiten Invariante, wiederum indem die untere Schranke erh\"oht wurde. Dies ist an der Form der Interaktionswidgets erkennbar: Die halbkreisf\"ormigen Ausschnitte deuten den Teil des Invariantenraumes an, der ausgeblendet werden soll, wiederum etwa 40\% des Invariantenintervalls.  Im zylindrischen Koordinatensystem entspricht dies der Entfernung zur zentralen x-Achse. Die Bereiche der Metallscheibe, deren Invarianten in dem selektierten Intervall liegen, sind in Abb. \ref{MetalDiskStrainObject2} zu sehen. Diese befinden sich ein einem halbkreisf\"ormigen Bereich an einer Stelle am inneren Rand der Scheibe. Aus der Interpretation von $K_2$ als Ma{\ss} f\"ur die Anisotropie l\"asst sich schlie{\ss}en, dass dort starke Anisotrope Verformung stattfindet.
 
-\clearpage
+Zuletzt zeigt \ref{MetalDiskStrainInvariant3} die Einschr\"ankung des Intervalls der dritten Invariante. Diese entspricht in zylindrischen Koordinaten dem Winkel zur xz-Ebene. Entsprechend wird die Einschr\"ankung durch die Winkel der geraden Seitenfl\"achen der Interaktionswidgets dargestellt. Die untere Schranke wird dabei um 80\% der Intervalll\"ange erh\"oht. Abb. \ref{MetalDiskStrainObject3} zeigt die Bereiche der Metallscheibe mit hoher dritter Invariante. Diese befinden sich in einem halbkreisf\"ormigen Bereich entlang des gesamten inneren Randes der Scheibe.
+
+Aus den Darstellungen der Invariantenbereiche im Objekt lassen sich eine Reihe von Schl\"ussen ziehen. Zun\"achst best\"atigen sich die aus der Ellipsoiddarstellung abgelesenen Informationen: Die Tensoren am inneren Rand und insbesondere im oberen Bereich des inneren Randes sind sehr vie st\"arker als im Rest der Metallscheibe. Auch, dass die Tensoren im unteren Bereich des Scheibenausschnitts st\"arker sind als im oberen stimmt \"uberein. Die zus\"atzliche Zunahme der Anisotropie kann auf den gezeigten Bildern nicht abgelesen werden, dies liegt jedoch daran dass die Anisotropie im unteren Bereich erheblich schw\"acher ist als am inneren Rand, weshalb die Interaktion diese mit ausblendete.
+
+Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nicht bietet. Aus der Kombination aus hohem $K_2$ und $K_3$ am inneren Rand beispielsweise folgt, dass dort hohe orthotrope Anisotropie vorliegt. Interessant sind auch die leicht unterschiedlichen Verteilungen von $K_1$ auf der Vorder- und R\"uckseite der Scheibe, dies ist wahrscheinlich auf die Temperaturunterschiede zur\"uckzuf\"uhren. 
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace1_C.png}
-		\subcaption{}
-		\label{MetalDiskStressInvariant1}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object1.png}
-		\subcaption{}
-		\label{MetalDiskStressObject1}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace2_C.png}
-		\subcaption{}
-		\label{MetalDiskStressInvariant2}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object2.png}
-		\subcaption{}
-		\label{MetalDiskStressObject2}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/cylindrical/MetalDiskStress_InvariantSpace3_C.png}
-		\subcaption{}
-		\label{MetalDiskStressInvariant3}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/stress/MetalDiskStress_Object3.png}
-		\subcaption{}
-		\label{MetalDiskStressObject3}
-	\end{subfigure}
-	\caption{Die mechanische Spannung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit niedrigem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
-	\label{MetalDiskStressInteraction}
-\end{figure}
-
-\subsubsection{Verformung}
-Die Verformungstensoren der Metallscheibensimulation sind in Abb. \ref{MetalDiskStrainEllipsoids} dargestellt. Erkennbar ist, dass die Glyphen am inneren Rand erheblich gr\"o{\ss}er sind als alle anderen. Die Eigenwerte dieser Tensoren haben tats\"achlich einen relativ hohen Betrag, sind jedoch teilweise negativ, was dazu f\"uhrt, dass auch die Spur dort niedrig oder sogar negativ ist. Dies f\"allt auch in Abb. \ref{MetalDiskStrainInvariant1} auf, wo Bereiche niedriger Spur ausgeblendet werden.
-Die Spur ist, \"ahnlich wie beim Spannungsdatensatz, unten links gr\"o{\ss}er als oben rechts. $K_2$, und somit auch die Anisotropie, ist in einem halbkreisf\"ormigen Bereich an der Innenseite der Scheibe am gr\"o{\ss}ten (siehe Abb. \ref{MetalDiskStrainInvariant2}). Im gleichen Bereich ist auch $K_3$ hoch (siehe Abb. \ref{MetalDiskStrainInvariant3}). Das Material wird also am inneren Rand der Scheibe in die Richtung zweier Eigenvektoren zusammengepresst und dehnt sich in entlang des dritten aus. Aus der Glyphendarstellung wird auch die Richtung dieses Eigenvektors ersichtlich, n\"amlich zum Mittelpunkt der Scheibe hin. Die Scheibe dehnt sich also in diesem Bereich zur Mitte hin aus.
-
-Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datensatz: Unterschiede, die sonst nur zu geringen Form\"anderungen der Ellipsoide f\"uhren, sind leichter zu erkennen und ohne \"Uberdeckungen sind Strukturen im Inneren der Metallscheibe sichtbar. Insbesondere die Unterschiede zwischen den Tensoren des oberen rechten und unteren linken Teils der Scheibe werden deutlich, wogegen die Ellipsoidglyphen in diesen Bereichen sehr \"ahnlich sind (Abb. \ref{MetalDiskStrainEllipsoids}).
-
-\begin{figure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace1_C.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace1.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant1}
 	\end{subfigure}
@@ -1947,7 +1905,7 @@ Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datens
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace2_C.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace2.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant2}
 	\end{subfigure}
@@ -1961,7 +1919,7 @@ Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datens
 	\medskip
 	\begin{subfigure}{0.49\textwidth}
 		\centering
-		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace3_C.png}
+		\includegraphics[height=4.5cm]{pictures/results/MetalDisk/strain/cylindrical/MetalDiskStrain_InvariantSpace3.png}
 		\subcaption{}
 		\label{MetalDiskStrainInvariant3}
 	\end{subfigure}
@@ -1976,157 +1934,7 @@ Die Vorteile der Darstellung der Invarianten sind identisch zum Spannungs-Datens
 	\label{MetalDiskStrainInteraction}
 \end{figure}
 
-\begin{figure}[H]
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Bremshebel_Ellipsoids.png}
-		\subcaption{}
-		\label{BremshebelEllipsoidsK}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=6cm]{pictures/results/Bremshebel_R_Object.png}
-		\subcaption{}
-		\label{BremshebelObjectK}
-	\end{subfigure}
-	\vspace{1cm}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=3cm]{pictures/results/Bremshebel_K_InvariantSpace.png}
-		\subcaption{}
-		\label{BremshebelInvariantSpaceK}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=3cm]{pictures/results/Bremshebel_R_InvariantSpace.png}
-		\subcaption{}
-		\label{BremshebelInvariantSpaceR}
-	\end{subfigure}
-	\caption{Darstellung des Bremshebel-Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts, (c) im K-Invariantenraum und (d) im R-Invariantenraum.}
-	\label{BremshebelK}
-\end{figure}
-
-\subsection{Bremshebel}
-Die bisherigen Datens\"atze behandelten ausschlie{\ss}lich einfache geometrische Objekte, auf die Kraft einwirkte. Der Bremshebel-Datensatz wurde ausgew\"ahlt, um die Ergebnisse der Visualisierung auch auf einem komplexeren Objekt zeigen zu k\"onnen.
-
-Beim Bremshebel-Datensatz handelt es sich wie zuvor um Simulationsdaten. Dabei wurden die mechanischen Spannungen des Hebels einer Fahrradbremse simuliert, wenn auf den Hebelarm eine Kraft einwirkt. Der Hebel ist dabei eingespannt, um Bewegung zu verhindern. Die einwirkende Kraft sowie die Stelle, an der der Hebel eingespannt ist, sind gut in Abb. \ref{BremshebelEllipsoidsK} zu erkennen. Die scheinbare Rotf\"arbung des Hebels stammt dabei aus der gro{\ss}en Menge kleiner Glyphen, die an den Punkten des Hebels gemessen wurden. 
-
-Die Simulation wurde mit Abaqus [Standardversion~6.13-4]\cite{abaqusWebsite} erzeugt.
-
-Die Glyphendarstellung zeigt, dass an zwei Stellen des Objekts besonders gro{\ss}e Spannungen wirken: Am Hebelarm, an dem die Kraft einwirkt und unten links, wo der Hebel fixiert ist. Die gro{\ss}e Anzahl und deshalb notwendige geringe Gr\"o{\ss}e der restlichen Glyphen machen eine Interpretation jedoch praktisch unm\"oglich.
-
-Der Bremshebel wurde jeweils einmal mit dem K- und einmal mit dem R-Invariantensatz visualisiert. 
-
-\subsubsection{K-Invarianten}
-Die Darstellung durch Glyphen wird durch die gro{\ss}e Anzahl der Datenpunkte erschwert. Dieses Problem tritt im Rendering des Invariantenraumes nicht auf, da mehr Datenpunkte nur zu exaktere Verl\"aufen der Isofl\"achen f\"uhren. In Abb. \ref{BremshebelRInvariant1} und \ref{BremshebelRObject1} ist erkennbar, dass die Spannungstensoren am Auftrittspunkt der Kraft, entlang der linken Seite des Hebels und einigen Streben im Inneren des Hebels am gr\"o{\ss}ten sind. Der anisotrope Anteil ist am Auftrittspunkt der Kraft, an der Beuge des Hebels und an den Zusammentreffpunkten einiger Streben am st\"arksten (siehe Abb. \ref{BremshebelKInvariant2} und \ref{BremshebelKObject2}).
-
-Bereiche mit niedrigem Modus, also mit planarer Anisotropie, sind in Abb. \ref{BremshebelKInvariant3} ausgew\"ahlt. Der am deutlichsten erkennbare Bereich liegt an der Beuge des Hebels, wo das Material zusammengepresst wird. Aber auch am Auftrittspunkt der Kraft ist der Modus gering, da Kraft dort entlang der Oberfl\"ache weitergeleitet wird.
-
-Tensoren mit hohen Werten f\"ur $K_2$ deuten h\"aufig auf Bereiche hin, innerhalb derer starke anisotrope Kr\"afte wirken. Solche Kr\"afte f\"uhren oft zu starken Verformungen oder sogar zu Br\"uchen des Materials. Gerade deshalb ist eine Untersuchung des Tensorfeldes auf Bereiche mit hohem $K_2$ ein wichtiger Anwendungsfall. Vom Bremshebeldatensatz existieren einige Varianten, die sich in der Anzahl und Form der inneren Verstrebungen unterscheiden. Die Untersuchung der H\"ohe und Verteilung der Werte f\"ur $K_2$ kann dabei wichtige Hinweise darauf liefern, welche Verstrebungen die Kraft besser verteilen als andere. 
-
-\begin{figure}[p]
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace1.png}
-		\subcaption{}
-		\label{BremshebelKInvariant1}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object1.png}
-		\subcaption{}
-		\label{BremshebelKObject1}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace2.png}
-		\subcaption{}
-		\label{BremshebelKInvariant2}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object2.png}
-		\subcaption{}
-		\label{BremshebelKObject2}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_InvariantSpace3.png}
-		\subcaption{}
-		\label{BremshebelKInvariant3}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_K_Object3.png}
-		\subcaption{}
-		\label{BremshebelKObject3}
-	\end{subfigure}
-	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit hohem $K_2$, (e) und (f) Bereiche mit niedrigem $K_3$.}
-	\label{BremshebelKInteraction}
-\end{figure}
-
-\subsubsection{R-Invarianten}
-Trotz der sehr unterschiedlichen Form des Feldes im Invariantenraum (Abb. \ref{BremshebelInvariantSpaceR}), \"ahneln sich die Bereiche, in denen die die erste Invariante hohe Werte annimmt. Da $R_1$ und $K_1$ beide Ma{\ss}e f\"ur die Isotropie Tensoren sind, ist dieses Verhalten zu erwarten. Die Bereiche f\"ur hohe $R_2$ und $K_2$, beide Ma{\ss}e f\"ur die Anisotropie, unterscheiden sich jedoch stark, $R_2$ scheint \"uberall im Inneren des Objekts hoch zu sein, darunter Bereiche, in denen es $K_2$ eher niedrig ist. 
-
-Die Bereiche mit niedrigem Modus (Abb. \ref{BremshebelRInvariant3}) sind, da die Ausgangsdaten die gleichen sind, nat\"urlich identisch.
-
-\begin{figure}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace1.png}
-		\subcaption{}
-		\label{BremshebelRInvariant1}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object1.png}
-		\subcaption{}
-		\label{BremshebelRObject1}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace2.png}
-		\subcaption{}
-		\label{BremshebelRInvariant2}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object2.png}
-		\subcaption{}
-		\label{BremshebelRObject2}
-	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_InvariantSpace3.png}
-		\subcaption{}
-		\label{BremshebelRInvariant3}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Bremshebel_R_Object3.png}
-		\subcaption{}
-		\label{BremshebelRObject3}
-	\end{subfigure}
-	\caption{Die mechanische Spannung des Bremshebel-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $R_1$, (c) und (d) Bereiche mit hohem $R_2$, (e) und (f) Bereiche mit niedrigem $R_3$.}
-	\label{BremshebelRInteraction}
-\end{figure}
-
-Gerade in Abb. \ref{BremshebelRObject2} zeigt sich ein weitere Vorteil der implementierten Visualisierung: Die Bereiche mit hohem $R_2$ sind \"uberall im Objekt verteilt. Diese Bereiche klar darzustellen w\"are bei den meisten klassischen Visualisierungen nur schwer m\"oglich, hier dagegen ist es ein Leichtes den passenden Bereich auszuw\"ahlen.
-
-
-
+\clearpage
 
 \subsection{Fazit}
 Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementierte Verfahren folgende Vorteile gegen\"uber den klassichen Visualisierungen bietet:
@@ -2135,7 +1943,7 @@ Durch die Voxelisierung ist es dem Benutzer m\"oglich, die Aufl\"osung der Darst
 
 Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o{(\ss}enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
 
-Die meisten im Kapitel \hyperref[sec:Verwandte]{Verwandte Arbeiten} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
+Die meisten im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
 
 Durch die in Echtzeit vornehmbaren Interaktionen ist es zudem m\"oglich, Bereiche mit bestimmten Invariantenkombinationen hervorzuheben. Diese explorative Analyse unterscheidet die Visualisierung von den klassischen statischen Ans\"atzen und bietet die M\"oglichkeit, uninteressante Bereiche auszublenden. Auch Zusammeh\"ange zwischen den Verteilungen der Invarianten im Objekt k\"onnen durch die Interaktionen leicht gefunden werden. Selbst kleine Ver\"anderungen der Invarianten \"uber den Datensatz hinweg lassen sich verfolgen.
 
@@ -2149,13 +1957,13 @@ Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"on
 
 Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"are sie ein guter Ansatzpunkt f\"ur Optimierungen. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen. Auch Probleme wie d\"unne, ebenenparallele Bereiche k\"onnten durch Verbesserungen der Rasterisierung behoben werden.
 
-Wie in den Vergleichen mit den Ergebnissen von Fritzsch erw\"ahnt ist die Implementierung einer Option zum Umschalten auf orthogonale Projektion im DVR eine m\"oglicherweise lohnenswerte Erweiterung. Auch Optionen zur Erstellung von R\"ontgenbildern, MIPs oder Isof\"achen sind vorstellbar.
+Wie in den Vergleichen mit den Ergebnissen von Fritzsch erw\"ahnt ist die Implementierung einer Option zum Umschalten auf orthogonale Projektion im DVR eine m\"oglicherweise lohnenswerte Erweiterung. Dadurch w\"urde das Ablesen von Koordinaten aus der Visualisierung erleichtert werden. Auch Optionen zur Erstellung von R\"ontgenbildern, MIPs oder Isof\"achen sind vorstellbar.
 
 Zuletzt bieten auch die Interaktionswidgets Raum f\"ur Weiterentwicklung, besonders in Hinblick auf Affordances, Hervorhebung der Handles bei Selektion und der Darstellung der Widgets in abh\"angig von den Farben der Transferfunktion.
  
 Weitere Verbesserungsm\"oglichkeiten werden wahrscheinlich erst sichtbar werden, wenn das System in der Praxis eingesetzt wird. 
 
-Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensorfeldvisualisierung dar. Die Interaktionen erm\"oglichen es Benutzern den Datensatz explorativ zu analysieren, die DVRs und die aus dem Continuous Scatterplotting \"ubernommenen Verfahren legen innere Strukturen der Datens\"atze offen.
+Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensorfeldvisualisierung dar. Die Interaktionen erm\"oglichen es Benutzern den Datensatz explorativ zu analysieren, die DVR und die aus dem Continuous Scatterplotting \"ubernommenen Verfahren legen innere Strukturen der Datens\"atze offen.
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % HERE ENDS YOUR DOCUMENT
