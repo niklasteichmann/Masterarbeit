@@ -1,4 +1,4 @@
-for FILENAME in SinglePoint_Obj*
+for FILENAME in SinglePoint_Inv*
 do 
-	convert $FILENAME -crop 700x800+470+160 "${FILENAME::-4}"_crop.png
+	convert $FILENAME -crop 1000x1000+450+50 "${FILENAME::-4}"_crop.png
 done
