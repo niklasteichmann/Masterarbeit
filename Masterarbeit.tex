@@ -92,7 +92,7 @@ Tensoren beschreiben im Allgemeinen Abbildungen zwischen Skalaren, Vektoren und 
 Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besondere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
 
 
-Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren zweiten Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Herausforderungen zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern.
+Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren zweiten Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Herausforderungen zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern. Deshalb m\"ussen die Interaktionen so implementiert werden, dass ihre Auswirkungen auf die Visualisierungen ohne sp\"urbare Verz\"ogerungen angezeigt werden.
 
 Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Auf eine Reihe von Direct Volume Rendering Verfahren wird in Kapitel \hyperref[sec:DVR]{5 Direct Volume Rendering Verfahren} n\"aher eingegangen. Kapitel \hyperref[sec:Umsetzung]{6 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{7 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{8 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
  
@@ -106,7 +106,9 @@ Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphe
 
 Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren zweiten Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Tuben durch das Tensorfeld. Die Mittellinien dieser Tuben entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
 
-Weiterhin muss die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
+Auch die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, muss erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
+
+Ein zu der vorliegenden Arbeit sehr \"ahnlicher Ansatz wurde von Raith et al. \cite{raith2019tensor} verfolgt. Dabei werden Tensorfelder in einen Invariantenraum \"uberf\"uhrt, in dem Punkte an Koordinaten verschoben werden, die den Invarianten der Tensoren am jeweiligen Punkt entsprechen. Das Feld wird im Invariantenraum als Gitternetz dargestellt. Durch Interaktionen k\"onnen Schnittfl\"achen innerhalb des Invariantenraumes platziert werden. Der Verlauf der Schnittfl\"achen beschreibt Bereiche innerhalb des Invariantenraumes. Die Grenzen dieser Bereiche werden daraufhin in einer Repr\"asentation des Feldes im Ortsraum eingezeichnet, abh\"angig von den Werten der Invarianten im Feld. Die wesentlichen Unterschiede zur vorliegenden Arbeit besteht aus zwei Aspekten. Zum einen hat die Darstellung des Feldes als Gitternetz wesentliche Nachteile. Die Interpretation der Form des Feldes im dreidimensionalen Raum ist erschwert und Informationen \"uber innere Strukturen sind schwer oder teilweise gar nicht ablesbar. Zum anderen ben\"otigt die Interaktion bei Raith et al. bei manchen Datens\"atzen mehrere Sekunden, was explorative Analysen erschwert.
 
 \section{Grundlagen}
 \label{sec:Grundlagen}
@@ -1675,6 +1677,7 @@ Die Anzahl der Voxel, in die das Feld voxelisiert werden soll, kann f\"ur die ei
 Um die Gr\"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onnen wei{\ss}e Linien an den Kanten der begrenzenden Fl\"achen eingezeichnet werden, also eine `Bounding Box' dargestellt werden.
 
 \subsubsection{Optionen des Invariantenraumrenderings}
+\label{sec:Options}
 
 \paragraph{Ausgew\"ahltes Interaktionswidget}
 Der Benutzer kann entscheiden, ob das quadrische oder die zylindrischen Interaktionswidgets angezeigt werden sollen. Dies ist notwendig, da es nicht ohne weiteres m\"oglich ist aus der internen Repr\"asentation eines Feldes in FAnToM zu bestimmen, ob dieses in zylindrischen oder kartesischen Koordinaten liegt.
@@ -1735,28 +1738,30 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 		\subcaption{}
 		\label{SinglePointInvariantSpace}
 	\end{subfigure}
-	\caption{Darstellung des Single Point Load Datensatzes: (a) als Ellipsoide, (b) als DVR des Objekts und (c) im Invariantenraum, berechnet mit den K-Invarianten.}
+	\caption{Darstellung des Single Point Load Datensatzes: (a) als DVR des Objekts, (b) als Ellipsoide und (c) im Invariantenraum, berechnet mit den I-Invarianten.}
 	\label{SinglePoint}
 \end{figure}
 Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als ``Single Point Load'' bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
 
-Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwirkungspunktes der Kraft ist in Abb. \ref{SinglePointObject} zu sehen. Diese Darstellung soll vor allem als Vergleichspunkt f\"ur die sp\"ater gezeigten Visualisierungen des Halbraums dienen, bei denen Teile abh\"angig von den gew\"ahlten Invarianten ausgeblendet wurden.
+Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwirkungspunktes der Kraft ist in Abb. \ref{SinglePointObject} zu sehen. Die verwendete Transferfunktion ist konstant vollst\"andig opak und blau f\"ur alle Eingabewerte, um die Form deutlich darzustellen. Die Darstellung soll vor allem als Vergleichspunkt f\"ur die sp\"ater gezeigten Visualisierungen des Halbraums dienen, bei denen Teile abh\"angig von den gew\"ahlten Invarianten ausgeblendet wurden.
 
-Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Durch die \"Uberdeckung der Glyphen ist es schwer zu erkennen an welchen Punkten die Glyphen genau eingezeichnet sind, es scheint jedoch so als ob die Matrizen nahe der Oberfl\"ache stark planar anistrop sind, was durch flache runde Glyphen dargestellt ist. Weiter im Inneren ist die Form der Glyphen eher l\"anglich, was auf lineare Anisotropie hinweist. 
+Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Die Form der Ellipsoide ist l\"anglich und zeigt weg vom Einwirkungspunkt der Kraft.
 
-F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. 
+F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. Auch wurde die Darstellung durch Mausinteraktion um 90\textdegree im Uhrzeigersinn um die y-Achse rotiert, um die Form des DVR deutlicher sichtbar zu machen. Dadurch ist der Punkt mit den Koordinaten der unteren Schranken der drei Invariantenintervalle vorn links, markiert dadurch dass dort die drei farbigen Kanten des Interaktionswidgets zusammentreffen.
 
-Durch die Normalisierungsfunktion wurden die Dimensionen des Invariantenraumes so skaliert, dass die Intervalle der drei Invarianten gleich gro{\ss} dargestellt werden. Tats\"achlich sind die Intervalle jedoch wie folgt:
+Durch die Normalisierungsfunktion wurden die Dimensionen des Invariantenraumes so skaliert, dass die Intervalle der drei Invarianten als gleich gro{\ss}e Strecken dargestellt werden.
 
-\begin{itemize}
-	\item $I_1$: Spur, im Intervall $[0,00916;44,035]$
-	\item $I_2$: Summe der Hauptminoren, im Intervall $[-3,195;345,12]$
-	\item $I_3$: Determinante, im Intervall $[-3,301;751,25]$
-\end{itemize}
+Die Form des DVR im Invariantenraum ist l\"anglich und befindet sich entlang einer imagin\"aren Gerade zwischen zwei Punkten, die jeweils das Minimum und Maximum aller drei Invarianten darstellen. Scheinbar besteht im Datensatz eine starke lineare Abh\"angigkeit zwischen den drei Invarianten. Dies ist teilweise durch die fehlende Orthogonalit\"at des I-Invariantensatzes zu erkl\"aren: Desto h\"oher die Eigenwerte einer Matrix, desto h\"oher sind auch die Werte der I-Invarianten.  
 
-Die Form des DVR im Invariantenraum ist l\"anglich und befindet sich entlang einer imagin\"aren Gerade. Scheinbar besteht im Datensatz eine starke lineare Abh\"angigkeit zwischen den drei Invarianten. Dies ist teilweise durch die fehlende Orthogonalit\"at des I-Invariantensatzes zu erkl\"aren: Desto h\"oher die Eigenwerte einer Matrix, desto h\"oher sind auch die Werte der I-Invarianten.  
+Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, beschr\"ankt sich die Demonstration der Funktion des Interaktionswidgets in diesem Datensatz auf $I_1$. In den Darstellungen \ref{SinglePointInvariant1}, \ref{SinglePointInvariant2} und \ref{SinglePointInvariant3} wird die untere Schranke des Intervalls der ersten Invariante erh\"oht. Im unrotierten Zustand wird dies durch die Position der linken Fl\"ache des quadrischen Interaktionswidgets dargestellt. Da jedoch das DVR rotiert wurde, ist diese Fl\"ache nun die vordere des Interaktionswidgets. Dies ist zwar unintuitiv, wird jedoch von der besser sichtbaren Darstellung des DVR nach der Rotation mehr als aufgewogen, weshalb das Bild so gew\"ahlt wurde. Die Abb. \ref{SinglePointObject1}, \ref{SinglePointObject2} und \ref{SinglePointObject3} stellen die Bereiche des Ausschnitts des Halbraums dar, in denen die Invarianten innerhalb der gew\"ahlten Intervalle liegen in blau dar. Der Rest des Halbraumausschnitts wird schemenhaft in grau dargestellt.
 
-Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, beschr\"ankt sich die Demonstration der Funktion des Interaktionswidgets in diesem Datensatz auf $I_1$.
+In Abb. \ref{SinglePointInvariant1} wurde das Intervall von $I_1$ nur um etwa 1\% verkleinert, was in der Darstellung des Invariantenraumes kaum erkennbar ist. Dennoch wird in \ref{SinglePointObject1} ein gro{\ss}er Teil des Halbraums ausgeblendet. Das bedeutet, dass in einem gro{\ss}en Teil des Datensatzes fast keine isotrope Spannung vorliegt. Nur in direkter N\"ahe zum Einwirkungspunkt der Kraft nimmt $I_1$ h\"ohere Werte an. 
+
+Abb. \ref{SinglePointInvariant2} zeigt eine Darstellung des Invariantenraumes, in dem die untere Schranke von $I_1$ um 10\% der Intervalll\"ange erh\"oht wurde. Dadurch ist die untere Spitze des DVR abgeschnitten. Die Wirkung auf die angezeigten Bereiche im DVR des Halbraums in \ref{SinglePointObject2} ist deutlich erkennbar, dieser ist im Vergleich zu Abb. \ref{SinglePointObject2} deutlich kleiner und wieder in der N\"ahe des Einwirkungspunktes der Kraft. 
+
+Das gleiche Verhalten ist auch in Abb. \ref{SinglePointInvariant3}, wo im Invariantenraum die unteren 50\% des Intervalls von $I_1$ ausgeblendet wurde und den zugeh\"origen Bereichen im Halbraum, dargestellt in \ref{SinglePointObject3}
+
+
 
 
 
@@ -1802,7 +1807,7 @@ Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, bes
 		\subcaption{}
 		\label{SinglePointObject3}
 	\end{subfigure}
-	\caption{Die mechanische Spannung des Single Point Load-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit hohem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
+	\caption{Darstellungen der Interaktion mittels des quadrischen Interaktionswidgets f\"ur den Single Point Load Datensatz. Angezeigt werden links der Invariantenraum des I-Invariantensatzes und rechts Darstellungen des Halbraumes. In (a) und (b) wurde die untere Schranke um 1\% der Intervalll\"ange erh\"oht, in (c) und (d) um 10\% und in (e) und (f) um 50\%.}
 	\label{SinglePointInteraction}
 \end{figure}
 
@@ -1824,7 +1829,7 @@ Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, bes
 		\label{MetalDiskStrainEllipsoids}
 	\end{subfigure}
 	\hspace*{\fill}
-	\caption{Der Metallscheiben-Datensatz: (a) DVR des Objektes, (b)Tensorglyphen der mechanischen Verformung.}
+	\caption{Der Metallscheiben-Datensatz: (a) ein DVR des Objektes, (b)Tensorglyphen der mechanischen Verformung.}
 	\label{MetalDisk}
 \end{figure}
 
@@ -1876,7 +1881,7 @@ Der K-Invariantensatz eignet sich f\"ur die Darstellung in zylindrischen Koordin
 
 F\"ur alle vom Invariantenraum der Metallscheibe erzeugten DVR wurden die Koordinaten durch die Option normalisiert. Dadurch werden die Intervalle von Invarianten gleich gro{\ss} dargestellt, obwohl dies in den Daten nicht notwendig der Fall ist.
 
-Abb. \ref{MetalDiskStrainInteraction} demonstriert die Funktionsweise des zylindrischen Interaktionswidgets. Abb. \ref{MetalDiskStrainInvariant1}, \ref{MetalDiskStrainInvariant2} und \ref{MetalDiskStrainInvariant3} zeigen Darstellungen der Metallscheibe im Invariantenraum. Links und rechts des DVR sind die Interaktionswidgets eingeblendet. Durch Interaktion wurden die Intervalle der anzuzeigenden Invarianten begrenzt, was durch Position und Form der Interaktionswidgets angezeigt wird. Allgemein entspricht der Teil des Invariantenraums, der innerhalb der ausgew\"ahlten Invariantenintervalle liegt, dem Bereich zwischen den roten Teilen der zylindrischen Interaktionswidgets. Teile der DVR, die ausserhalb der Intervalle liegen, werden ausgeblendet. Abb. \ref{MetalDiskStrainObject1}, \ref{MetalDiskStrainObject2} und \ref{MetalDiskStrainObject3} zeigen DVR der Metallscheibe in blau, bei denen die Bereiche mit Invarianten ausserhalb des ausgew\"ahlten Bereichs in einem transparenten Grau dargestellt werden.
+Abb. \ref{MetalDiskStrainInteraction} demonstriert die Funktionsweise des zylindrischen Interaktionswidgets. Abb. \ref{MetalDiskStrainInvariant1}, \ref{MetalDiskStrainInvariant2} und \ref{MetalDiskStrainInvariant3} zeigen Darstellungen der Metallscheibe im Invariantenraum. Links und rechts des DVR sind die Interaktionswidgets eingeblendet. Durch Interaktion wurden die Intervalle der anzuzeigenden Invarianten begrenzt, was durch Position und Form der Interaktionswidgets angezeigt wird. Allgemein entspricht der Teil des Invariantenraums, der innerhalb der ausgew\"ahlten Invariantenintervalle liegt, dem Bereich zwischen den roten Teilen der zylindrischen Interaktionswidgets. Teile der DVR, die ausserhalb der Intervalle liegen, werden ausgeblendet. Abb. \ref{MetalDiskStrainObject1}, \ref{MetalDiskStrainObject2} und \ref{MetalDiskStrainObject3} zeigen DVR der Metallscheibe, bei denen die Bereiche mit Invarianten innerhalb des ausgew\"ahlten Intervalls in blau und ausserhalb in einem transparenten Grau dargestellt werden.
 
 In \ref{MetalDiskStrainInvariant1} wurde das linke Interaktionswidget nach rechts bewegt, wodurch die untere Schranke des Intervalls von $K_1$ erh\"oht wurde w\"ahrend die obere Schranke gleich blieb. Die L\"ange des Intervalls wurde insgesamt um 40\% reduziert. Der Teil des DVR ausserhalb des eingeschr\"ankten Intervalls, also links vom linken Interaktionswidget, ist ausgeblendet. Abb. \ref{MetalDiskStrainObject1} zeigt die Darstellung der Bereiche der Metallscheibe, deren Invarianten innerhalb des eingeschr\"ankten Intervalls liegen: die untere H\"alfte der Metallscheibe sowie der innere Rand. Da $K_1$ als Ma{\ss} des isotropen Anteils der Verformungstensoren interpretiert werden kann, l\"asst sich daraus schlussfolgern, dass in diesen Bereichen starke isotrope Verformung stattfindet. Ein interessantes Detail ist, dass auf der R\"uckseite der Metallscheibe der angezeigte Bereich leicht gr\"o{\ss}er zu sein scheint.
 
@@ -1934,7 +1939,119 @@ Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nic
 	\label{MetalDiskStrainInteraction}
 \end{figure}
 
-\clearpage
+\begin{figure}
+	\begin{subfigure}{0.65\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_Raith.png}
+		\subcaption{}
+		\label{BeamRaith}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.34\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_InvariantSpace.png}
+		\subcaption{}
+		\label{BeamInvariant}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken-Datensatzes: (a) die Darstellungen von Raith et al., entnommen aus \cite{raith2019tensor}, (b) eine Darstellung als DVR im Invariantenraum}
+	\label{Beam}
+\end{figure}
+
+\subsubsection{Biegebalken}
+Die letzten zwei Testdatens\"atze stammen aus der Arbeit von Raith et al. \cite{raith2019tensor}. Der erste der beiden beschreibt die Werte der Eigenwerte innerhalb eines sogenannten Biegebalkens. Raith et al. beschreiben den Biegebalken als wagerechter Balken, der an einer Seite befestigt ist, w\"ahrend auf die andere Seite eine Kraft einwirkt \cite[S.~1128]{raith2019tensor}. Der Biegebalken wird im folgenden immer so dargestellt, dass das befestigte Ende auf den Bildern rechts liegt und die Kraft nach unten wirkt. Als Invarianten werden die drei Eigenwerte der Tensoren verwendet, geordnet nach ihrem Betrag. Die erste Invariante ist also stets der h\"ochste, die zweite der mittlere oder die dritte der kleinste der drei Eigenwerte. Da die Tensoren symmetrisch sind und nur reelle Werte enthalten, existieren immer drei Eigenwerte.
+
+Ziel des Tests dieses Datensatzes ist es, die Ergebnisse von Raith et al. zu reproduzieren sowie Vor- und Nachteile der erzeugten Visualisierungen mit denen von Raith et al. zu vergleichen.
+
+In Abb. \ref{BeamRaith} ist die Visualisierung von Raith et al. abgebildet: Auf der rechten Seite wird die Form des Datensatzes im Invariantenraum durch ein Gitternetz in blau dargestellt. Der transparente rote Quader zeigt die Grenzen eines durch Interaktion ausgew\"ahlten Teils des Invariantenraumes, sehr \"ahnlich zu dem innerhalb der vorliegenden Arbeit implementierten quadrischen Interaktionswidget. Gut sichtbar ist, dass der Quader das Gitternetz nur in Richtung der x-Achse (rot) und der z-Achse (blau) schneidet. Kleine achsenparallele Sichten auf das Gitternetz und den Quaders sind am rechten Rand dargestellt.
+
+Die linke Seite zeigt ein Gitternetz, das den Biegebalken im Ortsraum visualisiert. Die roten Fl\"achen entsprechen den Schnittfl\"achen zwischen Quader und Gitternetz im Invariantenraum, stellen also Isofl\"achen der einzelnen Invarianten dar, deren Isowerte durch die Positionen der Seitenfl\"achen des Quaders spezifiziert werden.
+
+Abb. \ref{BeamInvariant} ist die Darstellung desselben Datensatzes im Invariantenraum als DVR. Die leicht unterschiedliche Form ist \"uberweigend auf einen unterschiedlichen winkel der perspektivischen Projektion zur\"uckzuf\"uhren. 
+
+Bei der Erstellung des DVR trat jedoch ein Problem auf. In dem Bereich, an dem sich die beiden v-f\"ormigen Komponenten im Invariantenraum treffen nimmt die durch die Rasterisierung berechnete Dichte im Vergleich zum Rest der 3D Textur sehr hohe Werte an. Um diese hohen Werte dennoch abspeichern zu k\"onnen, muss ein sehr hoher Skalierungsfaktor verwendet werden. Dies f\"uhrte wiederum dazu, dass die abgespeicherten Dichtewerte im Rest der 3D Textur sehr klein und von OpenGL auf 0 abgerundet wurden. Dadurch waren die v-f\"ormigen Bereiche im DVR unsichtbar. Um dies zu verhindern, wurde die im Abschnitt \ref{sec:Options} beschriebene Funktion zur Festlegung einer minimalen Dichte benutzt. Indem die minimale Dichte auf 5\% der maximal vorkommenden Dichte gesetzt wurde, wurden die v-f\"ormigen Bereiche sichtbar.
+
+
+
+\begin{figure}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_InvariantSpace1.png}
+		\subcaption{}
+		\label{BeamInvariant1}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_Object1.png}
+		\subcaption{}
+		\label{BeamObject1}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_InvariantSpace2.png}
+		\subcaption{}
+		\label{BeamInvariant2}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_Object2.png}
+		\subcaption{}
+		\label{BeamObject2}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_InvariantSpace3.png}
+		\subcaption{}
+		\label{BeamInvariant3}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_Object3.png}
+		\subcaption{}
+		\label{BeamObject3}
+	\end{subfigure}
+	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
+	\label{BeamInteraction}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_InvariantSpace1.png}
+		\subcaption{}
+		\label{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_Object1.png}
+		\subcaption{}
+		\label{}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_InvariantSpace2.png}
+		\subcaption{}
+		\label{}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.49\textwidth}
+		\centering
+		\includegraphics[height=8cm]{pictures/results/Nodel/Nodel_Object2.png}
+		\subcaption{}
+		\label{}
+	\end{subfigure}
+	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
+	\label{}
+\end{figure}
+
+\subsubsection{Faserverst\"arkte Metallkomponente}
+
 
 \subsection{Fazit}
 Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementierte Verfahren folgende Vorteile gegen\"uber den klassichen Visualisierungen bietet:
