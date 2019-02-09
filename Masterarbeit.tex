@@ -1,9 +1,9 @@
-\documentclass[a4paper,fontsize=12pt,toc=bib,halfparskip]{scrartcl}
+\documentclass[a4paper,fontsize=12pt,toc=bib,halfparskip,ngerman]{scrartcl}
 
 \usepackage[utf8]{inputenc} % utf8 input encoding
 \usepackage{lmodern} % font
 \usepackage[T1]{fontenc} % 8-Bit output encoding
-\usepackage[ngerman]{babel} % This is a (new)german document so we want to have german labels as well
+\usepackage{babel} % This is a (new)german document so we want to have german labels as well
 \usepackage[dvipsnames]{xcolor} % refer to some colors by name
 \usepackage{graphicx} % able to load more graphic formats
 \usepackage[pdfborder={0 0 0},colorlinks,urlcolor=NavyBlue,linkcolor=NavyBlue,citecolor=NavyBlue]{hyperref} % make clickable hyper links in documents
@@ -23,6 +23,7 @@
 \usepackage{float}
 \usepackage{tikz}
 \usepackage{textcomp}
+\usepackage{cleveref}
 \usetikzlibrary{matrix}
 \usepackage{pgfplots}
 \addbibresource{Literatur.bib} % database for references
@@ -108,7 +109,7 @@ Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Str
 
 Auch die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, muss erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
 
-Ein zu der vorliegenden Arbeit sehr \"ahnlicher Ansatz wurde von Raith et al. \cite{raith2019tensor} verfolgt. Dabei werden Tensorfelder in einen Invariantenraum \"uberf\"uhrt, in dem Punkte an Koordinaten verschoben werden, die den Invarianten der Tensoren am jeweiligen Punkt entsprechen. Das Feld wird im Invariantenraum als Gitternetz dargestellt. Durch Interaktionen k\"onnen Schnittfl\"achen innerhalb des Invariantenraumes platziert werden. Der Verlauf der Schnittfl\"achen beschreibt Bereiche innerhalb des Invariantenraumes. Die Grenzen dieser Bereiche werden daraufhin in einer Repr\"asentation des Feldes im Ortsraum eingezeichnet, abh\"angig von den Werten der Invarianten im Feld. Die wesentlichen Unterschiede zur vorliegenden Arbeit besteht aus zwei Aspekten. Zum einen hat die Darstellung des Feldes als Gitternetz wesentliche Nachteile. Die Interpretation der Form des Feldes im dreidimensionalen Raum ist erschwert und Informationen \"uber innere Strukturen sind schwer oder teilweise gar nicht ablesbar. Zum anderen ben\"otigt die Interaktion bei Raith et al. bei manchen Datens\"atzen mehrere Sekunden, was explorative Analysen erschwert.
+Ein zu der vorliegenden Arbeit sehr \"ahnlicher Ansatz wurde von Raith et al. \cite{raith2019tensor} verfolgt. Dabei werden Tensorfelder in den Invariantenraum \"uberf\"uhrt, in dem Punkte an Koordinaten verschoben werden, die den Invarianten der Tensoren am jeweiligen Punkt entsprechen. Das Feld wird im Invarianten- und Ortsraum als Gitternetz dargestellt. Durch Interaktionen k\"onnen geometrische Objekte innerhalb des Invariantenraumes platziert werden. Wenn eine Seitenfl\"ache eines dieser Objekte eine Zelle des Gitternetzes im Invariantenraum schneidet, so wird der Verlauf des Schnitts im Ortsraum berechnet und angezeigt. Wenn die Schnittfl\"ache parallel zur xy-, xz- oder yz-Ebene war, so entspricht der Verlauf des Schnitts einer Isofl\"ache einer der drei Invarianten im Ortsraum. Die wesentlichen Unterschiede zur vorliegenden Arbeit besteht aus zwei Aspekten. Zum einen bringt die Darstellung des Feldes als Gitternetz Nachteile mit sich. Die Interpretation der Form des Feldes im dreidimensionalen Raum ist erschwert und Informationen \"uber innere Strukturen sind schwer oder teilweise gar nicht ablesbar. Zum anderen ben\"otigt die Interaktion bei Raith et al. bei manchen Datens\"atzen mehrere Sekunden, was explorative Analysen erschwert.
 
 \section{Grundlagen}
 \label{sec:Grundlagen}
@@ -281,7 +282,7 @@ Die Spur (`trace') einer $n\times n$ Matrix $A$ mit Komponenten $a_{ij}$ mit $1 
 	tr(A) = \sum_{i = 1}^{n} a{ii}
 \end{equation}
 
-also die Summe aller Elemente in der Hauptdiagonale. Eine wichtige Eigenschaft der Spur ist, dass sie bei der \"Uberf\"uhrung einer Matrix in eine andere Basis gleich bleibt (siehe auch \ref{Matrixinvarianten}).
+also die Summe aller Elemente in der Hauptdiagonale. Eine wichtige Eigenschaft der Spur ist, dass sie bei der \"Uberf\"uhrung einer Matrix in eine andere Basis gleich bleibt (siehe auch \cref{Matrixinvarianten}).
 
 
 \subsubsection{Norm einer Matrix}
@@ -370,7 +371,7 @@ Der Modus liegt im Intervall $[-1;1]$ und dr\"uckt das Verh\"altnis der Eigenwer
 	\caption{Darstellung der fraktionalen Anisotropie und des Modus von Matrizen in Form von Superquadrics\cite{kindlmann2004superquadric}. Die fraktionale Anisotropie nimmt mit gr\"o{\ss}erer werdender Entfernung zum obersten linken Superquadric zu. Der Modus des Deviators wird abh\"angig vom Winkel dargestellt, wobei er links -1 betr\"agt und rechts 1. Entnommen aus \cite[S.~140]{ennis2006orthogonal}.}
 	\label{Modus}
 \end{figure}
-Um die Intuition hinter Modus und fraktionaler Anisotropie zu verdeutlichen, sind in Abb. \ref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere soll damit gezeigt werden, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
+Um die Intuition hinter Modus und fraktionaler Anisotropie zu verdeutlichen, sind in \cref{Modus} Superquadrics von Matrizen unterschiedlicher Modi dargestellt. Insbesondere soll damit gezeigt werden, dass der Modus nicht von der Gr\"o{\ss}e der Eigenwerte abh\"angt, sondern von deren Verteilung.
 
 \subsubsection{Gradient}
 Der Gradient einer skalaren Funktion $f: \mathbb{R}^n \rightarrow \mathbb{R}$  \"uber einem kartesischen Koordinatensystem ist definiert als
@@ -498,7 +499,7 @@ Der K-Invariantensatz ist orthogonal und ist f\"ur eine Matrix $A$ definiert als
 	\label{cylinderCoords}
 \end{figure}
 
-Da $K_1 \in [-\infty; \infty]$, $K_2 \in [0;\infty]$, $K_3 \in [-1;1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in Abb. \ref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
+Da $K_1 \in [-\infty; \infty]$, $K_2 \in [0;\infty]$, $K_3 \in [-1;1]$ bietet sich f\"ur den K-Invariantensatz eine Darstellung in einem zylindrischen Koordinatensystem an, wobei $K_1$ eine Position auf einer zentralen Achse beschreibt, $K_2$ die orthogonale Entfernung zu diesem Punkt und $K_3$ den Winkel zu einer festgelegten, zur zentralen Achse orthogonalen, zweiten Achse. Sowohl ein zylindrisches als auch ein kartesisches Koordinatensystem sind in \cref{cylinderCoords} dargestellt. $K_1$ entspricht dabei der zylindrischen $x$-Koordinate, $K_2$ dem Radius $r$ und $K_3$ dem Winkel $\theta$.
 
 Ein Vorteil des K-Invariantensatzes ist die relativ leichte Interpretierbarkeit in der Kontinuumsmechanik. $K_1$ kann als Ma{\ss} der St\"arke des iostropen Anteils der Matrix, $K_2$ als Ma{\ss} des anisotropen Anteils angesehen werden \cite{kindlmann2007diffusion}. Dagegen kann aus dem Wert von $K_3$ die Verteilung der Eigenwerte und damit die Form der Anisotropie des Tensors geschlussfolgert werden.
 
@@ -524,7 +525,7 @@ Dabei f\"allt auf, dass gilt $R_3(A) = K_3(A) = mode(A)$. \"Ahnlich wie der K-In
 
 Genauso wie f\"ur den K-Invariantensatz existiert auch f\"ur den R-Invariantensatz eine Interpretation in der Kontinuumsmechanik. 
 
-Sowohl K- als auch R-Invarianten beschreiben die Verteilung, die ``Gr\"o{\ss}e'' und das Verh\"altnis der Eigenwerte zueinander. Dies ist in Abb. \ref{KRInvariants} dargestellt. 
+Sowohl K- als auch R-Invarianten beschreiben die Verteilung, die ``Gr\"o{\ss}e'' und das Verh\"altnis der Eigenwerte zueinander. Dies ist in \cref{KRInvariants} dargestellt. 
 
 \subsubsection{Faltung}
 Die kontinuierliche Faltung $*_c$ zweier Funktionen $f,g:\mathbb{R}^n\rightarrow\mathbb{C}$ ist definiert als
@@ -550,7 +551,7 @@ f(x) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 
 Die Variablen $\mu$ und $\sigma$ dienen dazu die Form der Glockenkurve und ihre Position im Koordinatensystem zu beeinflussen. Das Maximum der Glockenkurve liegt immer bei $\mu$. Und mit $\sigma$ l\"asst sich die Breite und H\"ohe der Glockenkurve beeinflussen, wobei die Fl\"ache darunter gleich bleibt.
 
-In Abb. \ref{Gauss} sind drei Glockenkurven mit unterschiedlichen Werten f\"ur $\mu$ und $\sigma$ dargestellt.
+In \cref{Gauss} sind drei Glockenkurven mit unterschiedlichen Werten f\"ur $\mu$ und $\sigma$ dargestellt.
 
 \pgfmathdeclarefunction{gauss}{2}{%
 	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
@@ -695,7 +696,7 @@ FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um
 	\label{Scatterplots}
 \end{figure}
 
-Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in Abb. \ref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
+Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in \cref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
 
 Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
 
@@ -719,7 +720,7 @@ Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ 
 	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind Teilmengen des Urbilds, die durch $\tau$ verformt werden. Zu erkennen ist, dass die Streckung des Vierecks zur Erh\"ohung der Entfernung zwischen den Punkten f\"uhrt, was einer Verringerung der Dichte im Viereck entspricht. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte an Punkten innerhalb der Dreiecke an.}
 	\label{ContinuousScatterplot}
 \end{figure}
-Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Mengen verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In Abb. \ref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
+Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Mengen verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In \cref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
 
 Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
 
@@ -771,7 +772,7 @@ Da die Integranden des ersten und letzten Integrals gleich sein m\"ussen, ergibt
 \label{DensitySum}
 \end{equation}
 
-Eine intuitive Interpretation von Formel \ref{DensitySum} ist, dass die gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
+Eine intuitive Interpretation von \cref{DensitySum} ist, dass die gesamte Dichtefunktion von $\tau$ als Summe der Dichtefunktionen der Einschr\"ankungen von $\tau$ auf die $V_i$ gebildet werden kann.
 
 Die Berechnung von $\sigma$ h\"angt vom Verh\"altnis von $m$ und $n$ zueinander ab. Da in der vorliegenden Arbeit nur der Fall $m=n=3$ auftritt, beschr\"ankt sich die weitere Er\"auterung auf diesen Fall. F\"ur $m=n$ unterscheiden Bachthaler und Weiskopf folgende F\"alle f\"ur $V \subseteq \mathbb{R}^n$\cite[S.~1430]{bachthaler2008continuous}:
 
@@ -813,7 +814,7 @@ Aus den Eigenschaften des Dirac Deltas ergibt sich, dass die Masseerhaltung erf\
 \end{split}
 \end{equation}
 
-Da $s(x) = 1$ festgelegt ist, ist die Bedingung erf\"ullt. In \ref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichten der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss Formel \ref{DiracTimesVolume} entsprechend angepasst werden.
+Da $s(x) = 1$ festgelegt ist, ist die Bedingung erf\"ullt. In \cref{Case2} ist ein Beispielfall daf\"ur angegeben. Die Dichte im \"uberlappenden Bereich der beiden Dreiecke ist gleich der Summe der Dichten der einzelnen Dreiecke. Bei anderen Dichtefunktionen muss \cref{DiracTimesVolume} entsprechend angepasst werden.
 
 \paragraph{Fall 3: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist Nullmenge}
 Ein weiterer Fall, in dem $det(J_\tau) = 0$ ist, tritt auf wenn $V$ eine Nullmenge ist (also z.B. eine Linie im $\mathbb{R}^3$). Da Integration \"uber Nullmengen immer 0 ergibt, k\"onnen die Nullmengen und ihr Bild bez\"uglich $\tau$ einfach aus dem Scatterplotting entfernt werden, ohne die Masseerhaltung zu verletzen.
@@ -836,7 +837,7 @@ Wenn im Datensatz Unstetigkeiten auftreten, zum Beispiel zwischen Zellen, ist $\
 \end{figure}
 
 \paragraph{Fall 5: $\tau$ ist differenzierbar und kein Diffeomorphismus, V ist keine Nullmenge}\mbox{}\\
-Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016continuousScatterplot}, die in der Praxis eine Rolle spielen. Ein solcher Fall tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe Abb. \ref{Case5}), wenn also entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
+Von Bachthaler und Weiskopf wurde noch ein f\"unfter Fall genannt, den sie jedoch als nicht in der Praxis vorkommend ansahen. Fritzsch konnte jedoch Beispiele f\"ur diesen Fall angeben\cite[S.~23~f.]{fritzsch2016continuousScatterplot}, die in der Praxis eine Rolle spielen. Ein solcher Fall tritt ein, wenn $V$ keine Nullmenge ist, jedoch auf eine Nullmenge $\tau(V)$ abgebildet wird (siehe \cref{Case5}), wenn also entweder mindestens eine Komponente des Bildes konstant ist, oder eine funktionale Abh\"angigkeit zwischen mindestens zwei Komponenten existiert. 
 
 Die Jacobimatrix enth\"alt in diesem Fall mindestens eine Nullzeile, wodurch f\"ur ihren Rang gilt $0 < rang(M) < m$. 
 
@@ -844,7 +845,7 @@ Fritzsch schl\"agt zur L\"osung dieses Problems zwei Ans\"atze vor.
 
 Der erste orientiert sich an Fall 2 und ordnet dem Bildbereich sehr hohe Dichten zu, um die Masseerhaltung zu gew\"ahrleisten. 
 
-Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $rang(M) = 1$ sein). Er kann jedoch auch auf h\"ohere Dimensionen \"ubertragen werden. Ziel ist es, die Dichte an Punkten $p\in\tau(V)$ proportional zur Gesamtmasse der darauf abgebildeten Punkte festzulegen. Dadurch wird zwar die Masseerhaltung nicht erf\"ullt, aber eine interpretierbare Darstellung erzeugt. Dazu werden zun\"acht die Gradienten f\"ur jede Komponente des Bildes von $V$ berechnet. Die Gr\"o{\ss}e der $dim(V) - dim(\tau(V))$-dimensionalen Teilmengen von $V$, die orthogonal zu den durch die Gradienten aufgespannten R\"aumen sind, ist gleich der Masse, die auf die einzelnen Punkte abgebildet wird. Ein Beispiel f\"ur den Fall $dim(V) = 2,~dim(\tau(V)) = 1$ ist in \ref{Case5Solution} zu sehen. Die Dichte an den Punkten von $\tau(V)$ wird dann proportional zur Masse gew\"ahlt.
+Der zweite Ansatz ist nur f\"ur den Fall $m=2, n=2$ beschrieben (somit muss $rang(M) = 1$ sein). Er kann jedoch auch auf h\"ohere Dimensionen \"ubertragen werden. Ziel ist es, die Dichte an Punkten $p\in\tau(V)$ proportional zur Gesamtmasse der darauf abgebildeten Punkte festzulegen. Dadurch wird zwar die Masseerhaltung nicht erf\"ullt, aber eine interpretierbare Darstellung erzeugt. Dazu werden zun\"acht die Gradienten f\"ur jede Komponente des Bildes von $V$ berechnet. Die Gr\"o{\ss}e der $dim(V) - dim(\tau(V))$-dimensionalen Teilmengen von $V$, die orthogonal zu den durch die Gradienten aufgespannten R\"aumen sind, ist gleich der Masse, die auf die einzelnen Punkte abgebildet wird. Ein Beispiel f\"ur den Fall $dim(V) = 2,~dim(\tau(V)) = 1$ ist in \cref{Case5Solution} zu sehen. Die Dichte an den Punkten von $\tau(V)$ wird dann proportional zur Masse gew\"ahlt.
 
 \subsection{Volumetrische Daten}
 Felder, die Punkten im dreidimensionalen Raum bestimmte Werte zuordnen, sind ein h\"aufig vorkommender Typ von Datens\"atzen, der oft unter dem Begriff ``Volumetrische Datens\"atze'' zusammengefasst wird. Dieser Abschnitt beschreibt einen der verbreitetsten Ans\"atze um solche Felder abzuspeichern.  
@@ -883,7 +884,7 @@ Nachteile der Speicherung durch Voxel sind unter anderem der hohe Verbrauch an S
 
 Volumetrische Datens\"atze beinhalten oft komplexe Strukturen. Die Position und Form sowie die Datenwerte innerhalb dieser Strukturen gut zu vermitteln stellt oft ein zentrales Ziel der Volume Visualization dar. Eine M\"oglichkeit diese Informationen zu vermitteln stellt die Berechnung und Darstellung von Isofl\"achen dar. Die Isofl\"ache einer Funktion $f: \mathbb{R}^3\rightarrow\mathbb{R}$ und eines Isowerts $i \in \mathbb{R}$ ist definiert als eine Oberfl\"ache, die den $\mathbb{R}^3$ in zwei Regionen $R_0, R_1$ teilt, wobei f\"ur jeden Punkt $r_0 \in R_0$ gilt $f(r_0) < i$ und f\"ur jeden Punkt $r_1 \in R_1$ gilt $f(r_1) > i$ \cite[S.~7]{hansen2005visualization}. Die Isofl\"ache muss dabei nicht zusammenh\"angend sein. Auf der Isofl\"ache selbst ist $f$ gleich dem Isowert. 
 
-In Abb. \ref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1;1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
+In \cref{Isosurface} ist ein Beispiel f\"ur eine Isofl\"ache abgebildet. Der Datensatz ist ein Ausschnitt aus der Funktion $f(x,y,z) = cos(x \cdot y \cdot z)$, wobei $x$, $y$ und $z$ im Intervall $[-1;1]$ liegen. Die Datenwerte sind den Eckpunkten der Voxel zugeordnet. 
 
 Die Berechnung von Isofl\"achen stellt einige Herausforderungen, besonders bez\"uglich der Korrektheit des Verlaufs der Isofl\"achen innerhalb eines Voxels und der ben\"otigten Rechenzeit. In der Vergangenheit wurden einige Verfahren entwickelt, die sich in Hinblick auf Korrektheit und Geschwindigkeit start unterscheiden. Der wohl einflussreichste davon ist ``Marching Cubes''. Marching Cubes kategorisiert Voxel abh\"angig davon, welche der Werte ihrer Eckpunkte gr\"o{\ss}er oder kleiner als der Isowert sind. F\"ur jede so gebildete Kategorie von Voxeln existiert eine vordefinierte Menge von Dreiecken, die den Verlauf der Isolinie innerhalb dieser Voxel ann\"ahernd beschreiben. F\"ur jedes Voxel werden die Dreiecke der jeweiligen Kategorie korrekt rotiert und zur Isofl\"ache hinzugef\"ugt.
 
@@ -903,7 +904,7 @@ Isofl\"achen haben jedoch auch Nachteile. So kann es passieren, dass eine Isof\"
 \label{sec:Slicing}
 Ein einfacher Ansatz um einen volumetrischen Datensatz zu visualisieren ist das sogenannte ``Slicing''\cite{munzner2014visualization}. Dabei wird der Schnitt zwischen dem Datensatz und einer Ebene berechnet, und dieser Schnitt durch eine Menge von verbundenen, texturierten Dreiecken, einem sogenannten ``Dreieckszug'' (engl. ``Triangle Strip'') dargestellt. Form und Position des Dreieckzuges entsprechen dabei der Schnittebene. Mithilfe von Interpoltion werden die Werte des volumetrischen Datensatzes an Punkten auf der Oberfl\"ache der Dreiecke, bezeichnet als Abtastpunkte, berechnet. Das Festlegen und Auswerten von Abtastpunkten wird im Folgenden als ``Abtastung'' bezeichnet. Um aus den Abtastpunkten die F\"arbungen der Dreiecke zu berechnen, gibt es zwei Verfahren, bezeichnet als Pr\"aklassifizierung und Postklassifizierung.
 
-Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Abtastpunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in Abb. \ref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Opazit\"at, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Opazit\"atswerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Opazit\"at zugeordnet. Dabei ist zu beachten, dass Opazit\"at im allgemeinen Fall bei Slicing nicht verwendet wird. Um die Farben an allen anderen Punkten der Schnittfl\"ache zu bestimmen, werden die Farben der Abtastpunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0;1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
+Bei der Pr\"aklassifizierung wird zun\"achst die Farbe  an den Abtastpunkten bestimmt. Dazu wird eine sogenannte ``Transferfunktion'' $T$, verwendet die einem Punkt anhand seiner Datenwerte eine Farbe zuordnet. Ein Beispiel f\"ur eine Transferfunktion ist in \cref{Colormap} dargestellt. Die horizontale Achse entspricht den skalaren Werten zwischen Minimum und Maximum im Datensatz sowie den zugeordneten Farben. Die vertikale Achse entspricht der Opazit\"at, von vollst\"andig transparent am unteren Rand bis zu opak am oberen Rand. Durch Position und Farbe der Dreiecke am oberen Rand der Transferfunktion kann die Farbzuordnung festgelegt werden. Die Quadrate stellen interaktiv ausgew\"ahlte Punkte dar, die Zuordnungen von Werten im Skalarfeld zu Farb- und Opazit\"atswerten entsprechen, zwischen denen entlang der verbindenden Linien interpoliert wird. So wird allen Werten im Feld eine Farbe und eine Opazit\"at zugeordnet. Dabei ist zu beachten, dass Opazit\"at im allgemeinen Fall bei Slicing nicht verwendet wird. Um die Farben an allen anderen Punkten der Schnittfl\"ache zu bestimmen, werden die Farben der Abtastpunkte interpoliert. Ein Nachteil der P\"aklassifizierung liegt darin, dass durch die Interpolation Farben entstehen k\"onnen, die nicht im Bild der Transferfunktion enthalten sind. Ein Beispiel: Sei $f$ eine Funktion, die Punkten $p in \mathbb{R}^3$ einen skalaren Wert $s \in \mathbb{R}$ zuordnet, also $f(p) = s$. Sei $V$ ein volumetrischer Datensatz, der einen Ausschnitt von $f$ enth\"alt und $T$ eine Transferfunktion, die Punkte dieses Datensatzes auf eine Farbe aus dem RGBA Farbraum abbildet, die durch einen Tupel $(r,g,b,a)$ dargestellt wird. Die Komponenten des Tupels $(r,g,b,a)$ seien zur Einfachheit auf den Bereich $[0;1]$ skaliert. Zus\"atzlich sei $T(f(p)) = (r,g,b,a)$ definiert als 
 
 \begin{equation}
 	f(x)= 
@@ -917,9 +918,9 @@ Wenn nun drei Punkte $p_0, p_1, p_2$ existieren, von denen $p_0$ und $p_2$ Abtas
 
 Die Postklassifizierung l\"ost diese Probleme indem die Reihenfolge der Interpolation und Anwendung der Transferfunktion vertauscht , also zun\"achst die Datenwerte interpoliert und danach die Transferfunktion auf die interpolierten Werte angewendet wird. Dadurch werden Farbverl\"aufe so wie in der Tansferfunktion dargestellt. Ein neuer Nachteil entsteht jedoch: Durch die Interpolation k\"onnen neue Datenwerte entstehen, die so im Datensatz nicht vorkommen. In dem meisten F\"allen wird dies jedoch als das geringere \"Ubel angesehen, weshalb Postklassifizierung fast immer bevorzugt wird.
 
-In Abb. \ref{Slicing} sind drei Slicings zusammen mit einer orangenen Isofl\"ache abgebildet.
+In \cref{Slicing} sind drei Slicings zusammen mit einer orangenen Isofl\"ache abgebildet.
 
-Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orientierung der Schnittfl\"ache interaktiv anpassen kann, bietet Slicing eine gute M\"oglichkeit um die Verteilung von Werten innerhalb eines volumetrischen Datensatzes zu analysieren und Werte sogar ablesen zu k\"onnen. Der Rechenaufwand ist sogar noch geringer als bei der Berechnung der Isofl\"achen und macht es m\"oglich, die Slicings ohne sp\"urbare Verz\"ogerung zu repositionieren. Slicings eignen sich auch, um andere Volume Visualizations zu erg\"anzen (wie z.B. in Abb. \ref{Slicing}).
+Indem Interaktionen angeboten werden, durch die der Benutzer Position und Orientierung der Schnittfl\"ache interaktiv anpassen kann, bietet Slicing eine gute M\"oglichkeit um die Verteilung von Werten innerhalb eines volumetrischen Datensatzes zu analysieren und Werte sogar ablesen zu k\"onnen. Der Rechenaufwand ist sogar noch geringer als bei der Berechnung der Isofl\"achen und macht es m\"oglich, die Slicings ohne sp\"urbare Verz\"ogerung zu repositionieren. Slicings eignen sich auch, um andere Volume Visualizations zu erg\"anzen (wie z.B. in \cref{Slicing}).
 
 Die gro{\ss}en Nachteile von Slicings liegen in der Schwierigkeit, korrekte Positionen und Orientierungen zu finden, um interessante Bereiche sichtbar zu machen sowie darin, dass die Form von dreidimensionalen Strukturen relativ schlecht vermittelt wird. 
 
@@ -945,7 +946,7 @@ Die bisher vorgestellten Volume Visualization Verfahren stellten immer nur einen
 
 Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Verfahren der Volume Visualization, die den gesamten Datensatz gleichzeitig darstellen k\"onnen, wenngleich die Darstellung auch auf Teile beschr\"ankt werden kann. Daher stammt auch das ``Direct'' im Namen dieser Gruppe von Verfahren: Anstelle den Datensatz durch einen Querschnitt (Slicing) oder durch eine Oberfl\"ache darzustellen, wird versucht, den gesamten Datensatz direkt zu visualisieren. Ein gro{\ss}er Teil der Informationen in diesem Abschnitt stammt aus Buch ``The Visualization Handbook''\cite{hansen2005visualization}, speziell aus den Kapiteln ``Overview of Volume Rendering'' (S. 127-164) von Kaufman und Mueller, ``Volume Rendering Using Splatting'' (S. 175-188) von Crawfis, Xue und Sang, ``Pre-Integrated Volume Rendering'' (S. 211-228) von Kraus und Ertl  sowie ``Hardware Accelerated Volume Rendering'' (S. 229-258) von Pfister.
 
-\"Ahnlich wie beim Slicing wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0;1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt (siehe Abb. \ref{Colormap} und die Beschreibung im Abschnitt \ref{sec:Slicing}). Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Ein Beispiel f\"ur ein durch Direct Volume Rendering erzeugtes Bild zeigt Abb. \ref{Zahn}. 
+\"Ahnlich wie beim Slicing wird eine Transferfunktion verwendet, um den Voxeln eine Farbe zuzuordnen. Zus\"atzlich legt die Transferfunktion auch noch einen Wert im Intervall $[0;1]$ als Opazit\"at fest, die ausdr\"ckt, wie stark ein Voxel hinter ihm gerenderte Voxel \"uberdeckt, wie schon in \cref{Colormap} und \cref{sec:Slicing} beschrieben. Eine Opazit\"at von 1 bedeutet dabei, dass das Voxel komplett opak ist, eine Opazit\"at von 0 dagegen dass das Voxel vollst\"andig durchsichtig und damit in der Visualisierung unsichtbar ist. Ein Beispiel f\"ur ein durch Direct Volume Rendering erzeugtes Bild zeigt \cref{Zahn}. 
 
 \begin{figure}
 	\centering
@@ -956,7 +957,7 @@ Der Begriff ``Direct Volume Rendering'' (kurz DVR) bezeichnet eine Reihe von Ver
 
 DVR Verfahren gliedern sich in vier Gruppen, die als image-order, object-order, hybride und Domain-Verfahren bezeichent werden.
 
-Allen image-order Verfahren ist gemein, dass sie eine Position im Raum als ``Kameraposition'' festlegen, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt (siehe Abb. \ref{image-order}). Indem Positionen der Bildebene auf Pixel des Bildschirms abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe eines Pixels ergibt sich dabei, indem ein Strahl berechnet wird, der sowohl durch die Position des Mittelpunkts des Pixels auf der Bildebene als auch durch die Kameraposition verl\"auft. Entlang des Strahls werden Abtastpunkte gew\"ahlt, an denen die Transferfunktion ausgewertet wird. Genau wie beim Slicing k\"onnen dabei Pr\"a- und Postklassifizierung verwendet werden. Abh\"angig davon, wie die Farb- und Opazit\"atswerte der Abtastpunkte kombiniert werden, k\"onnen unterschiedliche Darstellungen entstehen. Eine Reihe davon wird sp\"ater im Text vorgestellt. Da die Kombination von Farb- und Opazit\"atwerten in OpenGL fast immer durch die Funktion des Blendings implementiert wird, verwenden ich den Begriff `Blending' im Folgenden synonym dazu. Bei manchen Varianten ist es m\"oglich, die Berechnung der Farbe eines Pixels zu fr\"uhzeitig zu beenden, wenn die berechneten Farb- und Opazit\"atswerte bestimmte Werte annehmen. In diesem Fall wird davon ausgegangen, dass der Einfluss der noch zu berechnenden Abtastpunkte zu klein ist, um vom Benutzer noch wahrgenommen zu werden. Diese fr\"uhzeitige Terminierung ist einer der wichtigsten Vorteile der image-order Verfahren. 
+Allen image-order Verfahren ist gemein, dass sie eine Position im Raum als ``Kameraposition'' festlegen, die Position, von der aus der Benutzer den Datensatz betrachtet. Diese Position befindet sich dabei im gleichen Koordinatensystem wie die Voxel selbst. Vor der Kamera, orthogonal zur Blickrichtung, wird eine imagin\"are Ebene platziert, die sogenannte Bildebene (engl. ``image plane''). Ihre Gr\"o{\ss}e und Position ist so gew\"ahlt, dass die das gesamte Blickfeld der Kamera einnimmt (siehe \cref{image-order}). Indem Positionen der Bildebene auf Pixel des Bildschirms abgebildet werden, ist es m\"oglich, durch Einf\"arbung der Bildebene eine Visualisierung zu erzeugen. Die Farbe eines Pixels ergibt sich dabei, indem ein Strahl berechnet wird, der sowohl durch die Position des Mittelpunkts des Pixels auf der Bildebene als auch durch die Kameraposition verl\"auft. Entlang des Strahls werden Abtastpunkte gew\"ahlt, an denen die Transferfunktion ausgewertet wird. Genau wie beim Slicing k\"onnen dabei Pr\"a- und Postklassifizierung verwendet werden. Abh\"angig davon, wie die Farb- und Opazit\"atswerte der Abtastpunkte kombiniert werden, k\"onnen unterschiedliche Darstellungen entstehen. Eine Reihe davon wird sp\"ater im Text vorgestellt. Da die Kombination von Farb- und Opazit\"atwerten in OpenGL fast immer durch die Funktion des Blendings implementiert wird, verwenden ich den Begriff `Blending' im Folgenden synonym dazu. Bei manchen Varianten ist es m\"oglich, die Berechnung der Farbe eines Pixels zu fr\"uhzeitig zu beenden, wenn die berechneten Farb- und Opazit\"atswerte bestimmte Werte annehmen. In diesem Fall wird davon ausgegangen, dass der Einfluss der noch zu berechnenden Abtastpunkte zu klein ist, um vom Benutzer noch wahrgenommen zu werden. Diese fr\"uhzeitige Terminierung ist einer der wichtigsten Vorteile der image-order Verfahren. 
 
 Im Gegensatz dazu zerlegen object-order Verfahren den volumetrischen Datensatz in eine Menge von Basiselementen oder Basisfunktionen, die auf eine Bildebene projeziert werden und damit den Datensatz darstellen. Wenn sich Projektionen der Basiselemente \"uberlappen, was f\"ur die meisten Datens\"atze praktisch der Standardfall ist, werden die Farbwerte abh\"angig von gew\"ahltem Verfahren mittels Blending kombiniert. Genau wie bei den image-order Verfahren k\"onnen unterschiedliche Varianten des Blendings gew\"ahlt werden, was zu unterschiedlichen Visualisierungen f\"uhrt. Der gr\"o{\ss}te Vorteil von object-order Verfahren liegt darin, dass nur die Voxel abgespeichert und verarbeitet werden m\"ussen, die einen skalaren Wert ungleich 0 enthalten. Das ist besonders gut, da die Rechenzeit von object-order Verfahren in der Regel direkt von der Anzahl zu verarbeitender Voxel abh\"angt. Ein Problem liegt darin, dass es f\"ur viele Verfahren notwendig ist, die Voxel abh\"angig von ihrer Entfernung zur Kamera zu sortieren. Diese Sortierung muss jedes mal aktualisiert werden, wenn die Kamera bewegt wird.
 
@@ -990,13 +991,13 @@ Zuletzt gibt es noch die Domain-Verfahren. Dabei wird der komplette Datensatz so
 		(c) Isof\"ache, (d) Transluzent. Entnommen aus \cite[S.~134]{hansen2005visualization}}
 	\label{DVRModes}
 \end{figure}
-Es existieren vier popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In Abb. \ref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
+Es existieren vier popul\"are Arten von Visualisierungen, die durch DVR Verfahren erzeugt werden k\"onnen. In \cref{DVRModes} sind diese Visualisierungen am Beispiel des gleichen Datensatzes, eines menschlichen Kopfes, dargestellt.
 
 \paragraph{R\"ontgenbilder}
-Die Bezeichung ``R\"ontgenbilder'' stammt aus der \"Ahnlichkeit der entstehenden Bilder zu denen, die beim klassischen R\"ontgen in der bildgebenden Medizin erzeugt werden. Die F\"arbung eines Pixels ergibt sich in diesem Verfahren dadurch, dass die ermittelten Farb- und Transparenzwerte aller zur F\"arbung dex Pixels beitragenden Voxel aufaddiert werden. Damit sind die Voxel gemeint, die zum Beispiel vom selben Strahl durch den Mittelpunkt des Pixels geschnitten (image-order) werden oder deren Basisfunktionen sich in diesem Pixel \"uberschneiden (object-order). Das Blending entspricht in diesem Fall einer Addition, die die Farbe eines Voxels auf die bisher bestimmte Farbe eines Pixels aufaddiert. Ein Beispiel f\"ur ein so erzeugtes Bild ist in Abb. \ref{DVR:Xray} zu sehen. 
+Die Bezeichung ``R\"ontgenbilder'' stammt aus der \"Ahnlichkeit der entstehenden Bilder zu denen, die beim klassischen R\"ontgen in der bildgebenden Medizin erzeugt werden. Die F\"arbung eines Pixels ergibt sich in diesem Verfahren dadurch, dass die ermittelten Farb- und Transparenzwerte aller zur F\"arbung dex Pixels beitragenden Voxel aufaddiert werden. Damit sind die Voxel gemeint, die zum Beispiel vom selben Strahl durch den Mittelpunkt des Pixels geschnitten (image-order) werden oder deren Basisfunktionen sich in diesem Pixel \"uberschneiden (object-order). Das Blending entspricht in diesem Fall einer Addition, die die Farbe eines Voxels auf die bisher bestimmte Farbe eines Pixels aufaddiert. Ein Beispiel f\"ur ein so erzeugtes Bild ist in \cref{DVR:Xray} zu sehen. 
 
 \paragraph{Maximum Intensity Projection (MIP)}
-Bei der Maximum Intensity Projection wird zun\"achst der Voxel mit dem h\"ochsten Skalarwert berechnet, der auf diesen Pixel abgebildet wird (wiederum z.B. per Strahl oder Projektion der Basisfunktion). Nachdem dieser Wert bestimmt wurde, wird auf ihn die Transferfunktion angewendet und das Ergebnis als Farbe des Pixels festgelegt. Das Blending entspricht einer Maximumsfunktion, die den h\"ochsten bisher f\"ur einen Pixel gefundenen Skalarwert und den Skalarwert des Voxels entgegennimmt und das Maximum der beiden ausgibt. Abb. \ref{DVR:MIP} zeigt ein durch MIP erstelltes Bild. 
+Bei der Maximum Intensity Projection wird zun\"achst der Voxel mit dem h\"ochsten Skalarwert berechnet, der auf diesen Pixel abgebildet wird (wiederum z.B. per Strahl oder Projektion der Basisfunktion). Nachdem dieser Wert bestimmt wurde, wird auf ihn die Transferfunktion angewendet und das Ergebnis als Farbe des Pixels festgelegt. Das Blending entspricht einer Maximumsfunktion, die den h\"ochsten bisher f\"ur einen Pixel gefundenen Skalarwert und den Skalarwert des Voxels entgegennimmt und das Maximum der beiden ausgibt. \cref{DVR:MIP} zeigt ein durch MIP erstelltes Bild. 
 
 
 \paragraph{Isofl\"ache}
@@ -1010,13 +1011,13 @@ T_O(s) =
 \end{cases}
 \end{equation}
 
-so entsprechen die erzeugten Bilder Isofl\"achen. Da Isofl\"achen komplett opak sind, wird die Berechnung abgebrochen, sobald f\"ur einen Pixel der zur Kamera n\"aheste Voxel, der Teil einer Isofl\"ache ist, gefunden wurde. Blending entsprich hier einer Minimumsfunktion, die anstelle der Farbwerte die Distanz zur Kamera zur Entscheidung verwendet. Abh\"angig vom Verfahren kann auch sofort terminiert werden wenn ein opakes Voxel gefunden wurde, dies erschwert jedoch das sp\"atere Hinzuf\"ugen von z.B. Schatten. Durch geschickte Wahl der Reihenfolge, in der die Voxel verarbeitet werden (z.B. mit zunehmender Entfernung zur Kamera), kann weitere Beschleunigung erreicht werden. In Abb. \ref{DVR:Isosurface} ist eine so erzeugte Isofl\"ache dargestellt.
+so entsprechen die erzeugten Bilder Isofl\"achen. Da Isofl\"achen komplett opak sind, wird die Berechnung abgebrochen, sobald f\"ur einen Pixel der zur Kamera n\"aheste Voxel, der Teil einer Isofl\"ache ist, gefunden wurde. Blending entsprich hier einer Minimumsfunktion, die anstelle der Farbwerte die Distanz zur Kamera zur Entscheidung verwendet. Abh\"angig vom Verfahren kann auch sofort terminiert werden wenn ein opakes Voxel gefunden wurde, dies erschwert jedoch das sp\"atere Hinzuf\"ugen von z.B. Schatten. Durch geschickte Wahl der Reihenfolge, in der die Voxel verarbeitet werden (z.B. mit zunehmender Entfernung zur Kamera), kann weitere Beschleunigung erreicht werden. In \cref{DVR:Isosurface} ist eine so erzeugte Isofl\"ache dargestellt.
 
 \paragraph{Transluzent}
-Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, sodass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \ref{DVR:Translucent} zu sehen. 
+Transluzente Bilder entstehen, wenn der f\"ur die Opazit\"at zust\"andige Teil der Transferfunktion anstelle der Extremwerte $0$ und $1$ auch dazwischenliegende Werte annehmen kann. Voxel, f\"ur die die Transferfunktion dies tut, werden als teilweise transparent dargestellt. Sie stellen somit eine Verallgemeinerung des Verfahrens zur Erzeugung von Isofl\"achen dar. Dazu muss jedoch ein Verfahren verwendet werden, das Farben und Opazit\"aten korrekt kombiniert, sodass transparente Voxel die Sicht auf dahingerliegende Strukturen freigeben. Die Formulierung des Blendings h\"angt hierbei von der Verarbeitungsreihenfolge der Voxel ab. Im Paragraphen zu Raycasting wird dies genauer erl\"autert. Transluzente Visualisierungen sind besonders popul\"ar, da sie sowohl hohe Flexibilit\"at (durch Wahl der Transferfunktion) aufweisen als auch den Grundgedanken des DVR, das gleichzeitige und vollst\"andige Darstellen des Datensatzes, am besten umsetzen. Der Rest der Arbeit besch\"aftigt sich deshalb ausschlie{\ss}lich mit Verfahren zur Erzeugung von transluzenten Visualisierungen. Ein Beispiel f\"ur ein durch Transluzentes DVR erzeugtes Bild ist in \cref{DVR:Translucent} zu sehen. 
 
 \section{Direct Volume Rendering Verfahren}
-Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} erl\"auterten Konzepte umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
+Es existieren eine Reihe von DVR Verfahren, die die in \cref{sec:DVR} erl\"auterten Konzepte umsetzen. Diese Verfahren bieten dabei individuelle Vor- und Nachteile, die einen Vergleich auf Grundlage der von der Anwendung gestellten Anforderungen n\"otig macht. Dazu werden in diesem Kapitel einige der wichtigsten DVR Verfahren vorgestellt.
 
 \subsection{Texture Slicing}
 \begin{figure}
@@ -1028,7 +1029,7 @@ Es existieren eine Reihe von DVR Verfahren, die die in Abschnitt \ref{sec:DVR} e
 \label{sec:TextureSlicing}
 Eines der ersten image-order DVR Verfahren wurde von Neumann und Cullip \cite{cullip1993accelerating} entwickelt. Es wird aufgrund der darin verwendeten Mechanismen meist als Texture Slicing bezeichnet, in manchen Ver\"offentlichungen aber auch als Raycasting. Dieser Begriff wird jedoch auch f\"ur ein anderes Verfahren verwendet, das sp\"ater in dieser Arbeit vorgestellt wird.
 
-Beim Texture Slicing werden mehrere imagin\"are Ebenen parallel zur Bildebene durch den Datensatz gelegt. Die Schnittmenge dieser Ebenen mit dem Datensatz bilden Polygone. Indem Abtastpunkte auf diesen Polygonen ausgewertet werden, lassen sich durch Anwendung der Transferfunktion die Polygone einf\"arben. Das Verfahren dazu ist praktisch identisch zu dem in Abschnitt \ref{sec:Slicing} beschriebenen Slicing. Die entstandenen Schnittbilder werden danach auf die Bildebene projeziert und die Farbwerte der Pixel durch Blending der berechnet. Die f\"ur das Blending verwendete Formel h\"angt von der Reihenfolge ab, in der die Schnitte miteinander kombiniert werden. Wenn die Schnitte mit zunehmender Entfernung zur Kamera (front-to-back) verarbeitet werden, so entspricht das Blending den Formeln
+Beim Texture Slicing werden mehrere imagin\"are Ebenen parallel zur Bildebene durch den Datensatz gelegt. Die Schnittmenge dieser Ebenen mit dem Datensatz bilden Polygone. Indem Abtastpunkte auf diesen Polygonen ausgewertet werden, lassen sich durch Anwendung der Transferfunktion die Polygone einf\"arben. Das Verfahren dazu ist praktisch identisch zu dem in \cref{sec:Slicing} beschriebenen Slicing. Die entstandenen Schnittbilder werden danach auf die Bildebene projeziert und die Farbwerte der Pixel durch Blending der berechnet. Die f\"ur das Blending verwendete Formel h\"angt von der Reihenfolge ab, in der die Schnitte miteinander kombiniert werden. Wenn die Schnitte mit zunehmender Entfernung zur Kamera (front-to-back) verarbeitet werden, so entspricht das Blending den Formeln
 
 \begin{align}
 &c = c_{alt} + c_{neu}\cdot(1-\alpha_{alt})\cdot\alpha_{neu}
@@ -1054,7 +1055,7 @@ Ein Problem des Texture Slicings liegt darin, dass die gew\"ahlte Anzahl der Sch
 
 Die Laufzeit des Texture Slicings ist haupts\"achlich abh\"angig von der Anzahl der einzuf\"arbenden Pixel und der Nummer der zu berechnenden Schnittbilder. Eine h\"ohere Anzahl von Schnittbildern f\"uhrt jedoch auch zu einer exakteren Repr\"asentation des Datensatzes, da sich dadurch die Chance, dass ein relevanter Teil des Datensatzes von keinem der Schnitte getroffen wird, reduziert. Durch Interaktionen kann es dem Benutzer erm\"oglicht werden, den Tradeoff zwischen Rechenzeit und Bildqualit\"at anzupassen.
 
-Der wichtigste Vorteil des Texture Slicings ist die f\"ur image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe Abb. \ref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
+Der wichtigste Vorteil des Texture Slicings ist die f\"ur image-order Verfahren relativ geringe Rechenzeit. Sowohl das Erstellen der Schnittbilder als auch die Durchf\"uhrung des Blendings k\"onnen effizient von Grafikkarten parallelisiert werden. Ein wichtiger Nachteil ist jedoch, dass die Entfernung der Schnittpunkte von Strahl und Schnittebenen sich von Strahl zu Strahl unterscheiden: Im Zentrum des Sichtfeldes liegen die Schnittpunkte n\"aher zusammen als am Rand. Dies f\"uhrt dazu, dass die Bildqualit\"at zum Rand hin abnimmt (siehe \cref{TexureSlicing}). Zudem werden d\"unne, zur Bildebene parallele Strukturen vom Texture Slicing oft zu schwach oder gar nicht dargestellt, da zu wenige Schnittpunkte mit den Schnittebenen exisitieren.
 
 \subsection{Raycasting}
 \label{sec:Raycasting}
@@ -1105,7 +1106,7 @@ Durch Verwendung der rekursiven Gleichungen wird der Farbwert eines Pixels besti
 	\label{Raycasting}
 \end{figure}
 
-Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Es ist dabei sinnvoll, Abtastpunkte erst innerhalb des Datensatzes, also im oder am Rand des ersten geschnittenen Voxels zu setzen. In Abb. \ref{Raycasting} wird Raycasting mit dieser Optimierung schematisch dargestellt. 
+Eine direkte Umsetzung der front-to-back Funktionen traversiert den Datensatz entlang der Strahlen und berechnet das emittierte und absorbierte Licht an Abtastpunkten, die in regelm\"a{\ss}igen Abst\"anden auf den Strahlen liegen, was der \"ublichen Herangehensweise bei image-order Verfahren entspricht. Es ist dabei sinnvoll, Abtastpunkte erst innerhalb des Datensatzes, also im oder am Rand des ersten geschnittenen Voxels zu setzen. In \cref{Raycasting} wird Raycasting mit dieser Optimierung schematisch dargestellt. 
 Da f\"ur dieses Verfahren Strahlen durch das Volumen berechnet werden, entlang derer abgetastet wird, bezeichnet man es als Raycasting. Die Vorteile des Raycastings liegen der schon angesprochenen M\"oglichkeit zur fr\"urzeitigen Terminierung und der M\"oglichkeit, die Anzahl der Abtastpunkte, auch bezeichnet als ``Abtrastrate'', pro Strahl festzulegen.
 
 \begin{figure}
@@ -1129,7 +1130,7 @@ Da f\"ur dieses Verfahren Strahlen durch das Volumen berechnet werden, entlang d
 	\label{SamplingPoints}
 \end{figure}
 
-Die Qualit\"at eines Raycastings ist stark abh\"angig von der Abtastrate auf den Strahlen und somit vom Abstand zwischen den Abtastpunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Nutzer die Abtastrate selbst ausw\"ahlt, kann er den Tradeoff zwischen Rechenzeit und Bildqualit\"at an seine Bed\"urfnisse anpassen, genau wie schon beim Texture Slicing. In Abb. \ref{SamplingPoints1} und \ref{SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes $f:\mathbb{R}^3\rightarrow\mathbb{R}, f(x, y, z)=cos(x\cdot y\cdot z)$ zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Abtastpunkten erzeugt wurden. \ref{SamplingPoints1} wurde mit 20 Abtastpunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Abtastpunkten in \ref{SamplingPoints2} verschwinden diese Artefakte.
+Die Qualit\"at eines Raycastings ist stark abh\"angig von der Abtastrate auf den Strahlen und somit vom Abstand zwischen den Abtastpunkten. Ein geringerer Abstand f\"uhrt generell zu weniger Artefakten und macht kleine Strukturen besser erkennbar, erh\"oht jedoch den Rechenaufwand. Indem der Nutzer die Abtastrate selbst ausw\"ahlt, kann er den Tradeoff zwischen Rechenzeit und Bildqualit\"at an seine Bed\"urfnisse anpassen, genau wie schon beim Texture Slicing. In \cref{SamplingPoints1,SamplingPoints2} sind zwei Darstellungen desselben Skalarfeldes $f:\mathbb{R}^3\rightarrow\mathbb{R}, f(x, y, z)=cos(x\cdot y\cdot z)$ zu sehen, die durch Raytracing mit einer unterschiedlichen Anzahl von Abtastpunkten erzeugt wurden. \cref{SamplingPoints1} wurde mit 20 Abtastpunkten erstellt, wodurch visuelle, scheibenartige Artefakte entstanden. Bei einer h\"oheren Menge von 200 Abtastpunkten in \cref{SamplingPoints2} verschwinden diese Artefakte.
 
 \subsection{Cell Projection}
 \begin{figure}
@@ -1138,9 +1139,9 @@ Die Qualit\"at eines Raycastings ist stark abh\"angig von der Abtastrate auf den
 	\caption{Schematische Darstellung von Cell Projection. Das gro{\ss}e Dreieck rechts wird auf die Bildeben links projeziert. Die Projektion wird durch das kleinere Dreieck direkt an der Bildebene dargestellt.}
 	\label{CellProjection}
 \end{figure}
-Cell Projection z\"ahlt zu den object-order Verfahren. Es basiert auf der Arbeit von Lenz, Gudmundsson, Lindskog und Danielsson \cite{lenz86display} sowie der von Frieder, Gordon und Reynolds \cite{frieder1985back}. Die grundlegende Idee der Cell Projection besteht darin, f\"ur jedes Voxel ein zweidimensionales Polygon zu berechnen und dieses auf die Bildebene zu projezieren. Form, Farbe und Transparenz des Polygons werden dabei durch die Form des Voxels sowie die relative Position der Kamera zum Voxel bestimmt. Punkte des Polygons entsprechen Geraden durch das Voxel, deren Richtung von der Kameraposition abh\"angt. Die Opazit\"at an diesen Punkten entspricht dem Integral der Opazit\"at entlang der Linien. Dieses Vorgehen ist vergleichbar mit dem schon vorgestellten Continuous Scatterplotting, speziell dem Fall 5. In Abb. \ref{CellProjection} ist das Vorgehen schematisch abgebildet. Auf jeden Punkt der Bildeben wird ein eindimensionaler Ausschnitt des Voxels abgebildet. Die L\"ange dieses Ausschnitts gibt die Dicke des Voxels in Richtung des Punkts auf der Bildebene an, betrachtet von der Kameraposition aus. Diese Dicke wird in Abb. \ref{CellProjection} durch die Entfernung der Punkte auf den Schenkeln des Dreiecks zur Bildebene ausgedr\"uckt.
+Cell Projection z\"ahlt zu den object-order Verfahren. Es basiert auf der Arbeit von Lenz, Gudmundsson, Lindskog und Danielsson \cite{lenz86display} sowie der von Frieder, Gordon und Reynolds \cite{frieder1985back}. Die grundlegende Idee der Cell Projection besteht darin, f\"ur jedes Voxel ein zweidimensionales Polygon zu berechnen und dieses auf die Bildebene zu projezieren. Form, Farbe und Transparenz des Polygons werden dabei durch die Form des Voxels sowie die relative Position der Kamera zum Voxel bestimmt. Punkte des Polygons entsprechen Geraden durch das Voxel, deren Richtung von der Kameraposition abh\"angt. Die Opazit\"at an diesen Punkten entspricht dem Integral der Opazit\"at entlang der Linien. Dieses Vorgehen ist vergleichbar mit dem schon vorgestellten Continuous Scatterplotting, speziell dem Fall 5. In \cref{CellProjection} ist das Vorgehen schematisch abgebildet. Auf jeden Punkt der Bildeben wird ein eindimensionaler Ausschnitt des Voxels abgebildet. Die L\"ange dieses Ausschnitts gibt die Dicke des Voxels in Richtung des Punkts auf der Bildebene an, betrachtet von der Kameraposition aus. Diese Dicke wird in \cref{CellProjection} durch die Entfernung der Punkte auf den Schenkeln des Dreiecks zur Bildebene ausgedr\"uckt.
 
-Wenn sich mehrere Projektionen der Voxel auf der Bildebene \"uberschneiden, werden sie mittels Blending kombiniert. Die f\"ur das Blending verwendeten Formeln sind abh\"angig von der Reihenfolge, in der die Voxel verarbeitet werden: Die Formeln \ref{front-to-back-color} und \ref{front-to-back-alpha} im front-to-back Fall und die Formeln \ref{back-to-front-color} und \ref{back-to-front-alpha} im back-to-front Fall. Bei object-order Verfahren ist in der Regel keine fr\"uhzeitige Terminierung m\"oglich. Aus diesem Grund und weil back-to-front die akkumulierte Opazit\"at nicht abspeichern muss wird es meistens bevorzugt.
+Wenn sich mehrere Projektionen der Voxel auf der Bildebene \"uberschneiden, werden sie mittels Blending kombiniert. Die f\"ur das Blending verwendeten Formeln sind abh\"angig von der Reihenfolge, in der die Voxel verarbeitet werden: Die \cref{front-to-back-color,front-to-back-alpha} im front-to-back Fall und die \cref{back-to-front-color,back-to-front-alpha} im back-to-front Fall. Bei object-order Verfahren ist in der Regel keine fr\"uhzeitige Terminierung m\"oglich. Aus diesem Grund und weil back-to-front die akkumulierte Opazit\"at nicht abspeichern muss wird es meistens bevorzugt.
 
 \begin{figure}
 	
@@ -1169,9 +1170,9 @@ Wenn sich mehrere Projektionen der Voxel auf der Bildebene \"uberschneiden, werd
 
 Cell Projection Verfahren unterscheiden sich stark darin, welche Arten von Voxel als Eingabe dienen k\"onnen und wie die Umwandlung in zweidimensionale Voxel ausgef\"uhrt wird. Diese beiden Teilprobleme werden im Folgenden anhand des von Shirley und Tuchman \cite{shirley1990polygonal} entwickelten Algorithmus erl\"autert.
 
-Im ersten Schritt zerlegt der Algorithmus die Voxel in tetraedrische Teile (siehe Abb. \ref{Split}). Die daraus entstehenden Tetraeder werden anhand der Ausrichtung ihrer Fl\"achen zur Blickrichtung der Kamera klassifiziert. Dazu wird das Skalarprodukt zwischen den Normalen der Fl\"achen (die hier immer als nach au{\ss}en zeigend angenommen werden) und der Blickrichtung berechnet. Die Klassen sind in Abb. \ref{Classes} dargestellt. Die +, - und 0 neben den Klassen geben dabei an, welche Werte die Skalarprodukte jeweils annehmen k\"onnen: Ein + steht f\"ur ein positives, ein - f\"ur ein negatives Skalarprodukt. 0 steht daf\"ur dass das Skalarprodukt 0 ist, also die Normale orthogonal zur Blickrichtung.
+Im ersten Schritt zerlegt der Algorithmus die Voxel in tetraedrische Teile (siehe \cref{Split}). Die daraus entstehenden Tetraeder werden anhand der Ausrichtung ihrer Fl\"achen zur Blickrichtung der Kamera klassifiziert. Dazu wird das Skalarprodukt zwischen den Normalen der Fl\"achen (die hier immer als nach au{\ss}en zeigend angenommen werden) und der Blickrichtung berechnet. Die Klassen sind in \cref{Classes} dargestellt. Die +, - und 0 neben den Klassen geben dabei an, welche Werte die Skalarprodukte jeweils annehmen k\"onnen: Ein + steht f\"ur ein positives, ein - f\"ur ein negatives Skalarprodukt. 0 steht daf\"ur dass das Skalarprodukt 0 ist, also die Normale orthogonal zur Blickrichtung.
 
-Nachdem die Tetraeder klassifiziert sind, werden die von ihnen durch Projektion auf die Bildebene erzeugten Fl\"achen bestimmt. Dazu werden die Eckpunkte projeziert und die entstehenden Polygone in Dreiecke zerlegt (siehe Abb. \ref{Triangle}). Werte f\"ur neu entstandene Eckpunkte der Dreiecke werden durch Interpolation berechnet. Die Dicke des Tetraeders an Punkten im Inneren des Polygons wird durch die Euklidische Distanzformel bestimmt. Die Opazit\"at an diesen Punkten wird abh\"angig von der Dicke des Tetraeders dort und den skalaren Werten entlang der Geraden durch den Tetraeder, die auf den Punkt abgebildet wird, bestimmt.
+Nachdem die Tetraeder klassifiziert sind, werden die von ihnen durch Projektion auf die Bildebene erzeugten Fl\"achen bestimmt. Dazu werden die Eckpunkte projeziert und die entstehenden Polygone in Dreiecke zerlegt (siehe \cref{Triangle}). Werte f\"ur neu entstandene Eckpunkte der Dreiecke werden durch Interpolation berechnet. Die Dicke des Tetraeders an Punkten im Inneren des Polygons wird durch die Euklidische Distanzformel bestimmt. Die Opazit\"at an diesen Punkten wird abh\"angig von der Dicke des Tetraeders dort und den skalaren Werten entlang der Geraden durch den Tetraeder, die auf den Punkt abgebildet wird, bestimmt.
 
 Schlussendlich werden die Dreiecke auf die Bildebene gerendert. Die Farb- und Opazit\"atswerte im Inneren der Dreiecke ergeben sich durch Interpolation der Werte an ihren Eckpunkten. 
 
@@ -1202,7 +1203,7 @@ Splatting basiert auf einem von Westover entwickelten Algorithmus\cite{westover1
 
 In der Signalverarbeitung ist die Rekonstruktion von kontinuierlichen Funktionen aus diskreten Funktionen ein zentrales Problem. Dazu wird meisten Faltung verwendet. 
 
-Die Erzeugung einer diskreten Ann\"aherung an das urspr\"ungliche kontinuierliche Feld kann durch Faltung der diskreten Abtastung mit einem diskreten Kern geschehen. Daf\"ur werden eine Reihe unterschiedlicher Kerne benutzt. Einer der beliebtesten davon ist die diskrete Abtastung von Gau{\ss}schen Glockenkurven. Splatting bedient sich dieser Technik, indem es die Projektion der Mittelpunkte der Voxel auf der Bildebene berechnet und diskrete Abtastungen von zweidimensionalen Glockenkurven an diesen platziert. Die Abtastungen werden abh\"angig von Eigenschaften der Voxel skaliert: Ihre Gr\"o{\ss}e, Form und Drehung werden so angepasst, dass sie die Form des Voxels so gut wie m\"oglich wiedergeben. Zus\"atzlich wird die H\"ohe des Maximums so skaliert, dass sie dem Wert des Voxels entspricht. Damit nicht f\"ur jeden Voxel ein neuer Kern berechnet werden muss, wird zu Beginn des Rendering ein einzelner Filterkern berechnet und in einer Lookup-Tabelle abgespeichert. Eine solche Tabelle ist in Abb. \ref{kernel} dargestellt.
+Die Erzeugung einer diskreten Ann\"aherung an das urspr\"ungliche kontinuierliche Feld kann durch Faltung der diskreten Abtastung mit einem diskreten Kern geschehen. Daf\"ur werden eine Reihe unterschiedlicher Kerne benutzt. Einer der beliebtesten davon ist die diskrete Abtastung von Gau{\ss}schen Glockenkurven. Splatting bedient sich dieser Technik, indem es die Projektion der Mittelpunkte der Voxel auf der Bildebene berechnet und diskrete Abtastungen von zweidimensionalen Glockenkurven an diesen platziert. Die Abtastungen werden abh\"angig von Eigenschaften der Voxel skaliert: Ihre Gr\"o{\ss}e, Form und Drehung werden so angepasst, dass sie die Form des Voxels so gut wie m\"oglich wiedergeben. Zus\"atzlich wird die H\"ohe des Maximums so skaliert, dass sie dem Wert des Voxels entspricht. Damit nicht f\"ur jeden Voxel ein neuer Kern berechnet werden muss, wird zu Beginn des Rendering ein einzelner Filterkern berechnet und in einer Lookup-Tabelle abgespeichert. Eine solche Tabelle ist in \cref{kernel} dargestellt.
 
 Splatting bietet gegen\"uber der Cell Projection und \"ahnlichen Verfahren den Vorteil, dass im entstehenden Bild keine harten Voxelkanten zu sehen sind. Die aus der Signalverarbeitung \"ubernommenen Methoden garantieren eine hohe Bildqualit\"at mit relativ kurzen Rechenzeiten. Splatting ist daher eines der beliebtesten object-order Verfahren.
 Das Fehlen von harten Kanten stellt jedoch auch einen Nachteil von Splatting dar: Die Grenzen des Datensatzes werden weich gezeichnet. Ein zus\"atzliches Problem tritt auf, wenn die Gr\"o{\ss}e der Voxel stark variiert. Wenn beispielsweise einige wenige Voxel sehr viel gr\"o{\ss}er sind als der Rest, k\"onnen die f\"ur diese Voxel erzeugten Kerne deutlich erkennbar sein. Da einzelne Kerne die Form ihrer Voxel nur schlecht wiedergeben k\"onnen, kann dies zu deutlichen visuellen Artefakten im erzeugten Bild f\"uhren.
@@ -1227,7 +1228,7 @@ Shear Warp z\"ahlt zu den hybriden Verfahren. Es kombiniert Techniken aus object
 
 Der Grundansatz des Shear Warp besteht darin, den volumetrischen Datensatz mittels einer Scherung (engl. `shear') so zu transformieren, dass von der Kameraposition ausgehende und die Bildebene schneidende Strahlen parallel zu einer der Koordinatenachsen sind. Welche Koordinatenachse daf\"ur gew\"ahlt wird h\"angt von Blickrichtung der Kamera ab, in der Regel wird die Koordinatenachse mit dem geringsten Winkel zur Blickrichtung bevorzugt. Im Folgenden wird diese Achse als `Sichtachse' bezeichnet, die zugeh\"orige Koordinate `Sichtkoordinate'. 
 
-Abh\"angig von der Art der f\"ur die sp\"atere Bilderzeugung gew\"ahlten Projektion muss die Scherung unterschiedlich durchgef\"uhrt werden. Bei paralleler Projektion gen\"ugt eine Verschiebung der Voxelschichten untereinander (siehe Abb. \ref{ShearWarp1}). Dies setzt vorraus, dass die Voxel eine einheitliche Gr\"o{\ss}e und Form haben, in der Regel quaderf\"ormig. Bei perspektivischer Projektion muss zus\"atzlich die Gr\"o{\ss}e der Schichten so skaliert werden, dass sie mit zunehmender Entfernung zur Kamera kleiner werden (siehe Abb. \ref{ShearWarp2}). Wenn durch Verschiebung und Skalierung mehrere Eingabevoxel zum Teil oder ganz auf einen Ausgabevoxel abgebildet werden, m\"ussen die Werte der Voxel gewichtet nach der Gr\"o{\ss}e des Anteils interpoliert werden, um den Datensatz so gut wie m\"oglich darstellen zu k\"onnen.
+Abh\"angig von der Art der f\"ur die sp\"atere Bilderzeugung gew\"ahlten Projektion muss die Scherung unterschiedlich durchgef\"uhrt werden. Bei paralleler Projektion gen\"ugt eine Verschiebung der Voxelschichten untereinander (siehe \cref{ShearWarp1}). Dies setzt vorraus, dass die Voxel eine einheitliche Gr\"o{\ss}e und Form haben, in der Regel quaderf\"ormig. Bei perspektivischer Projektion muss zus\"atzlich die Gr\"o{\ss}e der Schichten so skaliert werden, dass sie mit zunehmender Entfernung zur Kamera kleiner werden (siehe \cref{ShearWarp2}). Wenn durch Verschiebung und Skalierung mehrere Eingabevoxel zum Teil oder ganz auf einen Ausgabevoxel abgebildet werden, m\"ussen die Werte der Voxel gewichtet nach der Gr\"o{\ss}e des Anteils interpoliert werden, um den Datensatz so gut wie m\"oglich darstellen zu k\"onnen.
 
 \begin{figure}
 	\centering
@@ -1236,11 +1237,11 @@ Abh\"angig von der Art der f\"ur die sp\"atere Bilderzeugung gew\"ahlten Projekt
 	\label{Scanline}
 \end{figure}
 
-Nachdem die Scherung durchgef\"uhrt wurde, wird die Projektion der Voxel auf die Bildebene begonnen. Der Datensatz wird dabei schichtweise verarbeitet. Die Pixel, auf die ein Voxel abgebildet wird, sind durch die Scherung leicht zu bestimmen. Es sind genau die, deren zwei Koordinaten innerhalb der entsprechenden nicht-Sichtkoordinaten des jeweiligen Voxels liegen. Dies erspart teure Projektionsoperatoren wie bei object-order oder schrittweise Abtastung wie bei image-order Verfahren \"ublich. Diese Eigenschaft erlaubt eine Optimierung. Wenn ein Pixel der Bildebene bereits eine hohe Opazit\"at akkumuliert hat (\"ahnlich wie die fr\"uhzeitige Terminierung bei image-order Verfahren), kann dieser \"ubersprungen werden. Implementiert wird dies meistens, indem f\"ur jeden opaken Pixel der Offset zum n\"achsten nicht-opaken Pixel gespeichert wird. Das gleiche Verfahren kann auch bei Voxeln verwendet werden, denen die Transferfunktion eine Opazit\"at von 0, also vollst\"andige Transparenz, zuordnet. Diese enthalten den Offset zum n\"achsten Voxel mit Opazit\"at gr\"o{\ss}er 0. Abb. \ref{Scanline} zeigt diese Optimierung. Die notwendigen Offsets der Voxel werden f\"ur jede achsenparallele Blickrichtung vorberechnet, also insgesamt dreimal. Optional k\"onnen komplett transparente Voxel auch direkt entfernt und die Offsets in den nicht-transparenten Voxeln gespeichert werden, wodurch sich die bei object-order Verfahren \"ublichen Speicherersparnisse ergeben. 
+Nachdem die Scherung durchgef\"uhrt wurde, wird die Projektion der Voxel auf die Bildebene begonnen. Der Datensatz wird dabei schichtweise verarbeitet. Die Pixel, auf die ein Voxel abgebildet wird, sind durch die Scherung leicht zu bestimmen. Es sind genau die, deren zwei Koordinaten innerhalb der entsprechenden nicht-Sichtkoordinaten des jeweiligen Voxels liegen. Dies erspart teure Projektionsoperatoren wie bei object-order oder schrittweise Abtastung wie bei image-order Verfahren \"ublich. Diese Eigenschaft erlaubt eine Optimierung. Wenn ein Pixel der Bildebene bereits eine hohe Opazit\"at akkumuliert hat (\"ahnlich wie die fr\"uhzeitige Terminierung bei image-order Verfahren), kann dieser \"ubersprungen werden. Implementiert wird dies meistens, indem f\"ur jeden opaken Pixel der Offset zum n\"achsten nicht-opaken Pixel gespeichert wird. Das gleiche Verfahren kann auch bei Voxeln verwendet werden, denen die Transferfunktion eine Opazit\"at von 0, also vollst\"andige Transparenz, zuordnet. Diese enthalten den Offset zum n\"achsten Voxel mit Opazit\"at gr\"o{\ss}er 0. \cref{Scanline} zeigt diese Optimierung. Die notwendigen Offsets der Voxel werden f\"ur jede achsenparallele Blickrichtung vorberechnet, also insgesamt dreimal. Optional k\"onnen komplett transparente Voxel auch direkt entfernt und die Offsets in den nicht-transparenten Voxeln gespeichert werden, wodurch sich die bei object-order Verfahren \"ublichen Speicherersparnisse ergeben. 
 
 Im Gegensatz zu object-order Verfahren werden Voxel beim Shear Warp nicht in Basisfunktionen \"ubersetzt, sondern pro Pixel die jeweiligen Werte durch Interpolation bestimmt. Da die Dicke der Voxel von der Blickrichtung abh\"angt, wird die Opazit\"at mittels einer vorberechneten Tabelle skaliert. Im perspektivischen Fall kann es sein, dass auf einen Pixel zwei oder mehr Voxel abgebildet werden. Dies muss bei der Optimierung ber\"ucksichtigt werden.
 
-Zum Abschluss wird eine zur Scherung inverse Verzerrung auf die Bildebene angewendet (engl. `warp'), um das endg\"ultige Bild zu erzeugen. Diese Operation ist, wie in Abb. \ref{ShearWarp1} und \ref{ShearWarp2} dargestellt, identisch f\"ur parallele und perspektivische Projektion.
+Zum Abschluss wird eine zur Scherung inverse Verzerrung auf die Bildebene angewendet (engl. `warp'), um das endg\"ultige Bild zu erzeugen. Diese Operation ist, wie in \cref{ShearWarp1,ShearWarp2} dargestellt, identisch f\"ur parallele und perspektivische Projektion.
 
 
 
@@ -1260,7 +1261,7 @@ Das Verfahren zur Erzeugung der Darstellungen und Interaktionen ist im Folgenden
 	\label{BigSession}
 \end{figure}
 \subsubsection{Die Vorbereitungssession}
-Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithms, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in Abb. \ref{BigSession} zu sehen. Die Algorithms der Session werden im weiteren Verlauf erkl\"art.
+Bevor die Visualisierung beginnen kann, m\"ussen die Daten vorbereitet werden. Um Zeit zu sparen, wird dieser Schritt f\"ur jeden Datensatz nur einmal durchgef\"uhrt und die Ergebnisse abgespeichert. Die Vorbereitung geschieht durch eine Reihe von FAnToM Algorithms, die im Folgenden beschrieben werden. Ein Screenshot der f\"ur die Datenvorbereitung verwendeten Session ist in \cref{BigSession} zu sehen. Die Algorithms der Session werden im weiteren Verlauf erkl\"art.
 
 Die verwendeten Eingabedaten liegen im VTK Format\cite{avila2010vtk} vor. Daher l\"adt der erste Algorithmus `Load/VTK' die VTK Dateien. Der Algorithmus `Extract Domain' extrahiert die Zellstruktur, auf der das Tensorfeld definiert ist. Falls die Zellen keine Tetraeder sind, werden sie vom Algorithmus `Triangulate Grid' in Tetraeder zerlegt. Dabei wird die Anzahl und die Position der Eckpunkte der Zellen nicht ver\"andert. Die Tensoren an den Punkten des Objekts werden auf diese neue Zellstruktur durch den Algorithmus `Transfer Data' kopiert. 
 
@@ -1272,7 +1273,7 @@ Ziel des Cylindric Coordinate Algorithmus ist es, eine einheitliche Eingabe in k
 
 Der Vorteil dieser Vereinheitlichung liegt darin, dass das Format der erzeugten Datens\"atze optimiert werden kann, dass die Laufzeit des Visualisierungsalgorithmus minimiert wird. 
 
-Im n\"achsten Schritt wird das Volumen der Zellen des Objekts und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in Abschnitt \ref{CSPImplementation} genauer erkl\"art und begr\"undet.
+Im n\"achsten Schritt wird das Volumen der Zellen des Objekts und der neu erzeugten Zellstruktur berechnet (`Compute Cell Volumes'). Es entstehen zwei Skalarfelder, die den Zellen ein Volumen zuordnen. Die Skalarfelder werden elementweise durcheinander geteilt (Original geteilt durch verschobenes Feld, `Divide Scalar Fields'). Das Ergebnis ist wiederum ein Skalarfeld, das $\sigma_V$ der Zellen f\"ur das Continuous Scatterplottings approximiert. Die Herangehensweise wird in \cref{CSPImplementation} genauer erkl\"art und begr\"undet.
 
 Zum Schluss wird das Quotientenfeld auf die verschobene Zellstruktur zellenweise \"ubertragen und das Ergebnis abgespeichert, um als zweite Eingabe der Visualisierung zu dienen.
 
@@ -1284,9 +1285,9 @@ Zum Schluss wird das Quotientenfeld auf die verschobene Zellstruktur zellenweise
 	\label{VisualizationSession}
 \end{figure}
 
-Zwei Teile der Datenvorbereitung m\"ussen in der gleichen Session stattfinden wie die Visualisierung selbst, um dem Anwender die M\"oglichkeit der Interaktion zu geben. Das sind zum einen die Erzeugung der Transferfunktion, zum anderen die Berechnung der Dichte innerhalb der Voxel im Objekt. Die Session ist in Abb. \ref{VisualizationSession} zu sehen.
+Zwei Teile der Datenvorbereitung m\"ussen in der gleichen Session stattfinden wie die Visualisierung selbst, um dem Anwender die M\"oglichkeit der Interaktion zu geben. Das sind zum einen die Erzeugung der Transferfunktion, zum anderen die Berechnung der Dichte innerhalb der Voxel im Objekt. Die Session ist in \cref{VisualizationSession} zu sehen.
 
-Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in Abb. \ref{Colormap} beschrieben, ist diese vom Nutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt werden durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
+Der linke `VTK Load' Algorithmus l\"adt dabei das skalare Dichtefeld im Invariantenraum, der rechte das Vektorfeld auf den urspr\"unglichen Punkten, in dem die Invarianten gespeichert sind. Vom Algorithmus `Transfer Function' wird eine Transferfunktion f\"ur das Feld im Invariantenraum erzeugt. Wie in \cref{Colormap} beschrieben, ist diese vom Nutzer frei konfigurierbar und wird in Echtzeit auf die Darstellung angewendet. Die Dichten der Voxel im Objekt werden durch eine Funktion bestimmt, die in den Algorithmus `Field from Formula' eingegeben wird (standardm\"a{\ss}ig konstant 1). Die geladenen VKT Dateien, die Transferfunktion und die neuen Voxeldichten werden am Ende dem Visualisierungsalgorithmus \"ubergeben.
 
 \subsection{Wahl des DVR Verfahrens}
 Die vorgestellten Verfahren unterscheiden sich in Hinsicht auf Laufzeit, Speicherverbrauch, Adaptierbarkeit und Qualit\"at der erzeugten Visualisierung. Zum Abschluss des Kapitels werden sie deshalb anhand dieser Eigenschaften und den aus der Aufgabenstellung resultierenden Anforderungen verglichen und eins der Verfahren zur Umsetzung ausgew\"ahlt.
@@ -1305,7 +1306,7 @@ Das Problem der teilweisen Darstellung von Voxeln tritt auch bei Shear Warp auf,
 Damit verbleiben als Optionen nur noch die image-order Verfahren. Unterschiede zwischen diesen lassen sich meistens auf einen Tradeoff zwischen Rechenzeit und Bildqualit\"at zur\"uckf\"uhren. Raycasting bietet dabei eine M\"oglichkeit f\"ur den Benutzer diesen Tradeoff selbst zu beeinflussen und, falls hoch eingestellt, die besten Ergebnisse. Auch die teilweise Darstellung von Voxeln ist leicht in Raycasting zu implementieren, indem die Werte der Invarianten an Abtastpunkten interpoliert werden und Punkte mit Werten ausserhalb des gew\"ahlten Bereichs \"ubersprungen werden. Daher wird f\"ur diese Arbeit Raycasting als DVR Verfahren gew\"ahlt.
 
 \subsection{Voxelisierung}
-Da das in dieser Arbeit verwendete DVR Verfahren (siehe Abschnitt \ref{RaycastingImplementation}) eine Repr\"asentation der Dichtefelder als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
+Da das in dieser Arbeit verwendete DVR Verfahren, wie in \cref{RaycastingImplementation} vorgestellt, eine Repr\"asentation der Dichtefelder als 3D Texturen vorraussetzt, m\"ussen diese Texturen zun\"achst erzeugt werden. Eine 2D Textur kann im Allgemeinen als Tabelle aufgefasst werden, in der Farbwerte codiert sind. 3D Texturen setzen sich aus vielen 2D Texturen zusammen, deren Felder die Eigenschaften von Voxeln einer Schicht der 3D Textur beschreiben. 
 
 \begin{figure}
 	\centering
@@ -1333,13 +1334,13 @@ OpenGL stellt verschiedene Optionen f\"ur Farbcodierung zur Auswahl, womit Speic
 
 Um die Textur zu erzeugen, ist es notwendig, die korrekten Werte f\"ur die Voxel zu berechnen und das Ergebnis an die Grafikkarte zu \"ubergeben. Dies wird als Voxelisierung bezeichnet. FAnToM besitzt zwar eine effiziente Funktion, um Werte innerhalb eines Feldes zu berechnen, diese ist jedoch nicht in der Lage, mit selbstdurchdringenden Feldern, wie sie bei der \"Uberf\"uhrung in den Invariantenraum entstehen k\"onnen, umzugehen. Es war deshalb notwendig, eine effiziente Methode zur Erzeugung der 3D Texturen zu implementieren. 
 
-Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der 3D Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen bestimmt werden. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann er als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe Abb. \ref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird. Falls der Shader nicht-triviale Algorithmen enth\"alt, ist zus\"atzlich Pseudocode angegeben.
+Aufgrund der leichten Parallelisierbarkeit bot es sich an, die Voxelisierung durch OpenGL und somit auf der Grafikkarte durchf\"uhren zu lassen. Das Verfahren basiert auf der Arbeit von Rueda et al.\cite{rueda2004voxelization}. Dabei werden Schichten der 3D Textur berechnet, indem die Schnittfl\"achen zwischen den Tetraedern und Ebenen bestimmt werden. Die Ebenen verlaufen dabei durch die Mittelpunkte der Voxel einer Schicht der Textur. Da der Schnitt zwischen einer Ebene und einem Tetraeder immer entweder ein Dreieck oder ein Viereck ist, kann er als Folge von einem oder zwei Dreiecken (`Triangle Strip') dargestellt werden (siehe \cref{TetraCuts}). Diese Dreiecke wiederum werden durch den standardm\"a{\ss}igen Rasterisierer von OpenGL in die fertigen Voxel unterteilt. Das komplette Verfahren ist in Form einer Shaderpipeline implementiert, die im Folgenden kurz erl\"autert wird. Falls der Shader nicht-triviale Algorithmen enth\"alt, ist zus\"atzlich Pseudocode angegeben.
 
 Die Eingabe des Vertex Shaders besteht aus den Punkten der Tetraeder, ihren jeweiligen Dichten und optional den an den Punkten berechneteten Invarianten. OpenGL l\"asst allerdings in den von FAnToM unterst\"utzten Versionen keine Tetraeder als Eingabe zu. Deshalb m\"ussen diese auf eine andere Art \"ubergeben werden. Eine M\"oglichkeit dazu sind Liniensegmente mit Nachbarschaft (`GL\_LINES\_ADJACENCY\_EXT'). Das Format von Liniensegmenten mit Nachbarschaft besteht aus vier Punkten pro Primitiv: Der erste Punkt entspricht dem Beginn des vorhergehenden Liniensegments, der zweite und dritte Punkt entsprechen dem aktuellen Liniensegment und der vierte Punkt ist der Endpunkt des n\"achsten Liniensegments. Da es immer genau vier Punkte pro Primitiv gibt, eignet das Format sich jedoch auch, um Tetraeder an die Pipeline zu \"ubergeben.
 
 Da die zylindrische Darstellung in Richtung der x-Achse sehr gro{\ss} werden kann, wurde ein Verfahren entwickelt und implementiert, das das Feld entlang der x-Achse unterteilt und in mehrere einzelne Texturen voxelisiert. Dasselbe Verfahren kann theoretisch auch f\"ur die anderen Richtungen implementiert werden, das war jedoch f\"ur keinen der verwendeten Datens\"atze n\"otig.
 
-Wie schon im Abschnitt \ref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
+Wie schon im \cref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
 
 Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Nutzer selbst festgelegt werden. Falls in Richtung der x-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale Ausdehung einer 3D Textur in jede Richtung.
 
@@ -1351,7 +1352,7 @@ Die von FAnToM unterst\"utzte OpenGL Version unterst\"utzt standardm\"a{\ss}ig k
 
 Der Geometry Shader bekommt als Eingabe alle Punkte eines Primitivs und die vom Vertex Shader \"ubergebenen Variablen f\"ur diese Punkte. Ziel des Geometry Shaders ist es, die Tetraeder mit Ebenen, die parallel zur xy-Ebene verlaufen, zu schneiden und die Schnittfl\"achen als Dreiecke zur\"uck in die Renderpipeline zu \"ubergeben.
 
-Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkanten mit der Ebene. Wenn mindestens drei Schnittpunkte existieren, werden  daraus Dreiecke konstruiert und weitergegeben. Wenn vier Schnittpunkte gefunden wurden, m\"ussen sie zuvor noch nach ihrer Position im Raum geordnet werden, um leicht zwei \"uberlappungsfreie Dreiecke konstruieren zu k\"onnen. In Pseudocode \ref{PseudoGeometry} wird das Verfahren dargestellt.
+Dazu berechnet der Geometry Shader zun\"acht die Schnittpunkte der Tetraederkanten mit der Ebene. Wenn mindestens drei Schnittpunkte existieren, werden  daraus Dreiecke konstruiert und weitergegeben. Wenn vier Schnittpunkte gefunden wurden, m\"ussen sie zuvor noch nach ihrer Position im Raum geordnet werden, um leicht zwei \"uberlappungsfreie Dreiecke konstruieren zu k\"onnen. In \cref{PseudoGeometry} wird das Verfahren dargestellt.
 
 \begin{algorithm}
 	\KwData{$p_i$ Eckpunkte des Tetraeders, $z$ Parameter der Schnittebene}
@@ -1386,9 +1387,9 @@ Durch den Fragment Shader werden im Invariantenraum mehrere der erzeugten Dreiec
 \label{CSPImplementation}
 Durch die Kombination der beiden beschriebenen Verfahren wird wurde in dieser Arbeit ein vollst\"andiges Continuous Scatterplotting Verfahren implementiert. Dies wird in diesem Abschnitt genauer begr\"undet.
 
-Der erste Teil, das Berechnen des Dichtebeitrags $\sigma_{V_i}$ der Tetraeder $V_i$, erfolgt bereits in der Vorverarbeitung der Daten. Dabei wird die f\"ur Fall 1 angegebene Formel \ref{Case1Formula} verwendet. Die anderen F\"alle k\"onnen zwar theoretisch vorkommen, sind jedoch extrem unwahrscheinlich. Durch unvermeidbare Rundungsfehler werden Bereiche konstanter Invarianten (Fall 2), Nullmengen (Fall 3) und Abbildungen auf Teilr\"aume mit geringerer Dimension (Fall 5) zerst\"ort. Das Erkennen von diesen Rundungsfehlern wird dadurch erschwert, dass in den verwendeten Datens\"atzen tats\"achlich Bereiche mit sehr geringen Ver\"anderungen der Invarianten oder Abbildungen auf sehr flache Tetraeder vorkommen. Die Unterscheidung solcher extremen Formen von Fall 1 zu den anderen F\"allen ist nicht ohne Weiteres m\"oglich. Fall 4 kommt nicht vor, da die verwendeten Felder \"uberall differenzierbar sind.
+Der erste Teil, das Berechnen des Dichtebeitrags $\sigma_{V_i}$ der Tetraeder $V_i$, erfolgt bereits in der Vorverarbeitung der Daten. Dabei wird die f\"ur Fall 1 angegebene \cref{Case1Formula} verwendet. Die anderen F\"alle k\"onnen zwar theoretisch vorkommen, sind jedoch extrem unwahrscheinlich. Durch unvermeidbare Rundungsfehler werden Bereiche konstanter Invarianten (Fall 2), Nullmengen (Fall 3) und Abbildungen auf Teilr\"aume mit geringerer Dimension (Fall 5) zerst\"ort. Das Erkennen von diesen Rundungsfehlern wird dadurch erschwert, dass in den verwendeten Datens\"atzen tats\"achlich Bereiche mit sehr geringen Ver\"anderungen der Invarianten oder Abbildungen auf sehr flache Tetraeder vorkommen. Die Unterscheidung solcher extremen Formen von Fall 1 zu den anderen F\"allen ist nicht ohne Weiteres m\"oglich. Fall 4 kommt nicht vor, da die verwendeten Felder \"uberall differenzierbar sind.
 
-Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich Formel \ref{DensitySum} anwenden. Die $\sigma_V$ entsprechen den berechneten Dichtewerten pro Tetraeder, die f\"ur jedes Voxel durch das Blending aufaddiert werden.
+Da die $V_i$ eine vollst\"andige Zerlegung des Feldes darstellen, l\"asst sich \cref{DensitySum} anwenden. Die $\sigma_V$ entsprechen den berechneten Dichtewerten pro Tetraeder, die f\"ur jedes Voxel durch das Blending aufaddiert werden.
 
 Die Dichte innerhalb eines Voxels entspricht im Moment stets der Summe der Tetraeder, die das Voxel schneiden, unabh\"angig davon, wie viel des Voxels vom Tetraeder eingenommen wird. Dadurch enth\"alt die 3D Textur insgesamt mehr Masse als das urspr\"ungliche Feld, was gegen einen Grundsatz des Continuous Scatterplottings, die Masseerhaltung, verst\"o{\ss}t. Eine M\"oglichkeit diesen Fehler zu reduzieren oder sogar komplett zu vermeiden w\"are es, pro Voxel die Werte an mehreren Samplepoints zu berechnen und die Dichte auf den Mittelwert der Samplepunkte zu setzen. OpenGL bietet standardm\"a{\ss}ig eine Option dieses Supersampling zu implementieren. Da aber Supersampling die Rechenzeit der Voxelisierung stark erh\"ohen w\"urde und die Voxelisierung schon einen Gro{\ss}teil der Rechenzeit der Visualisierung ausmacht, wurde dies noch nicht implementiert.
 
@@ -1415,7 +1416,7 @@ Indem das Maximum der 3D Textur, ein Wert zwischen 0 und 1, mit dem Wert der gr\
 Der Vertex Shader ordnet (-1.0, 0.0, 0.0) den Wert 0 und (1.0, 0.0, 0.0) den Wert 1 zu und gibt diese Werte an den Fragment Shader weiter.
 
 \paragraph{Fragment Shader}
-F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert und das Maximum der Schicht zur\"uckgegeben. Der Algorithmus ist in \ref{MaximumAlgo} dargestellt.
+F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berechnet. Dieser Wert entspricht der Schicht, deren Maximum berechnet werden soll. Danach wird \"uber alle Voxel dieser Schicht iteriert und das Maximum der Schicht zur\"uckgegeben. Der Pseudocode ist in \cref{MaximumAlgo} dargestellt.
 
 \begin{algorithm}
 	\KwData{$T$ 3D Textur, $z$ interpolierte z-Koordinate der Schicht,\\
@@ -1439,9 +1440,9 @@ F\"ur jedes Fragment werden die interpolierten Werte aus dem Vertex Shader berec
 \subsection{Umsetzung des Raycastings}
 \label{RaycastingImplementation}
 
-F\"ur die beiden DVR Darstellungen wird eine Variante von des in Abschnitt \ref{sec:Raycasting} beschriebenen Raycastings verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
+F\"ur die beiden DVR Darstellungen wird eine Variante von des in \cref{sec:Raycasting} beschriebenen Raycastings verwendet. Dies geschieht wiederum in Form einer Shaderpipeline.
 
-Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht der Bildebene in Abb. \ref{sec:Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
+Die Eingabe der Pipeline ist die vorberechnete 3D Textur und ein Rechteck bestehend aus zwei Dreiecken. Das Rechteck entspricht der Bildebene in \cref{sec:Raycasting}. Die Bildebene befindet sich so vor der Kamera, dass sie das gesamte Blickfeld einnimmt. Das Raycasting wird durchgef\"uhrt, indem die Shader die Farben auf der Bildebene berechnen.
 
 Um den r\"aumlichen Eindruck des DVR zu erh\"ohen, wird eine perspektivische Projektion mit einem Blickfeld von 90\textdegree verwendet.
 
@@ -1455,7 +1456,7 @@ Danach wird der Schnitt zwischen den die 3D Textur begrenzenden, achsenparallele
 
 Um Artefakte zu verhindern, kann ebenfalls optional ein pseudo-zuf\"alliger Offset erzeugt werden, der die Position des ersten Samplepunkts beeinflusst.
 
-Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach Formeln \ref{RaycastingFormula1} und \ref{RaycastingFormula2} zu einem Farbwert kombiniert. 
+Die eigentliche Berechnung der Fragmentfarbe geschieht in einer Schleife. F\"ur jeden Samplepunkt entlang des Strahls wird die Dichte an diesem Punkt gemessen, durch die Transferfunktion in Farbe und Transparenz  \"ubersetzt und nach \cref{RaycastingFormula1,RaycastingFormula2} zu einem Farbwert kombiniert. 
 
 Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Rand des Volumendatensatzes, fr\"uhzeitige Terminierung) sind implementiert.
 
@@ -1506,11 +1507,11 @@ Auch die bereits angesprochenen Optimierungen (Samplepunkte beginnen erst am Ran
 	\label{RaycastingAlgorithm}
 \end{algorithm}
 
-Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb der ausgew\"ahlten Intervalle liegt, werden dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Intervalls liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in Abb. \ref{RaycastingExample} zu sehen. Der Pseudocode in Algorithmus \ref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
+Wenn beim Rendering des Feldes im Invariantenraumes ein Samplepunkt ausserhalb der ausgew\"ahlten Intervalle liegt, werden dort die Farbe und Dichte als 0 angenommen. Wenn dagegen beim Rendern des Objekts ein Samplepunkt an einer Stelle liegt, an der die Invarianten ausserhalb des Intervalls liegen, wird ein stark transparentes Wei{\ss} als Farbe festgelegt. Dadurch entsteht ein Schemen des restlichen Objektes, wodurch die Position und Form der noch sichtbaren Bereiche besser einsch\"atzbar wird. Dieser Effekt ist in \cref{RaycastingExample} zu sehen. Der Pseudocode in \cref{RaycastingAlgorithm} beschreibt die Funktionsweise der Schleife.
 
-Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe Abb. \ref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
+Um die Tiefenwahrnehmung zu verbessern, werden zus\"atzlich Farben an Punkten, die n\"aher am Zentrum des Objekts liegen, als dunkler angezeigt, als die an weiter vom Zentrum entfernten Punkten (siehe \cref{RaycastingExample1}). Dadurch sind L\"ocher im Volumen leichter zu erkennen, ohne Lichtquellen und Schattenbildung berechnen zu m\"ussen.
 
-Die Implementierung basiert auf dem FAnToM Algorithmus `Volume Renderer GLSL', ver\"andert diesen jedoch deutlich um mehrere 3D Texturen in x-Richtung als Eingabe zuzulassen, Bereiche des Volume Renderings ausblenden zu k\"onnen, korrekte \"Uberlappung mit dahinter gezeichneten Objekten sicherzustellen und die in Abschnitt \ref{Options} beschriebenen Optionen zu erm\"oglichen.
+Die Implementierung basiert auf dem FAnToM Algorithmus `Volume Renderer GLSL', ver\"andert diesen jedoch deutlich um mehrere 3D Texturen in x-Richtung als Eingabe zuzulassen, Bereiche des Volume Renderings ausblenden zu k\"onnen, korrekte \"Uberlappung mit dahinter gezeichneten Objekten sicherzustellen und die in \cref{Options} beschriebenen Optionen zu erm\"oglichen.
 
 \subsection{Die Interaktionswidgets}
 \label{sec:Widget}
@@ -1532,7 +1533,7 @@ Mit dem Begriff ``Affordances'' beschreiben Preim et al. \cite[S.~137]{preim2010
 
 Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget beschrieben ist, wurden im Rahmen dieser Arbeit eigene Widgets entwickelt, durch die Intervalle von Invarianten im Invariantenraum ausgew\"ahlt werden k\"onnen. Da die Invariantenr\"aume meistens in einem von zwei Koordinatensystemen dargestellt werden, den kartesischen und den zylindrischen Koordinaten, wurden f\"ur diese beiden Koordinatensysteme jeweils ein eigenes Widget enwickelt. Die Auswahl des angezeigten Widgets muss dabei der Benutzer treffen, da VTK keine M\"oglichkeit unterst\"utzt, das verwendete Koordinatensystem mit abzuspeichern.
 
-Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in Abschnitt \ref{sec:Slicing} beschrieben werden. 
+Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in \cref{sec:Slicing} beschrieben werden. 
 
 \subsubsection{Quadrisches Interaktionswidget}
 
@@ -1545,7 +1546,7 @@ Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015in
 
 Das erste Interaktionswidget hat die Form eines Quaders, der das erzeugte DVR vollst\"andig umfasst. Die Seitenfl\"achen sind parallel zu paarweise aus den Koordinatenachsen gebildeten Ebenen (xy-, xz-, yz-Ebene) und vollst\"andig transparent. Nur die Kanten des Quaders sind sichtbar, sie werden durch Linien dargestellt. Um die Orientierung des Quaders im dreidimensionalen Raum erkennbar zu machen, sind die drei Kanten, die zum Knoten links unten hinten zusammenlaufen eingef\"arbt: Die Kante parallel zur x Achse in rot, die Kante parallel zur y-Achse in gelb und die Kante parallel zur z-Achse in blau. Die Farben wurden so gew\"ahlt, dass sie auch bei Farbenblindheit noch unterscheidbar sind. Die Koordinaten des Schnittpunkts der drei farbigen Kanten entsprechen den Minima der einzelnen Invarianten: Die x- dem der ersten, die y- dem der zweiten und die z-Koordinaten dem der dritten Invariante. Entsprechend verlaufen die farbigen Kanten von diesem Schnittpunkt aus in Richtung der steigenden Invarianten: Die rote in Richtung der ersten, die gelbe in Richtung der zweiten und die blaue Kante in Richtung der dritten Invariante. Die Positionen der Seitenfl\"achen entsprechen im Ausgangszustand den Minima und Maxima der einzelnen Invarianten. 
 
-Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Kriterium 1 erf\"ullt wird. Ein Problem kann jedoch auftreten, wenn die Farben der Transferfunktion sich mit denen der Kanten \"uberschneiden. Abb. \ref{CubicalInteractions} zeigt das quadrische Interaktionswidget.
+Die Geraden unterscheiden sich deutlich von der Darstellung des DVR, wodurch Kriterium 1 erf\"ullt wird. Ein Problem kann jedoch auftreten, wenn die Farben der Transferfunktion sich mit denen der Kanten \"uberschneiden. \cref{CubicalInteractions} zeigt das quadrische Interaktionswidget.
 
 Die Interaktion findet statt, indem eine Seitenfl\"ache durch Klicken und Halten der mittleren Maustasten ausgew\"ahlt wird und durch Bewegung der Maus entlang der zur Fl\"ache orthogonalen Achse verschoben wird. Jede Seitenfl\"ache stellt einen Handle dar, durch den das Minimum oder Maximum des angezeigten Intervalls einer einzelnen Invariante eingestellt wird. Dadurch ist Kriterium 2 erf\"ullt. Die Position der Seitenfl\"achen folgt dabei der Maus, sodass immer die aktuellen Intervallgrenzen gezeigt werden. Dies erf\"ullt Kriterium 3 zum Teil: Das aktuelle Handle liegt immer unter dem Mauszeiger und bewegt sich mit ihm, wodurch das ausgew\"ahlte Handle meist erkennbar ist. 
 
@@ -1556,6 +1557,8 @@ Ob und wie die Widgets ver\"andert werden k\"onnen, um die Kriterien besser zu e
 Das quadrische Interaktionswidget kann f\"ur jeden Invariantensatz verwendet werden, ist jedoch besonders f\"ur solche geeignet, bei denen alle drei Invarianten beliebige Werte in $\mathbb{R}$ annehmen k\"onnen (z.B. Eigenwerte, I- und J-Invariantens\"atze).
 
 Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Picking'. Dabei wird, \"ahnlich wie beim Raycasting, ein Strahl ausgehend von der Kamera durch die Szene berechnet. Wenn der Strahl ein Handle trifft, wird die jeweilige Intervallschranke ausgew\"ahlt.  Wenn mehr als ein Handle getroffen wird, wird das n\"aheste bevorzugt. Preim et al. vergleichen diese Art der Auswahl von Widgets als Metapher zum Zeigen auf ein Objekt mit einem Laserpointer oder dem Greifen eines Objekts mit der Hand \cite[344]{preim2015interaktive}.
+
+Um die vom Interaktionswidget ausgeblendeten Bereiche besser einsch\"atzen zu k\"onnen, existiert eine Option, zus\"atzlich zu den aktuellen Positionen der Kanten des Interaktionswidgets auch deren Position im Ausgangszustand einzuzeichnen. Die Darstellung dieser Kanten wird als Gitternetz oder ``Wireframe'' bezeichnet.
 
 \begin{figure}
 	\hspace*{\fill}
@@ -1593,15 +1596,15 @@ Die Berechnung, ob ein Mausklick eine Handle trifft, geschieht mittels `Ray-Pick
 \end{figure}
 
 \subsubsection{Zylindrisches Interaktionswidget}
-Wie im Abschnitt \ref{sec:Invariants} beschrieben, kann es f\"ur manche Invariantens\"atze (z.B. die K- und R-Invariantens\"atze) sinnvoll sein, sie in einem zylindrischen Koordinatensystem darzustellen. Daf\"ur m\"ussen eigene Interaktionswidgets entwickelt werden, durch die, \"aquivalent zum quadrischen Widget, die Intervallgrenzen der Invarianten manipuliert werden k\"onnen.
+Wie in \cref{sec:Invariants} beschrieben, kann es f\"ur manche Invariantens\"atze (z.B. die K- und R-Invariantens\"atze) sinnvoll sein, sie in einem zylindrischen Koordinatensystem darzustellen. Daf\"ur m\"ussen eigene Interaktionswidgets entwickelt werden, durch die, \"aquivalent zum quadrischen Widget, die Intervallgrenzen der Invarianten manipuliert werden k\"onnen.
 
-Die implementierten Widgets haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Komponenten, die parallel zur yz-Ebene gezeichnet werden. Ein zylindrisches Interaktionswidget ist in Abb. \ref{InteractionPlaneA} dargestellt. Jede farbige Komponente markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch wird Kriterium 1 erf\"ullt.
+Die implementierten Widgets haben die Form von Kreissegmenten mit unterschiedlich eingef\"arbten Komponenten, die parallel zur yz-Ebene gezeichnet werden. Ein zylindrisches Interaktionswidget ist in \cref{InteractionPlaneA} dargestellt. Jede farbige Komponente markiert einen Teil des Widgets, durch den eine andere Invariante manipuliert werden kann. Diese Teile gliedern sich wiederum in Handles f\"ur das Minimum und Maximum der jeweiligen Invariante auf. Die Wahl der Farben basiert folgt der gleichen Logik wie beim quadrischen Widget. Dadurch wird Kriterium 1 erf\"ullt.
 
-Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe Abb. \ref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe Abb. \ref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe Abb. \ref{InteractionPlaneD}). Dies erf\"ullt Kriterium 2.
+Die Interaktion selbst ist analog zum quadrischen Widget: Durch Klicken der Maustaste wird ein Handle ausgew\"ahlt, dessen Position der Bewegung der Maus folgt. F\"ur die erste Invariante entspricht dies der x-Koordinate des jeweiligen Widgets (siehe \cref{InteractionPlaneB}). Bei der zweiten und dritten Invariante wird die Form des Widgets angepasst: Da die zweite Invariante der Entfernung zur x-Achse entspricht, werden innerer und \"ausserer Radius des Kreissegments angepasst. Wenn der innere Radius gr\"o{\ss}er als null ist, wird somit aus dem Kreissegment ein Keisringsektor (siehe \cref{InteractionPlaneC}). Die dritte Invariante entspricht dem Skalarprodukt zwischen der Projektion des Punktes auf die yz-Ebene und der y-Achse. Die zugeh\"origen Handles sind die beiden geraden Seiten des Kreissegments, deren Winkel zur y-Achse ver\"andert wird (siehe \cref{InteractionPlaneD}). Dies erf\"ullt Kriterium 2.
 
 Kriterien 3 und 4 werden genau wie beim quadrischen Widget nur teilweise erf\"ullt und werden Thema von weiterer Forschung.
 
-Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus einem Zylinder dar, der den dargestellten Teil des Invariantenraums umfasst. Um diese Eigenschaft zu verdeutlichen, kann ein zus\"atzliches Gitter aus Linien, bezeichnet als ``Wireframe'', gezeichnet werden, die sich auf der Oberfl\"ache dieses Zylinders befinden (siehe Abb. \ref{InteractionPlaneE}).
+Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus einem Zylinder dar, der den dargestellten Teil des Invariantenraums umfasst. Um diese Eigenschaft zu verdeutlichen, kann ein zus\"atzliches Gitter aus Linien auf der Oberfl\"ache des Zylinders gezeichnet werden, \"aquivalent zum Wireframe beim quadrischen Interaktionswidget (siehe \cref{InteractionPlaneE}).
 
 \subsection{Labeling}
 \begin{figure}
@@ -1623,9 +1626,9 @@ Die zylindrischen Widgets stellen somit die Seitenfl\"achen eine Ausschnitts aus
 \end{figure}
 Um die Position der Interaktionshandles im Raum ablesen zu k\"onnen, ist es m\"oglich, die eingestellten Minimal- und Maximalwerte der Invarianten an den Interaktionswidgets einzuzeichnen. Solche Beschriftungen in grafischen Oberfl\"achen werden als `Labels' bezeichnet, als Metapher zu Etiketten an Waren im Einzelhandel.
 
-Beim quadrischen Interaktionswidget werden die Labels an den Endpunkten der farbigen Kanten angezeigt. An dem Punkt, an dem sich die drei Kanten schneiden, werden die Labels untereinander angeordnet, mit dem Label der ersten Invariante oben und dem der dritten unten. Abb. \ref{QuadricLabels} zeigt die Positionierung der Labels.
+Beim quadrischen Interaktionswidget werden die Labels an den Endpunkten der farbigen Kanten angezeigt. An dem Punkt, an dem sich die drei Kanten schneiden, werden die Labels untereinander angeordnet, mit dem Label der ersten Invariante oben und dem der dritten unten. \cref{QuadricLabels} zeigt die Positionierung der Labels.
 
-Die Labels am zylindrischen Interaktionswidget sind an den Handles eingezeichnet. F\"ur die erste Invariante befinden sich die Labels im Zentrum der zugeh\"origen Handles, der gro{\ss}en roten Fl\"achen. Ebenso sind Labels der zweiten Invariante im Mittelpunkt ihrer Handles eingezeichnet, der gelben B\"ogen an der Innen- und Aussenseite der Kreisringausschnitte. F\"ur die Position der Labels der dritten Invariante wurden die \"au{\ss}eren Eckpunkte der geraden Seiten der Kreisringausschnitte gew\"ahlt. Die Positionen sind in Abb. \ref{CylindricalLabels} zu sehen.
+Die Labels am zylindrischen Interaktionswidget sind an den Handles eingezeichnet. F\"ur die erste Invariante befinden sich die Labels im Zentrum der zugeh\"origen Handles, der gro{\ss}en roten Fl\"achen. Ebenso sind Labels der zweiten Invariante im Mittelpunkt ihrer Handles eingezeichnet, der gelben B\"ogen an der Innen- und Aussenseite der Kreisringausschnitte. F\"ur die Position der Labels der dritten Invariante wurden die \"au{\ss}eren Eckpunkte der geraden Seiten der Kreisringausschnitte gew\"ahlt. Die Positionen sind in \cref{CylindricalLabels} zu sehen.
 
 \subsection{Weitere Interaktionen}
 Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
@@ -1683,7 +1686,7 @@ Um die Gr\"o{\ss}e und Form des Objekts besser einsch\"atzbar zu machen, k\"onne
 Der Benutzer kann entscheiden, ob das quadrische oder die zylindrischen Interaktionswidgets angezeigt werden sollen. Dies ist notwendig, da es nicht ohne weiteres m\"oglich ist aus der internen Repr\"asentation eines Feldes in FAnToM zu bestimmen, ob dieses in zylindrischen oder kartesischen Koordinaten liegt.
 
 \paragraph{Wireframe}
-Wenn die zylindrischen Interaktionswidgets angezeigt werden, kann optional ein Wireframe angezeigt werden, ein Liniengitter an den Grenzen des maximalen Invariantenintervalls. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in Abb. \ref{InteractionPlaneE} zu sehen.
+Wenn die zylindrischen Interaktionswidgets angezeigt werden, kann optional ein Wireframe angezeigt werden, ein Liniengitter an den Grenzen des maximalen Invariantenintervalls. Die Position der Linien macht es einfacher, die ausgew\"ahlten Bereiche einzusch\"atzen. Form und Position des Wireframes sind nicht abh\"angig vom ausgew\"ahlten Invariantenbereich. Der Wireframe ist in \cref{InteractionPlaneE} zu sehen.
 
 \paragraph{Labels einzeichnen}
 Es ist m\"oglich auszuw\"ahlen, ob die Minimal- und Maximalwerte der jeweiligen Invarianten an den Widgets eingezeichnet werden sollen oder nicht.
@@ -1707,7 +1710,7 @@ Die Dichtewerte der Voxel im Invariantenraum k\"onnen sich extrem unterscheiden.
 	\caption{Das Intervall-Fenster.}
 	\label{IntervalWindow}
 \end{figure}
-Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe Abb. \ref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0;1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVR angewendet.
+Um die Invariantenbereiche auf exakte Werte einstellen zu k\"onnen, existiert ein weiteres Fenster (siehe \cref{IntervalWindow}). Darin sind die sechs Invariantenschranken tabellarisch angegeben. Das linke Textfeld gibt den absoluten, das rechte den relativen Wert im Intervall $[0;1]$ an. Alle Textfelder sind editierbar und \"Anderungen werden direkt auf die DVR angewendet.
 
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
@@ -1741,25 +1744,25 @@ Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Daten
 	\caption{Darstellung des Single Point Load Datensatzes: (a) als DVR des Objekts, (b) als Ellipsoide und (c) im Invariantenraum, berechnet mit den I-Invarianten.}
 	\label{SinglePoint}
 \end{figure}
-Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als ``Single Point Load'' bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \ref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. 
+Um die grundlegenden Funktionen der implementierten Visualisierung zu erl\"autern, wird als erster Testdatensatz ein von FAnToM erzeugtes Tensorfeld verwendet. Dieses ist das Ergebnis einer Simulation, in der auf einen unendlichen Halbraum an einem Punkt eine Kraft einwirkt. Diese Art von Datens\"atzen wird auch als ``Single Point Load'' bezeichnet. Die entstehende mechanische Spannung wird an Punkten innerhalb des Objekts gemessen und die Tensoren in Form von $3\times3$ Matrizen gespeichert. Darstellungen des Datensatzes sind in \cref{SinglePoint} zu sehen. Der Punkt, an dem die Kraft einwirkt ist in der linken H\"alfte der vorderen, quadratischen Seite. Der Datensatz besteht aus 19494 tetraederf\"ormigen Zellen.
 
-Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwirkungspunktes der Kraft ist in Abb. \ref{SinglePointObject} zu sehen. Die verwendete Transferfunktion ist konstant vollst\"andig opak und blau f\"ur alle Eingabewerte, um die Form deutlich darzustellen. Die Darstellung soll vor allem als Vergleichspunkt f\"ur die sp\"ater gezeigten Visualisierungen des Halbraums dienen, bei denen Teile abh\"angig von den gew\"ahlten Invarianten ausgeblendet wurden.
+Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwirkungspunktes der Kraft ist in \cref{SinglePointObject} zu sehen. Die verwendete Transferfunktion ist konstant vollst\"andig opak und blau f\"ur alle Eingabewerte, um die Form deutlich darzustellen. Die Darstellung soll vor allem als Vergleichspunkt f\"ur die sp\"ater gezeigten Visualisierungen des Halbraums dienen, bei denen Teile abh\"angig von den gew\"ahlten Invarianten ausgeblendet wurden.
 
-Abb. \ref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Die Form der Ellipsoide ist l\"anglich und zeigt weg vom Einwirkungspunkt der Kraft.
+\cref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Die Form der Ellipsoide ist l\"anglich und zeigt weg vom Einwirkungspunkt der Kraft.
 
-F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. Abb. \ref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. Auch wurde die Darstellung durch Mausinteraktion um 90\textdegree im Uhrzeigersinn um die y-Achse rotiert, um die Form des DVR deutlicher sichtbar zu machen. Dadurch ist der Punkt mit den Koordinaten der unteren Schranken der drei Invariantenintervalle vorn links, markiert dadurch dass dort die drei farbigen Kanten des Interaktionswidgets zusammentreffen.
+F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. \cref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. Auch wurde die Darstellung durch Mausinteraktion um 90\textdegree im Uhrzeigersinn um die y-Achse rotiert, um die Form des DVR deutlicher sichtbar zu machen. Dadurch ist der Punkt mit den Koordinaten der unteren Schranken der drei Invariantenintervalle vorn links, markiert dadurch dass dort die drei farbigen Kanten des Interaktionswidgets zusammentreffen.
 
 Durch die Normalisierungsfunktion wurden die Dimensionen des Invariantenraumes so skaliert, dass die Intervalle der drei Invarianten als gleich gro{\ss}e Strecken dargestellt werden.
 
 Die Form des DVR im Invariantenraum ist l\"anglich und befindet sich entlang einer imagin\"aren Gerade zwischen zwei Punkten, die jeweils das Minimum und Maximum aller drei Invarianten darstellen. Scheinbar besteht im Datensatz eine starke lineare Abh\"angigkeit zwischen den drei Invarianten. Dies ist teilweise durch die fehlende Orthogonalit\"at des I-Invariantensatzes zu erkl\"aren: Desto h\"oher die Eigenwerte einer Matrix, desto h\"oher sind auch die Werte der I-Invarianten.  
 
-Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, beschr\"ankt sich die Demonstration der Funktion des Interaktionswidgets in diesem Datensatz auf $I_1$. In den Darstellungen \ref{SinglePointInvariant1}, \ref{SinglePointInvariant2} und \ref{SinglePointInvariant3} wird die untere Schranke des Intervalls der ersten Invariante erh\"oht. Im unrotierten Zustand wird dies durch die Position der linken Fl\"ache des quadrischen Interaktionswidgets dargestellt. Da jedoch das DVR rotiert wurde, ist diese Fl\"ache nun die vordere des Interaktionswidgets. Dies ist zwar unintuitiv, wird jedoch von der besser sichtbaren Darstellung des DVR nach der Rotation mehr als aufgewogen, weshalb das Bild so gew\"ahlt wurde. Die Abb. \ref{SinglePointObject1}, \ref{SinglePointObject2} und \ref{SinglePointObject3} stellen die Bereiche des Ausschnitts des Halbraums dar, in denen die Invarianten innerhalb der gew\"ahlten Intervalle liegen in blau dar. Der Rest des Halbraumausschnitts wird schemenhaft in grau dargestellt.
+Da nur f\"ur $I_1$ eine eindeutige Interpretation in der Mechanik existiert, beschr\"ankt sich die Demonstration der Funktion des Interaktionswidgets in diesem Datensatz auf $I_1$. In den Darstellungen \cref{SinglePointInvariant1,SinglePointInvariant2,SinglePointInvariant3} wird die untere Schranke des Intervalls der ersten Invariante erh\"oht. Im unrotierten Zustand wird dies durch die Position der linken Fl\"ache des quadrischen Interaktionswidgets dargestellt. Da jedoch das DVR rotiert wurde, ist diese Fl\"ache nun die vordere des Interaktionswidgets. Dies ist zwar unintuitiv, wird jedoch von der besser sichtbaren Darstellung des DVR nach der Rotation mehr als aufgewogen, weshalb das Bild aus dieser Blickrichtung erzeugt wurde. Um den ausgeblendeten Bereich des DVR besser einsch\"atzen zu k\"onnen, wird das Wireframe in einem hellen Grau eingeblendet. Die \cref{SinglePointObject1,SinglePointObject2,SinglePointObject3} stellen die Bereiche des Ausschnitts des Halbraums dar, in denen die Invarianten innerhalb der gew\"ahlten Intervalle liegen in blau dar. Der Rest des Halbraumausschnitts wird schemenhaft in grau dargestellt.
 
-In Abb. \ref{SinglePointInvariant1} wurde das Intervall von $I_1$ nur um etwa 1\% verkleinert, was in der Darstellung des Invariantenraumes kaum erkennbar ist. Dennoch wird in \ref{SinglePointObject1} ein gro{\ss}er Teil des Halbraums ausgeblendet. Das bedeutet, dass in einem gro{\ss}en Teil des Datensatzes fast keine isotrope Spannung vorliegt. Nur in direkter N\"ahe zum Einwirkungspunkt der Kraft nimmt $I_1$ h\"ohere Werte an. 
+In \cref{SinglePointInvariant1} wurde das Intervall von $I_1$ nur um etwa 1\% verkleinert, was in der Darstellung des Invariantenraumes kaum erkennbar ist. Dennoch wird in \cref{SinglePointObject1} ein gro{\ss}er Teil des Halbraums ausgeblendet. Das bedeutet, dass in einem gro{\ss}en Teil des Datensatzes fast keine isotrope Spannung vorliegt. Nur in direkter N\"ahe zum Einwirkungspunkt der Kraft nimmt $I_1$ h\"ohere Werte an. 
 
-Abb. \ref{SinglePointInvariant2} zeigt eine Darstellung des Invariantenraumes, in dem die untere Schranke von $I_1$ um 10\% der Intervalll\"ange erh\"oht wurde. Dadurch ist die untere Spitze des DVR abgeschnitten. Die Wirkung auf die angezeigten Bereiche im DVR des Halbraums in \ref{SinglePointObject2} ist deutlich erkennbar, dieser ist im Vergleich zu Abb. \ref{SinglePointObject2} deutlich kleiner und wieder in der N\"ahe des Einwirkungspunktes der Kraft. 
+\cref{SinglePointInvariant2} zeigt eine Darstellung des Invariantenraumes, in dem die untere Schranke von $I_1$ um 10\% der Intervalll\"ange erh\"oht wurde. Dadurch ist die untere Spitze des DVR abgeschnitten. Die Wirkung auf die angezeigten Bereiche im DVR des Halbraums in \cref{SinglePointObject2} ist deutlich erkennbar, dieser ist im Vergleich zu \cref{SinglePointObject2} deutlich kleiner und wieder in der N\"ahe des Einwirkungspunktes der Kraft. 
 
-Das gleiche Verhalten ist auch in Abb. \ref{SinglePointInvariant3}, wo im Invariantenraum die unteren 50\% des Intervalls von $I_1$ ausgeblendet wurde und den zugeh\"origen Bereichen im Halbraum, dargestellt in \ref{SinglePointObject3}
+Das gleiche Verhalten ist auch in \cref{SinglePointInvariant3}, wo im Invariantenraum die unteren 50\% des Intervalls von $I_1$ ausgeblendet wurde und den zugeh\"origen Bereichen im Halbraum, dargestellt in \cref{SinglePointObject3}
 
 
 
@@ -1863,31 +1866,31 @@ Als zweites Beispiel wurden die Ergebnisse einer thermo-mechanischen Simulation 
 
 ``Die Metallscheibe liegt flach auf und ist entlang ihres \"au{\ss}eren Rands fixiert. Zwecks Umformung wirkt von oben ein hoher Druck ein. Zus\"atzlich wird sie von unten erw\"armt und von oben gek\"uhlt.''\cite[S.~15]{fritzsch2016continuousScatterplot}
 
-Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur z-Achse sind. Die z-Achse selbst zeigt nach unten.
+Die `obere' und `untere' Seite der Metallscheibe sind dabei die flachen Seiten, deren Normalen parallel zur z-Achse sind. Die z-Achse selbst zeigt nach unten. Die Anzahl der Tetraederzellen betr\"agt 26984.
 
 Da die Metallscheibe spiegelsymmetrisch zur x- und y-Achse ist, gen\"ugt es, ein Viertel der Scheibe zu simulieren. Als Ergebnisse der Simulation wurden zwei Datens\"atze erzeugt, die jeweils die mechanische Spannung und die Verformung an den Punkten der Metallscheibe enthalten. 
 
 Beide Datens\"atze wurden von Fritzsch untersucht. Dabei wurden als Invarianten $I_1$ und $\sqrt{2J}$ verwendet. Da im bei symmetrischen Tensoren gilt $I_1 = K_1$ und $\sqrt{2J_2} = K_2$ und die Tensoren beider Datens\"atze dreidimensional sind, ist im Folgenden stattdessen vom K-Invariantensatz die Rede. Um die Korrektheit der in der vorliegenden Arbeit implementierten Visualisiserung zu zeigen und die Ergebnisse mit denen von Fritzsch vergleichen zu k\"onnen, werden im Folgenden Visualisierungen des K-Invariantensatzes f\"ur die mechanische Verformung gezeigt und denen von Fritzsch gegen\"ubergestellt. Das bedeutet, dass f\"ur die Erstellung des DVR als dritte Koordinate $K_3$ verwendet wurde.
 
-Ein DVR der Metallscheibe ist in Abb. \ref{MetalDiskObject} in blau dargestellt. Abb. \ref{MetalDiskStrainEllipsoids} zeigt eine Darstellung der Verformungstensoren als Ellipsoidglyphen. Am inneren Rand der Scheibe, insbesondere im oberen Bereich, sind die Ellipsoide am gr\"o{\ss}ten. Dies l\"asst auf hohe Betr\"age der Eigenwerte dort schlie{\ss}en. Das Vorzeichen der Eigenwerte l\"asst sich jedoch nicht ableiten. Zum \"ausseren Rand hin nimmt die Gr\"o{\ss}e der Ellipsoide ab. Eine weitere Eigenschaft l\"asst sich aus der Form der Ellipsoide ablesen. Diese scheint am unteren Ende des Scheibenausschnitts eher l\"anglich, am oberen Ende eher rund zu sein. Scheinbar ist die Verformung am oberen Ende st\"arker isotrop als am oberen. Ebenfalls nimmt die Gr\"o{\ss}e der Ellipsoide von oben rechts nach unten links zu.
+Ein DVR der Metallscheibe ist in \cref{MetalDiskObject} in blau dargestellt. \cref{MetalDiskStrainEllipsoids} zeigt eine Darstellung der Verformungstensoren als Ellipsoidglyphen. Am inneren Rand der Scheibe, insbesondere im oberen Bereich, sind die Ellipsoide am gr\"o{\ss}ten. Dies l\"asst auf hohe Betr\"age der Eigenwerte dort schlie{\ss}en. Das Vorzeichen der Eigenwerte l\"asst sich jedoch nicht ableiten. Zum \"ausseren Rand hin nimmt die Gr\"o{\ss}e der Ellipsoide ab. Eine weitere Eigenschaft l\"asst sich aus der Form der Ellipsoide ablesen. Diese scheint am unteren Ende des Scheibenausschnitts eher l\"anglich, am oberen Ende eher rund zu sein. Scheinbar ist die Verformung am oberen Ende st\"arker isotrop als am oberen. Ebenfalls nimmt die Gr\"o{\ss}e der Ellipsoide von oben rechts nach unten links zu.
 
-Abb. \ref{MetalDiskStrainFritzsch} zeigt die von Fritzsch erzeugte Visualisierung der mechanischen Verformung. Die x-Achse entspricht dem Wert von $K_1$, die y-Achse dem von $K_2$. 
+\cref{MetalDiskStrainFritzsch} zeigt die von Fritzsch erzeugte Visualisierung der mechanischen Verformung. Die x-Achse entspricht dem Wert von $K_1$, die y-Achse dem von $K_2$. 
 
-Damit die \"Ahnlichkeit zwischen der Darstellung von Fritzsch und den Ergebnissen der vorgestellten Arbeit deutlich werden, wurde ein DVR mit orthogonaler Projektion in kartesischen Koordinaten erzeugt, das in Abb. \ref{MetalDiskStrainOrthogonal} zu sehen ist. F\"ur die Verwendung von orothogonaler Projektion existiert im implementierten FAnToM Plugin noch keine Option, diese k\"onnte jedoch in Zukunft hinzugef\"ugt werden. Auch die verwendete Transferfunktion wurde absichtlich so gew\"ahlt, um die Darstellung des DVR an die von Fritzsch anzugleichen. Die x- und y-Achse entsprechen beim orthogonalen DVR jeweils $K_1$ und $K_2$, wie auch bei der Darstellung von Fritzsch. Die z-Achse entspricht zus\"atzlich $K_3$.
+Damit die \"Ahnlichkeit zwischen der Darstellung von Fritzsch und den Ergebnissen der vorgestellten Arbeit deutlich werden, wurde ein DVR mit orthogonaler Projektion in kartesischen Koordinaten erzeugt, das in \cref{MetalDiskStrainOrthogonal} zu sehen ist. F\"ur die Verwendung von orothogonaler Projektion existiert im implementierten FAnToM Plugin noch keine Option, diese k\"onnte jedoch in Zukunft hinzugef\"ugt werden. Auch die verwendete Transferfunktion wurde absichtlich so gew\"ahlt, um die Darstellung des DVR an die von Fritzsch anzugleichen. Die x- und y-Achse entsprechen beim orthogonalen DVR jeweils $K_1$ und $K_2$, wie auch bei der Darstellung von Fritzsch. Die z-Achse entspricht zus\"atzlich $K_3$.
 
-Die Abbildungen \ref{MetalDiskStrainFritzsch} und \ref{MetalDiskStrainOrthogonal} \"ahneln sich stark, weisen jedoch eine Reihe deutlicher Unterschiede auf. Zun\"achst ist die Abb. \ref{MetalDiskStrainFritzsch} deutlich breiter, was an einer unterschiedlichen Skalierung in Richtung der x-Achse liegt. Desweiteren ist der rechte obere Teil von Abb. \ref{MetalDiskStrainOrthogonal} deutlich heller als der von \ref{MetalDiskStrainFritzsch}. Das ist darauf zur\"uckzuf\"uhren, dass die Tetraeder in diesem Bereich sehr flach und fast parallel zur xy-Ebene sind. Dadurch werden sie nur von wenigen oder gar keiner der bei der Rasterisierung verwendeten Schnittebenen getroffen, wodurch nur wenige Voxel Dichtewerte erhalten. Durch die Skalierung der Dichte mit der Anzahl der Abtastpunkte wird der Bereich deutlich heller als in der Darstellung von Fritzsch. Ein weiterer wichtiger Faktor ist, dass das von Fritzsch implementierte Verfahren die Dichtewerte der projezierten Tetraeder einfach aufaddiert. Im DVR w\"urde dies dem R\"ontgenbildverfahren entsprechen. Da stattdessen ein transluzentes Verfahren implementiert wurde, erscheinen dichte Bereiche wie z.B. an der unteren Kante des DVR heller als dieselben Stellen in der Darstellung von Fritzsch. 
+Die \cref{MetalDiskStrainFritzsch,MetalDiskStrainOrthogonal} \"ahneln sich stark, weisen jedoch eine Reihe deutlicher Unterschiede auf. Zun\"achst ist die \cref{MetalDiskStrainFritzsch} deutlich breiter, was an einer unterschiedlichen Skalierung in Richtung der x-Achse liegt. Desweiteren ist der rechte obere Teil von \cref{MetalDiskStrainOrthogonal} deutlich heller als der von \cref{MetalDiskStrainFritzsch}. Das ist darauf zur\"uckzuf\"uhren, dass die Tetraeder in diesem Bereich sehr flach und fast parallel zur xy-Ebene sind. Dadurch werden sie nur von wenigen oder gar keiner der bei der Rasterisierung verwendeten Schnittebenen getroffen, wodurch nur wenige Voxel Dichtewerte erhalten. Durch die Skalierung der Dichte mit der Anzahl der Abtastpunkte wird der Bereich deutlich heller als in der Darstellung von Fritzsch. Ein weiterer wichtiger Faktor ist, dass das von Fritzsch implementierte Verfahren die Dichtewerte der projezierten Tetraeder einfach aufaddiert. Im DVR w\"urde dies dem R\"ontgenbildverfahren entsprechen. Da stattdessen ein transluzentes Verfahren implementiert wurde, erscheinen dichte Bereiche wie z.B. an der unteren Kante des DVR heller als dieselben Stellen in der Darstellung von Fritzsch. 
 
-Der K-Invariantensatz eignet sich f\"ur die Darstellung in zylindrischen Koordinaten. Daher bietet sich die mechanische Verformung der Metallscheibe an, um das zylindrische Interaktionswidget zu demonstrieren. Abb. \ref{MetalDiskStrainPerspective} zeigt ein DVR desselben Datensatzes wie Abb. \ref{MetalDiskStrainOrthogonal}, bei dem jedoch die Koordinaten der Eckpunkte der Tetraeder als Zylinderkoordinaten interpretiert wurden.
+Der K-Invariantensatz eignet sich f\"ur die Darstellung in zylindrischen Koordinaten. Daher bietet sich die mechanische Verformung der Metallscheibe an, um das zylindrische Interaktionswidget zu demonstrieren. \cref{MetalDiskStrainPerspective} zeigt ein DVR desselben Datensatzes wie \cref{MetalDiskStrainOrthogonal}, bei dem jedoch die Koordinaten der Eckpunkte der Tetraeder als Zylinderkoordinaten interpretiert wurden.
 
 F\"ur alle vom Invariantenraum der Metallscheibe erzeugten DVR wurden die Koordinaten durch die Option normalisiert. Dadurch werden die Intervalle von Invarianten gleich gro{\ss} dargestellt, obwohl dies in den Daten nicht notwendig der Fall ist.
 
-Abb. \ref{MetalDiskStrainInteraction} demonstriert die Funktionsweise des zylindrischen Interaktionswidgets. Abb. \ref{MetalDiskStrainInvariant1}, \ref{MetalDiskStrainInvariant2} und \ref{MetalDiskStrainInvariant3} zeigen Darstellungen der Metallscheibe im Invariantenraum. Links und rechts des DVR sind die Interaktionswidgets eingeblendet. Durch Interaktion wurden die Intervalle der anzuzeigenden Invarianten begrenzt, was durch Position und Form der Interaktionswidgets angezeigt wird. Allgemein entspricht der Teil des Invariantenraums, der innerhalb der ausgew\"ahlten Invariantenintervalle liegt, dem Bereich zwischen den roten Teilen der zylindrischen Interaktionswidgets. Teile der DVR, die ausserhalb der Intervalle liegen, werden ausgeblendet. Abb. \ref{MetalDiskStrainObject1}, \ref{MetalDiskStrainObject2} und \ref{MetalDiskStrainObject3} zeigen DVR der Metallscheibe, bei denen die Bereiche mit Invarianten innerhalb des ausgew\"ahlten Intervalls in blau und ausserhalb in einem transparenten Grau dargestellt werden.
+\cref{MetalDiskStrainInteraction} demonstriert die Funktionsweise des zylindrischen Interaktionswidgets. \cref{MetalDiskStrainInvariant1,MetalDiskStrainInvariant2,MetalDiskStrainInvariant3} zeigen Darstellungen der Metallscheibe im Invariantenraum. Links und rechts des DVR sind die Interaktionswidgets eingeblendet. Durch Interaktion wurden die Intervalle der anzuzeigenden Invarianten begrenzt, was durch Position und Form der Interaktionswidgets angezeigt wird. Allgemein entspricht der Teil des Invariantenraums, der innerhalb der ausgew\"ahlten Invariantenintervalle liegt, dem Bereich zwischen den roten Teilen der zylindrischen Interaktionswidgets. Teile der DVR, die ausserhalb der Intervalle liegen, werden ausgeblendet. \cref{MetalDiskStrainObject1}, \cref{MetalDiskStrainObject2,MetalDiskStrainObject3} zeigen DVR der Metallscheibe, bei denen die Bereiche mit Invarianten innerhalb des ausgew\"ahlten Intervalls in blau und ausserhalb in einem transparenten Grau dargestellt werden.
 
-In \ref{MetalDiskStrainInvariant1} wurde das linke Interaktionswidget nach rechts bewegt, wodurch die untere Schranke des Intervalls von $K_1$ erh\"oht wurde w\"ahrend die obere Schranke gleich blieb. Die L\"ange des Intervalls wurde insgesamt um 40\% reduziert. Der Teil des DVR ausserhalb des eingeschr\"ankten Intervalls, also links vom linken Interaktionswidget, ist ausgeblendet. Abb. \ref{MetalDiskStrainObject1} zeigt die Darstellung der Bereiche der Metallscheibe, deren Invarianten innerhalb des eingeschr\"ankten Intervalls liegen: die untere H\"alfte der Metallscheibe sowie der innere Rand. Da $K_1$ als Ma{\ss} des isotropen Anteils der Verformungstensoren interpretiert werden kann, l\"asst sich daraus schlussfolgern, dass in diesen Bereichen starke isotrope Verformung stattfindet. Ein interessantes Detail ist, dass auf der R\"uckseite der Metallscheibe der angezeigte Bereich leicht gr\"o{\ss}er zu sein scheint.
+In \cref{MetalDiskStrainInvariant1} wurde das linke Interaktionswidget nach rechts bewegt, wodurch die untere Schranke des Intervalls von $K_1$ erh\"oht wurde w\"ahrend die obere Schranke gleich blieb. Die L\"ange des Intervalls wurde insgesamt um 40\% reduziert. Der Teil des DVR ausserhalb des eingeschr\"ankten Intervalls, also links vom linken Interaktionswidget, ist ausgeblendet. \cref{MetalDiskStrainObject1} zeigt die Darstellung der Bereiche der Metallscheibe, deren Invarianten innerhalb des eingeschr\"ankten Intervalls liegen: die untere H\"alfte der Metallscheibe sowie der innere Rand. Da $K_1$ als Ma{\ss} des isotropen Anteils der Verformungstensoren interpretiert werden kann, l\"asst sich daraus schlussfolgern, dass in diesen Bereichen starke isotrope Verformung stattfindet. Ein interessantes Detail ist, dass auf der R\"uckseite der Metallscheibe der angezeigte Bereich leicht gr\"o{\ss}er zu sein scheint.
 
-Abb. \ref{MetalDiskStrainInvariant2} zeigt die Einschr\"ankung des Intervalls der zweiten Invariante, wiederum indem die untere Schranke erh\"oht wurde. Dies ist an der Form der Interaktionswidgets erkennbar: Die halbkreisf\"ormigen Ausschnitte deuten den Teil des Invariantenraumes an, der ausgeblendet werden soll, wiederum etwa 40\% des Invariantenintervalls.  Im zylindrischen Koordinatensystem entspricht dies der Entfernung zur zentralen x-Achse. Die Bereiche der Metallscheibe, deren Invarianten in dem selektierten Intervall liegen, sind in Abb. \ref{MetalDiskStrainObject2} zu sehen. Diese befinden sich ein einem halbkreisf\"ormigen Bereich an einer Stelle am inneren Rand der Scheibe. Aus der Interpretation von $K_2$ als Ma{\ss} f\"ur die Anisotropie l\"asst sich schlie{\ss}en, dass dort starke Anisotrope Verformung stattfindet.
+\cref{MetalDiskStrainInvariant2} zeigt die Einschr\"ankung des Intervalls der zweiten Invariante, wiederum indem die untere Schranke erh\"oht wurde. Dies ist an der Form der Interaktionswidgets erkennbar: Die halbkreisf\"ormigen Ausschnitte deuten den Teil des Invariantenraumes an, der ausgeblendet werden soll, wiederum etwa 40\% des Invariantenintervalls.  Im zylindrischen Koordinatensystem entspricht dies der Entfernung zur zentralen x-Achse. Die Bereiche der Metallscheibe, deren Invarianten in dem selektierten Intervall liegen, sind in \cref{MetalDiskStrainObject2} zu sehen. Diese befinden sich ein einem halbkreisf\"ormigen Bereich an einer Stelle am inneren Rand der Scheibe. Aus der Interpretation von $K_2$ als Ma{\ss} f\"ur die Anisotropie l\"asst sich schlie{\ss}en, dass dort starke Anisotrope Verformung stattfindet.
 
-Zuletzt zeigt \ref{MetalDiskStrainInvariant3} die Einschr\"ankung des Intervalls der dritten Invariante. Diese entspricht in zylindrischen Koordinaten dem Winkel zur xz-Ebene. Entsprechend wird die Einschr\"ankung durch die Winkel der geraden Seitenfl\"achen der Interaktionswidgets dargestellt. Die untere Schranke wird dabei um 80\% der Intervalll\"ange erh\"oht. Abb. \ref{MetalDiskStrainObject3} zeigt die Bereiche der Metallscheibe mit hoher dritter Invariante. Diese befinden sich in einem halbkreisf\"ormigen Bereich entlang des gesamten inneren Randes der Scheibe.
+Zuletzt zeigt \cref{MetalDiskStrainInvariant3} die Einschr\"ankung des Intervalls der dritten Invariante. Diese entspricht in zylindrischen Koordinaten dem Winkel zur xz-Ebene. Entsprechend wird die Einschr\"ankung durch die Winkel der geraden Seitenfl\"achen der Interaktionswidgets dargestellt. Die untere Schranke wird dabei um 80\% der Intervalll\"ange erh\"oht. \cref{MetalDiskStrainObject3} zeigt die Bereiche der Metallscheibe mit hoher dritter Invariante. Diese befinden sich in einem halbkreisf\"ormigen Bereich entlang des gesamten inneren Randes der Scheibe.
 
 Aus den Darstellungen der Invariantenbereiche im Objekt lassen sich eine Reihe von Schl\"ussen ziehen. Zun\"achst best\"atigen sich die aus der Ellipsoiddarstellung abgelesenen Informationen: Die Tensoren am inneren Rand und insbesondere im oberen Bereich des inneren Randes sind sehr vie st\"arker als im Rest der Metallscheibe. Auch, dass die Tensoren im unteren Bereich des Scheibenausschnitts st\"arker sind als im oberen stimmt \"uberein. Die zus\"atzliche Zunahme der Anisotropie kann auf den gezeigten Bildern nicht abgelesen werden, dies liegt jedoch daran dass die Anisotropie im unteren Bereich erheblich schw\"acher ist als am inneren Rand, weshalb die Interaktion diese mit ausblendete.
 
@@ -1940,14 +1943,14 @@ Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nic
 \end{figure}
 
 \begin{figure}
-	\begin{subfigure}{0.65\textwidth}
+	\begin{subfigure}{0.62\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_Raith.png}
 		\subcaption{}
 		\label{BeamRaith}
 	\end{subfigure}
 	\hspace*{\fill}
-	\begin{subfigure}{0.34\textwidth}
+	\begin{subfigure}{0.32\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{pictures/results/Beam/Beam_InvariantSpace.png}
 		\subcaption{}
@@ -1957,19 +1960,36 @@ Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nic
 	\label{Beam}
 \end{figure}
 
-\subsubsection{Biegebalken}
-Die letzten zwei Testdatens\"atze stammen aus der Arbeit von Raith et al. \cite{raith2019tensor}. Der erste der beiden beschreibt die Werte der Eigenwerte innerhalb eines sogenannten Biegebalkens. Raith et al. beschreiben den Biegebalken als wagerechter Balken, der an einer Seite befestigt ist, w\"ahrend auf die andere Seite eine Kraft einwirkt \cite[S.~1128]{raith2019tensor}. Der Biegebalken wird im folgenden immer so dargestellt, dass das befestigte Ende auf den Bildern rechts liegt und die Kraft nach unten wirkt. Als Invarianten werden die drei Eigenwerte der Tensoren verwendet, geordnet nach ihrem Betrag. Die erste Invariante ist also stets der h\"ochste, die zweite der mittlere oder die dritte der kleinste der drei Eigenwerte. Da die Tensoren symmetrisch sind und nur reelle Werte enthalten, existieren immer drei Eigenwerte.
+\subsection{Biegebalken}
+Die letzten zwei Testdatens\"atze stammen aus der Arbeit von Raith et al. \cite{raith2019tensor}. Der erste der beiden beschreibt die Werte der Eigenwerte innerhalb eines sogenannten Biegebalkens. Raith et al. beschreiben den Biegebalken wie folgt\cite[S.~1128]{raith2019tensor}: 
+
+Der Datensatz ist die Simulation eines wagerechten Balkens, der an einer Seite befestigt ist, w\"ahrend auf die andere Seite eine Kraft einwirkt. Generiert wurde er durch die Simulationssoftware Abaqus\cite{abaqusWebsite}. Die Dimensionen des Balkens sind 30 mm $\times$ 30 mm $\times$ 100 mm. Die einwirkende Kraft betr\"agt 1000 N und wirkt in negatie y-Richtung. Der Balken besteht aus einem Metall mit einem Elastizit\"atsmodul von 210 GPa und einer Poissonszahl von 0.3. Die Zellen des Datensatzes sind Tetraeder.
+
+Der Biegebalken wird im folgenden immer so dargestellt, dass das befestigte Ende auf den Bildern rechts liegt und die Kraft nach unten wirkt. Als Invarianten werden die Werte der drei Hauptspannungen verwendet, diese sind gleich den drei Eigenwerte der Tensoren, geordnet nach ihrem Betrag. Die erste Invariante ist also stets der h\"ochste, die zweite der mittlere oder die dritte der kleinste der drei Eigenwerte. Da die Tensoren symmetrisch sind und nur reelle Werte enthalten, existieren immer drei Eigenwerte.
 
 Ziel des Tests dieses Datensatzes ist es, die Ergebnisse von Raith et al. zu reproduzieren sowie Vor- und Nachteile der erzeugten Visualisierungen mit denen von Raith et al. zu vergleichen.
 
-In Abb. \ref{BeamRaith} ist die Visualisierung von Raith et al. abgebildet: Auf der rechten Seite wird die Form des Datensatzes im Invariantenraum durch ein Gitternetz in blau dargestellt. Der transparente rote Quader zeigt die Grenzen eines durch Interaktion ausgew\"ahlten Teils des Invariantenraumes, sehr \"ahnlich zu dem innerhalb der vorliegenden Arbeit implementierten quadrischen Interaktionswidget. Gut sichtbar ist, dass der Quader das Gitternetz nur in Richtung der x-Achse (rot) und der z-Achse (blau) schneidet. Kleine achsenparallele Sichten auf das Gitternetz und den Quaders sind am rechten Rand dargestellt.
+In \cref{BeamRaith} ist die Visualisierung von Raith et al. abgebildet: Auf der rechten Seite werden die Positionen und Formen der Zellen des Datensatzes im Invariantenraum durch ein Gitternetz dargestellt. Um Verwechslung mit dem optional im DVR des Invariantenraumes eingezeichneten Wireframe zu verhindern, wird im folgenden daf\"ur der deutsche Begriff Gitternetz verwendet. Der transparente, rote Quader zeigt die Grenzen eines durch Interaktion ausgew\"ahlten Teils des Invariantenraumes, sehr \"ahnlich zu dem innerhalb der vorliegenden Arbeit implementierten quadrischen Interaktionswidget. Gut sichtbar ist, dass der Quader das Gitternetz nur in postive Richtung der x-Achse (roter Pfeil) und negative Richtung der z-Achse (blauer Pfeil) schneidet. Kleine achsenparallele Sichten auf das Gitternetz und den Quaders sind am rechten Rand dargestellt.
 
-Die linke Seite zeigt ein Gitternetz, das den Biegebalken im Ortsraum visualisiert. Die roten Fl\"achen entsprechen den Schnittfl\"achen zwischen Quader und Gitternetz im Invariantenraum, stellen also Isofl\"achen der einzelnen Invarianten dar, deren Isowerte durch die Positionen der Seitenfl\"achen des Quaders spezifiziert werden.
+Die linke Seite zeigt ein Gitternetz, das die Zellen des Biegebalkens im Ortsraum visualisiert. Indem die Schnittfl\"achen zwischen dem Quader und den Zellen des Gitternetzes im Invariantenraum berechnet und zur\"uck in den Ortsraum transformiert werden, entstehen die beiden gebogenen, roten Fl\"achen in der Darstellung. Da die Schnittfl\"achen im Invariantenraum jeweils parallel zur xy- und yz-Ebene sind, stellen die roten Fl\"achen Isofl\"achen der ersten und zweiten Invariante dar, deren Isowerte durch die Positionen der Seitenfl\"achen des Quaders spezifiziert werden.
 
-Abb. \ref{BeamInvariant} ist die Darstellung desselben Datensatzes im Invariantenraum als DVR. Die leicht unterschiedliche Form ist \"uberweigend auf einen unterschiedlichen winkel der perspektivischen Projektion zur\"uckzuf\"uhren. 
+\cref{BeamInvariant} ist die Darstellung desselben Datensatzes im Invariantenraum als DVR. Das DVR wurde so gedreht, dass die Kameraposition und Perspektive dem der Visualisierung von Raith et al. \"ahnelt. Die leicht unterschiedliche Form ist \"uberweigend auf Unterschiede bei der Implementierung der perspektivischen Projektion zur\"uckzuf\"uhren. Dennoch ist die Darstellung des DVR sehr \"ahnlich zu der Gitternetzdarstellung von Raith et al.
 
-Bei der Erstellung des DVR trat jedoch ein Problem auf. In dem Bereich, an dem sich die beiden v-f\"ormigen Komponenten im Invariantenraum treffen nimmt die durch die Rasterisierung berechnete Dichte im Vergleich zum Rest der 3D Textur sehr hohe Werte an. Um diese hohen Werte dennoch abspeichern zu k\"onnen, muss ein sehr hoher Skalierungsfaktor verwendet werden. Dies f\"uhrte wiederum dazu, dass die abgespeicherten Dichtewerte im Rest der 3D Textur sehr klein und von OpenGL auf 0 abgerundet wurden. Dadurch waren die v-f\"ormigen Bereiche im DVR unsichtbar. Um dies zu verhindern, wurde die im Abschnitt \ref{sec:Options} beschriebene Funktion zur Festlegung einer minimalen Dichte benutzt. Indem die minimale Dichte auf 5\% der maximal vorkommenden Dichte gesetzt wurde, wurden die v-f\"ormigen Bereiche sichtbar.
+Bei der Erstellung des DVR trat jedoch ein Problem auf. In dem Bereich, an dem sich die beiden v-f\"ormigen Komponenten im Invariantenraum treffen nimmt die durch die Rasterisierung berechnete Dichte im Vergleich zum Rest der 3D Textur sehr hohe Werte an. Um diese hohen Werte dennoch abspeichern zu k\"onnen, muss ein sehr hoher Skalierungsfaktor verwendet werden. Dies f\"uhrte wiederum dazu, dass die abgespeicherten Dichtewerte im Rest der 3D Textur sehr klein und von OpenGL auf 0 abgerundet wurden. Dadurch waren die v-f\"ormigen Bereiche im DVR unsichtbar. Um dies zu verhindern, wurde die in \cref{sec:Options} beschriebene Funktion zur Festlegung einer minimalen Dichte benutzt. Indem die minimale Dichte auf 5\% der maximal vorkommenden Dichte gesetzt wurde, wurden die v-f\"ormigen Bereiche sichtbar.
 
+Tats\"achlich liegt der Bereich, an dem die beiden v-f\"ormigen Komponenten zusammentreffen, nah am Punkt $(0,0,0)$. Das erkl\"art auch, warum die Dichtewerte dort so hoch sind: Im Gro{\ss}teil des Biegebalkens nehmen die Eigenwerte nur sehr kleine Betr\"age an, da dort nur relativ wenig Kraft wirkt. Dadurch werden wird ein Gro{\ss}teil des Volumens des Biegebalkens auf diesen sehr kleinen Bereich abgebildet, was durch das Continuous Scatterplotting zu sehr hohen Dichtewerten f\"uhrt.
+
+Wiederum wird das Wireframe des quadrischen Interaktionswidgets angezeigt, um die ausgeblendeten Bereiche besser einsch\"atzen zu k\"onnen.
+
+Die von Raith et al. erzeugte Visualisierung w\"ahlt durch das von ihnen implementierte Interaktionswidget gleichzeitig eingeschr\"ankte Intervalle aller drei Invarianten aus. Es bietet sich daher an, diesen Datensatz zu nutzen, um die Funktion des gleichzeitigen Einschr\"ankens mehrerer Intervalle mithilfe des innerhalb der vorliegenden Arbeit implementierten quadrischen Interaktionswidgets zu demonstrieren. Daf\"ur wurde in \cref{BeamInvariant1} die obere Schranke des gr\"o{\ss}ten Eigenwerts auf den Wert 9 festgesetzt, so wie auch in der Visualisierung von Raith et al. Der Wert wird zwar in ihrem Artikel nicht explizit erw\"ahnt, wurde jedoch auf m\"undliche Nachfrage hin genannt. Im Invariantenraum entspricht dies der Bewegung der vorderen linken Seitenfl\"ache des Interaktionswidgets nach hinten rechts. Erkennbar ist, dass, wie auch bei Raith et al. die linke v-f\"ormige Komponente geschnitten und der Teil ausserhalb des Intervalls ausgeblendet wird. Der durch die Einschr\"ankung des Intervalls ausgeblendeten Bereich des Objekt DVR ist in \cref{BeamObject1} dargestellt, ein Bereich in der linken H\"alfte der oberen Kante des Balkens. Deutlich erkennbar ist die \"Ahnlichkeit der Form der Grenze zwischen dem blauen und grauen Bereich des DVR und dem Verlauf der oberen Invarianten-Isofl\"ache in der Visualisierung in \cref{BeamRaith}. Die von Raith et al. vorgeschlagene Erkl\"arung f\"ur Form und Position dieses Bereichs liegt in der Bedeutung der Eigenwerte bzw. Hauptspannungen. Hauptspannungen mit hohen positiven Werten weisen dabei auf Bereiche mit Zugspannungen hin, also Spannungen, die das Material in diesen Bereichen auseinanderziehen.
+
+Bei der zweite Visualisierung, dargestellt in \cref{BeamInvariant2}, wird die untere Schranke des kleinsten Eigenwertes auf -9 festgelegt. Auch dieser Wert entspricht dem in der Visualisierung von Raith et al. verwendeten und wurde ebenfalls m\"undlich erfragt. Im Invariantenraum ist dies dargestellt durch die Bewegung der rechten vorderen Seitenfl\"ache des Interaktionswidgets nach hinten links. Wie zuvor wird dadurch eine der v-f\"ormigen Komponenten geschnitten, dieses Mal ist es jedoch die rechte der beiden. Die zugeh\"orige Darstellung des ausgeblendeten Bereichs im Objekt sind in \cref{BeamObject2} abgebildet, ein Bereich in der linken H\"alfte der unteren Kante des Balkens. Wiederum ist die \"Ahnlichkeit zu einer der Isofl\"achen in der Visualisierung von Raith et al. deutlich, dieses Mal zur unteren. Die von Raith et al. vorgeschlagene Interpretation dieses Bereichs l\"asst sich wiederum auf die Werte der Hauptspannungen zur\"uckf\"uhren. Hauptspannungen mit negativen Werten und hohen Betr\"agen treten in Bereichen auf, in denen das Material zusammengedr\"uckt wird. Man spricht auch von Druckspannungen.
+
+\cref{BeamInvariant3} zeigt die Kombination beider zuvor erl\"auterter Intervalleinschr\"ankungen. Eine Einschr\"ankung in Richtung des mittleren Eigenwerts ist nicht notwendig, da wie schon erw\"ahnt das von Raith et al. implementierte Interaktionswidget die Darstellung des Biegebalkens im Invariantenraum in Richtung der y-Achse nicht schneidet. \cref{BeamObject3} zeigt die Wirkung auf das DVR des Objekts. Dabei wird deutlich, dass die ausgeblendeten Bereiche spiegelsymmetrisch gegen\"uber einer horizontalen Achse durch das Objekt sind. Auch dies stimmt mit den Ergebnissen von Raith et al. \"uberein.
+
+Durch die Form des DVR im Invariantenraum bietet sich der Biegebalken-Datensatz dazu an, den explorativen Anteil der Interaktionen zu demonstrieren. Dazu wurde in Abb \cref{BeamComic} im Anhang die obere Intervallgrenze schrittweise reduziert, so dass der Verlauf der Werte der ersten Invariante im DVR des Ortsraums sichtbar wird. In den ersten Schritten in \cref{BeamComic00,BeamComic05,BeamComic10,BeamComic15} vergr\"o{\ss}ert sich der im Biegebalken ausgeblendete Bereich nur langsam. Die Betr\"age der durch das Einwirken der Kraft erzeugten Spannunungen nehmen scheinbar mit gr\"o{\ss}erer Entfernung zum Einwirkungspunkt stark ab. Das Wachstum des ausgeblendeten Bereichs des Biegebalkens zwischen den Abbildungen nimmt \"uber \cref{BeamComic20,BeamComic25,BeamComic30,BeamComic35,BeamComic40,BeamComic45,BeamComic50,BeamComic55,BeamComic60,BeamComic65,} hinweg zu. Wenn sich die obere Schranke der ersten Invariante jedoch an den Wert 0 ann\"ahert, zu sehen in \cref{BeamComic70,BeamComic75,BeamComic80}, wird das Wachstum wieder langsamer. Somit hat scheinbar ein erheblicher Teil des Biegebalkens eine mittelgro{\ss}e erste Invariante. Zwischen \cref{BeamComic80,BeamComic85,BeamComic90, BeamComic95} sind deutliche Spr\"unge in der Ausdehhung der ausgeblendeten Bereiche des DVR im Ortsraum zu erkennen. Da, wie schon beschrieben, in einem gro{\ss}en Teil des Biegebalkens nur sehr kleine Kr\"afte wirken, ist dieses Verhalten zu erwarten.
+
+Interessant ist besonders der nicht ausgeblendete Bereich in \cref{BeamComic95}. Die obere Schranke der ersten Invariante hat dort einen negativen Wert. Da die erste Invariante jedoch die h\"ochste Hauptspannung der Tensoren ist, bedeutet dies, dass dort alle drei Hauptspannungen negativ sein m\"ussen. Somit wird in einem kleinen Bereich am linken Rand des Balkens das Material aus allen Richtungen zusammengedr\"uckt.
 
 
 \begin{figure}
@@ -2014,9 +2034,51 @@ Bei der Erstellung des DVR trat jedoch ein Problem auf. In dem Bereich, an dem s
 		\subcaption{}
 		\label{BeamObject3}
 	\end{subfigure}
-	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
+	\caption{Der Biegebalken-Datensatz mit quadrischen Interaktionen: (a) und (b) zeigen Bereiche, deren h\"ochster Eigenwert kleiner als 9 ist, (c) und (d) Bereiche in denen der kleinste Eigenwert gr\"o{\ss}er als -9 ist, (e) und (f) Bereiche in denen der gr\"o{\ss}te Eigenwert kleiner als 9 und der kleinste gr\"o{\ss}er als -9 ist}
 	\label{BeamInteraction}
 \end{figure}
+
+\begin{figure}
+	\begin{subfigure}{0.2\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Nodel/Nodel_Object.png}
+		\subcaption{}
+		\label{NodelObject}
+	\end{subfigure}
+	\hspace*{\fill}
+	\begin{subfigure}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Nodel/Nodel_Raith.png}
+		\subcaption{}
+		\label{NodelRaith}
+	\end{subfigure}	
+	\hspace*{\fill}
+	\begin{subfigure}{0.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{pictures/results/Nodel/Nodel_InvariantSpace.png}
+		\subcaption{}
+		\label{NodelInvariant}
+	\end{subfigure}
+	\caption{Darstellungen des Faserverst\"arkte Metallkomponenten-Datensatzes: (a) ein DVR des Datensatzes im Ortsraum, (b) die von Raith et al. erzeugten Visualisierungen und (c) ein DVR des Datensatzes im Invariantenraum.}
+	\label{Nodel}
+\end{figure}
+
+\subsubsection{Faserverst\"arkte Metallkomponente}
+Der letzte Datensatz beschreibt ein Werkst\"uck, das aus mehreren Materialien zusammengesetzt ist. Wie auch der Biegebalken-Datensatz stammt er aus der Arbeit von Raith et al. Dort wird er wie folgt beschrieben \cite[S.~1129]{raith2019tensor}:
+
+Der Datensatz repr\"asentiert ein aus drei Komponenten zusammengesetztes Werkst\"ucks. Die erste Komponente ist ein Metalleinsatz, von dem drei Arme ausgehen. Der Metalleinsatz wird von der zweiten Komponente, einem Polymer, umschlossen. Das Polymer wiederum ist von Fasern durchzogen, die die dritte Komponente bilden. Der Datensatz ist eine Simulation, die mithilfe von Abaqus\cite{abaqusWebsite} und Helios\cite{heliosWebsite} erstellt wurde. Da das Werkst\"uck symmetrisch entlang einer Schnittfl\"ache parallel zur yz-Ebene ist, wurde nur die rechte H\"alfte simuliert. Entlang der Schnittfl\"ache wurden von der Simulation spezielle symmetrische Bedingungen simuliert. An der oberen und rechten Kante wird das Werkst\"uck als fixiert angenommen, w\"ahrend an der unteren Kante des Metalleinsatzes eine Kraft von 3000 N in negative y-Richtung einwirkt. Durch die Form und das Material der Komponenten sowie das spezielle Verhalten an der Schnittfl\"ache ist das Verhalten des Werkst\"ucks unter Krafteinwirkung erheblich komplexer und schwieriger zu verstehen als in den vorherigen Beispielen, was auch zu einer komplexeren Form des Datensatzes im Invariantenraum f\"uhrt. 
+
+Die verwendeten Invarianten sind, wie schon beim Biegebalken, die Werte der Hauptspannungen, geordnet nach ihrer Gr\"o{\ss}e.
+
+Dieser Datensatz wurde aus mehreren Gr\"unden ausgew\"ahlt. Erstens ist er deutlich komplexer als die bisher vorgestellten Datens\"atze. Diese Komplexit\"at stellt h\"ohere Anforderungen an die Visualisierung, wie sie auch bei realen Anwendungen auftreten w\"urden. Zweitens enth\"alt der Datensatz um ein vielfaches mehr Tetraeder als die beiden anderen
+
+In \cref{Nodel} sind Visualisierungen des Faserverst\"arkte Metallkomponenten-Datensatzes abgebildet. \cref{NodelObject} zeigt ein DVR des Datensatzes im Ortsraum. Unten links ist die H\"alfte des Metalleinsatzes mit seinen drei Armen zu erkennen. \cref{NodelRaith} sind die von Raith et al. erzeugten Visualisierungen. Wie auch beim Biegebalken-Datensatz werden die Zellen durch ein Gitternetz dargestellt. Auf der rechten Seite ist die Gitternetzdarstellung im Invariantenraum zu sehen. Interessante dabei ist, dass das Koordinatensystem linksh\"andig ist, also x- und y-Achse vertauscht sind. Ein kleiner, quaderf\"ormiger Bereich des Invariantenraumes ausgew\"ahlt, dargestellt durch das rote, quaderf\"ormige Interaktionswidget. 
+
+Im linken Teil von \cref{NodelRaith} ist das Gitternetz des Datensatzes im Ortsraum dargestellt. Die Schnittfl\"achen zwischen den Seitenfl\"achen des Quaders und den Zellen des Gitternetzes im Invariantenraum wurden zur\"uck in den Ortsraum transformiert und sind in rot eingezeichnet. Der dadurch markierte Bereich wird von Raith et al. als eine Region beschrieben, in der \"ublicherweise Besch\"adigungen im Material auftreten.
+
+\cref{NodelInvariant} zeigt den Datensatz als DVR im Invariantenraum. Das in dieser Arbeit implementierte DVR-Verfahren verwendet ein rechtsh\"andiges Koordinatensystem. Um die \"Ahnlichkeit zum rechten Teil von \cref{NodelRaith}, der in linksh\"andigen Koordinaten erzeugt wurde, zu erh\"ohen, wurde \cref{NodelInvariant} vertikal gespiegelt. 
+
+Wegen der Komplexit\"at des Datensatzes ist es ohne gr\"undliche Kenntniss der physikalischen Prozesse schwierig, Informationen aus der Form des DVR im Invariantenraum oder aus den Formen der ein- und ausgeblendeten Teile des DVR im Ortsraum zu ziehen. Die vorliegende Arbeit beschr\"ankt sich daher darauf, die von Raith et al. erzeugten Visualisierungen zu reproduzieren und zu vergleichen.
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
@@ -2049,9 +2111,6 @@ Bei der Erstellung des DVR trat jedoch ein Problem auf. In dem Bereich, an dem s
 	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
 	\label{}
 \end{figure}
-
-\subsubsection{Faserverst\"arkte Metallkomponente}
-
 
 \subsection{Fazit}
 Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementierte Verfahren folgende Vorteile gegen\"uber den klassichen Visualisierungen bietet:
@@ -2094,4 +2153,213 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 
 \printbibliography
 \label{LastBibPage}
+\section{Anhang}
+\begin{figure}
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_00.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_00.png}}
+		\subcaption{0\%}
+		\label{BeamComic00}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_05.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_05.png}}
+		\subcaption{5\%}
+		\label{BeamComic05}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_10.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_10.png}}
+		\subcaption{10\%}
+		\label{BeamComic10}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_15.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_15.png}}
+		\subcaption{15\%}
+		\label{BeamComic15}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
+\end{figure}
+
+\begin{figure}
+	
+	\ContinuedFloat
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_20.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_20.png}}
+		\subcaption{20\%}
+		\label{BeamComic20}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_25.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_25.png}}
+		\subcaption{25\%}
+		\label{BeamComic25}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_30.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_30.png}}
+		\subcaption{30\%}
+		\label{BeamComic30}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_35.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_35.png}}
+		\subcaption{35\%}
+		\label{BeamComic35}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
+\end{figure}
+
+\begin{figure}
+	
+	\ContinuedFloat
+
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_40.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_40.png}}
+		\subcaption{40\%}
+		\label{BeamComic40}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_45.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_45.png}}
+		\subcaption{45\%}
+		\label{BeamComic45}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_50.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_50.png}}
+		\subcaption{50\%}
+		\label{BeamComic50}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_55.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_55.png}}
+		\subcaption{55\%}
+		\label{BeamComic55}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
+\end{figure}
+
+\begin{figure}
+	
+	\ContinuedFloat
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_60.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_60.png}}
+		\subcaption{60\%}
+		\label{BeamComic60}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_65.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_65.png}}
+		\subcaption{65\%}
+		\label{BeamComic65}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_70.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_70.png}}
+		\subcaption{70\%}
+		\label{BeamComic70}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_75.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_75.png}}
+		\subcaption{75\%}
+		\label{BeamComic75}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
+\end{figure}
+
+\begin{figure}
+	
+	\ContinuedFloat
+	
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_80.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_80.png}}
+		\subcaption{80\%}
+		\label{BeamComic80}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_85.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_85.png}}
+		\subcaption{85\%}
+		\label{BeamComic85}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_90.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_90.png}}
+		\subcaption{90\%}
+		\label{BeamComic90}
+	\end{subfigure}
+	\medskip
+	\begin{subfigure}{\textwidth}
+		\centering
+		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_95.png}}
+		\hspace{1cm}
+		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_95.png}}
+		\subcaption{95\%}
+		\label{BeamComic95}
+	\end{subfigure}
+	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
+	\label{BeamComic}
+\end{figure}
+
 \end{document}
