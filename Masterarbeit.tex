@@ -24,10 +24,12 @@
 \usepackage{tikz}
 \usepackage{textcomp}
 \usepackage{cleveref}
+\usepackage{appendix}
 \usetikzlibrary{matrix}
 \usepackage{pgfplots}
 \addbibresource{Literatur.bib} % database for references
 \graphicspath{{./images/}} % sets the default path for images
+\crefname{appsec}{Anhang}{Anh\"ange}
 
 % header and footer settings
 \pagestyle{scrheadings}
@@ -76,26 +78,27 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Einleitung}
-Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Tensoren stellen, vereinfacht ausgedr\"uckt, mathematische Funktionen dar, die eine Menge von Vektoren auf einen skalaren Wert abbilden. Skalare, Vektoren und Matrizen können ebenfalls als Tensoren aufgefasst werden. Die Auswertung der Tensoren ist dann mittels des inneren Produkts möglich. Im Abschnitt \hyperref[sec:Grundlagen]{3 Grundlagen} wird dies näher erklärt.
+Tensorfelder sind eine sowohl in der Forschung als auch in der Praxis h\"aufig vorkommende Art von Datens\"atzen. Tensoren stellen, vereinfacht ausgedr\"uckt, mathematische Funktionen dar, die eine Menge von Vektoren auf einen skalaren Wert abbilden. Beispiele f\"ur Tensorfelder findet man in der Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusionsbewegung von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder bei Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik, durch die Richtungen, St\"arken und Wirkungen von Kr\"aften innerhalb von Objekten ausgedr\"uckt werden. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Dabei stellen sich eine Reihe von Herausforderungen, von denen einige im Folgenden genannt werden\cite{fritzsch2016continuousScatterplot,hlawitschka2014top}:
 
-Beispiele f\"ur Tensorfelder findet man in der Diffusions-Tensor-Bildgebung\cite{basser1994mr}, welche die Diffusion von Wasser in Gewebe wie z.B. dem Hirn untersucht, oder bei Verformungs-\cite[S.~122]{FundamentalsofStructuralMechanics} und Spannungstensoren\cite[S.~154]{FundamentalsofStructuralMechanics} in der Mechanik. Ein h\"aufig gew\"ahlter Ansatz, um die Interpretation von Tensordaten zu erleichtern, ist die Tensorfeldvisualisierung, ein Teilgebiet der wissenschaftlichen Visualisierung, das sich mit der Erzeugung von f\"ur Menschen verst\"andlichen visuellen Repr\"asentationen von Tensorfeldern besch\"aftigt. Dabei stellen sich eine Reihe von Herausforderungen, von denen einige im Folgenden genannt werden\cite{hlawitschka2014top}\cite{fritzsch2016continuousScatterplot}:
-
-\paragraph{Menge an Daten pro Tensor}
+\paragraph{1. Menge an Daten pro Tensor}
 Ein einzelner Tensor kann, abh\"angig von Grad und Dimension, beliebig viele Datenwerte umfassen. Selbst ein Tensor zweiten Grades und dritter Dimension, der durch eine $3 \times 3$ Matrix dargestell wird, besteht bereits aus neun Werten, f\"ur die eine visuelle Codierung gefunden werden muss.
 
-\paragraph{Menge an Daten pro Datensatz}
+\paragraph{2. Menge an Daten pro Datensatz}
 H\"aufig enthalten Datens\"atze Tausende oder Millionen von Tensoren, was Ansp\"uche an die Skalierbarkeit der Visualisierung stellt. Zus\"atzlich bestehen relevante Merkmale der Datens\"atze oft nur aus einem geringen Anteil der Menge von Tensoren. Bei der Entwicklung der Visualisierung muss daher auch die Sichtbarkeit solch kleiner Merkmale sichergestellt werden.
 
-\paragraph{Fehlende Intuition}
+\paragraph{3. Fehlende Intuition}
 Tensoren beschreiben im Allgemeinen Abbildungen zwischen Skalaren, Vektoren und h\"oheren Tensoren. W\"ahrend bei niedrigen R\"angen (Skalare/Vektoren) noch intuitive Interpretationen existieren (Zahlenwert/Punkt im mehrdimensionalen Raum), f\"allt es Menschen erheblich schwerer, Matrizen oder Tensoren h\"oheren Grades zu interpretieren. Die Repr\"asentation eines Tensors muss daher sehr gut durchdacht sein und relevante Eigenschaften interpretierbar darstellen.
 
-\paragraph{Dom\"anenspezifische Informationen}
-Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann isotropen oder degenerierten Punkten (Punkte, in denen die Eigenvektoren nicht eindeutig definiert sind) in manchen Anwendungsf\"allen besondere Bedeutung zugemessen werden, w\"ahrend sie in anderen Kontexten nur Punkte hoher Symmetrie ohne besondere Bedeutung sind \cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
+\paragraph{4. Dom\"anenspezifische Informationen}
+Abh\"angig von der jeweiligen Dom\"ane k\"onnen unterschiedliche Informationen \"uber die vorliegenden Tensoren von Interesse sein.  Zum Beispiel kann in manchen Anwendungsf\"allen Bereichen hoher Isotropie besondere Bedeutung zugemessen werden, w\"ahrend solche Bereiche in anderen Kontexten eher uninteressant sind\cite[S.~4]{hlawitschka2014top}. Eine Anwendung zu entwickeln, die \"uber Dom\"anen hinweg verwendbar ist, ist daher eine Herausforderung.
 
+Die am meisten verwendeten Verfahren zur Tensorfeldvisualisierung, von denen einige in \cref{sec:Verwandte} beschrieben werden, l\"osen diese Herausforderungen nicht ausreichend. Ziel der vorliegenden Arbeit ist es daher, eine Visualisierung mit Hinblick auf die genannten Herausfoderungen zu entwickeln und die Ergebnisse in Hinsicht auf Interpretierbarkeit und Korrektheit zu analysieren. Dabei wurde sich aus praktischen Gr\"unden auf symmetrische Tensoren zweiten Grades im dreidimensionalen Raum beschr\"ankt, da diese Art von Tensoren in den meisten Anwendungsf\"allen verwendet wird. Zur Erzeugung der Visualisierung wurden Verfahren und Konzepte aus dem Direct Volume Rendering und dem Continuous Scatterplotting verwendet.
 
-Im Zuge der vorliegenden Arbeit wurde ein neues Verfahren zur Visualisierung von symmetrischen Tensoren zweiten Grades im dreidimensionalen Raum entwickelt, das versucht, die genannten Herausforderungen zu l\"osen. Es wurde als Erweiterung der Visualisierungssoftware `FAnToM' implementiert. Im Speziellen wurden Invariantenfelder aus den Matrixdarstellungen der Tensoren berechnet und mithilfe von Techniken aus dem Continuous Scatterplotting und dem Direct Volume Rendering dargestellt. Durch Mausinteraktionen ist es m\"oglich, Bereiche von Invarianten auszuw\"ahlen und im urspr\"unglichen Feld darzustellen. Das Ziel der Anwendung ist es, kontinuumsmechanische Untersuchungen von Materialien und Werkst\"ucken zu erleichtern. Deshalb m\"ussen die Interaktionen so implementiert werden, dass ihre Auswirkungen auf die Visualisierungen ohne sp\"urbare Verz\"ogerungen angezeigt werden.
+Ein weiterer Ansatz um die Herausforderungen zu l\"osen liegt darin, dass statt den Matrizen selbst eine Menge von Kennzahlen der Matrizen, die sogenannten Invarianten, berechnet und visualisiert werden. Auf die Definition von Invarianten, ihre Berechnung, Interpretation und m\"ogliche Darstellung wird in den Abschnitten \ref{sec:Grundlagen} und \ref{sec:Technologien} n\"aher eingegangen.
 
-Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Auf eine Reihe von Direct Volume Rendering Verfahren wird in Kapitel \hyperref[sec:DVR]{5 Direct Volume Rendering Verfahren} n\"aher eingegangen. Kapitel \hyperref[sec:Umsetzung]{6 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{7 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{8 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
+Zentraler Bestandteil der implementierten Visualisierung sind die Interaktionen. Durch diese ist es m\"oglich, Datens\"atze explorativ zu analysieren, indem die Visualisierung unterteilt und die Teile einzeln analysiert werden. Dadurch sollen insbesondere Herausforderungen 2 und 3 bearbeitet werden. Damit die Interaktionen f\"ur explorative Analysen geeignet sind, muss besonders auf die Performanz der Visualisierung geachtet werden. Die Zeit, die ben\"otigt wird um die Auswirkungen einer Interaktion darzustellen, darf nur Bruchteile von Sekunden betragen.
+
+Der Rest dieser Arbeit ist wie folgt gegliedert: Zun\"achst werden im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} bekannte Verfahren zur Tensorfeldvisualisierung mit Vor- und Nachteilen erl\"autert. Danach werden im Kapitel \hyperref[sec:Grundlagen]{3 Grundlagen} die verwendeten Definitionen und Grundlagen aus der Mathematik und Kontinuumsmechanik vorgestellt. Als N\"achstes werden in \hyperref[sec:Technologien]{4 Verwendetete Verfahren und Technologien} die benutzten Programmschnittstellen und Visualisierungstechniken erl\"autert. Insbesondere wird dort auch auf FAnToM als Softwaregrundlage eingegangen. Eine Reihe von verbreiteten Direct Volume Rendering Verfahren wird in Kapitel \hyperref[sec:DVR]{5 Direct Volume Rendering Verfahren} vorgestellt und in Hinsicht auf die Eignung f\"ur das vorliegende Problem verglichen. Kapitel \hyperref[sec:Umsetzung]{6 Umsetzung} beschreibt die konkrete Umsetzung der FAnToM-Erweiterung mit allen implementierten Funktionen. Nachfolgend wird in Kapitel \hyperref[sec:Ergebnisse]{7 Ergebnisse} die entwickelte Erweiterung exemplarisch auf einige Datens\"atze angewendet, und die Ergebnisse diskutiert. Zum Abschluss werden in Kapitel \hyperref[sec:Ausblick]{8 Ausblick} im Verlauf dieser Arbeit neu aufgetretene Problemstellungen sowie weitere Verbesserungsm\"oglichkeiten er\"ortert.
  
 \section{Verwandte Arbeiten}
 \label{sec:Verwandte}
@@ -103,11 +106,11 @@ Es existiert bereits eine gro{\ss}e Anzahl von Verfahren, die Visualisierungen v
 
 Eine relativ einfache Darstellung eines Tensorfelds besteht darin, die einzelnen Komponenten eines Tensor zweiten Grades als Skalarfelder aufzufassen und als Grauwertbild zu zeichnen. Dabei ist der Grauwert an einem Datenpunkt abh\"angig vom Verh\"altnis des Wertes der Komponente des Tensors zu dem h\"ochsten Wert dieser Komponente im Datensatz. Die fr\"uheste von mir gefundene Erw\"ahnung dieses Verfahrens stammt aus einem Paper von Kindlmann und Weinstein aus dem Jahre 1999 \cite{kindlmann1999hue}, in dem es jedoch als weder neu noch besonders intuitiv beschrieben wird. 
 
-Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"anken sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Nutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
+Die wohl am weitesten verbreitete Art von Tensorvisualisierungen sind die glyphenbasierten Verfahren. Diese Verfahren beschr\"anken sich auf Tensoren zweiten Grades im dreidimensionalen Raum, die als $3\times3$ Matrizen dargestellt werden k\"onnen und einen gro{\ss}en Teil der Daten aus Mechanik und Medizin ausmachen. Eine Glyphe ist hierbei ein kleines Bild eines grafischen Primitivs, z.B. eines Ellipsoiden, Kuboiden oder Superquadrics\cite{kindlmann2004superquadric}, das einen Tensor darstellt. Die Form der Primitive ist dabei abh\"angig von den Eigenwerten des jeweiligen, als Matrix dargestellten Tensors an dieser Stelle. Indem an jedem Datenpunkt eine solche Glyphe gezeichnet wird, erh\"alt der Nutzer ein Bild von der Verteilung und Struktur der Tensoren im Datensatz. Glyphenbasierte Verfahren sind besonders in der Medizin beliebt, da sie leicht R\"uckschl\"usse auf die Richtung von Nerven- und Muskelfasern zulassen.
 
-Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren zweiten Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Tuben durch das Tensorfeld. Die Mittellinien dieser Tuben entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Da so aber Informationen \"uber den Wert des gr\"o{\ss}ten Eigenwertes verloren gehen, werden einzelne St\"ucken des Schlauchs abh\"angig von diesem Wert eingef\"arbt.
+Hyperstreamlines\cite{delmarcelle1993visualizing} bilden ein Analogon zu den Stromlinien bei Vektorfeldern. Als Eingabedaten sind nur Felder von reellen, symmetrischen, dreidimensionalen Tensoren zweiten Grades mit nichtnegativen Eigenwerten zugelassen, da so sichergestellt wird, dass die Eigenwerte ganzzahlig und gr\"o{\ss}er 0 sind, sowie dass die Eigenvektoren paarweise orthogonal zueinander sind. Das Verfahren zeichnet ausgehend von festgelegten Punkten Tuben durch das Tensorfeld. Die Mittellinien dieser Tuben entsprechen dabei Stromlinien, deren Richtung vom Eigenvektor mit dem h\"ochsten Eigenwert abh\"angt. Der Durchschnitt durch den Schlauch orthogonal zur Mitellinie ist stets eine Ellipse, deren Halbachsen den zwei kleineren Eigenwerten entsprechen. Damit keine Informationen \"uber den gr\"o{\ss}ten Eigenwert verloren gehen, werden St\"ucke der Tuben abh\"angig von dessen Betrag eigenf\"arbt.
 
-Auch die Diplomarbeit von Clemens Fritzsch, `Visuelle Analyse kontinuumsmechanischer Simulationen durch kontinuierliche Streudiagramme'\cite{fritzsch2016continuousScatterplot}, muss erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze indem eine dreidimensionale Darstellung erzeugt wird.
+Auch die Diplomarbeit von Clemens Fritzsch\cite{fritzsch2016continuousScatterplot} muss erw\"ahnt werden, auf der die vorliegende Arbeit direkt aufbaut. Fritzsch verwendet Methoden des Continuous Scatterplottings, um Invarianten von zweidimensionalen, symmetrischen Tensoren zweiten Grades darzustellen. Dabei beschr\"ankt er sich jedoch auf zwei der drei Invarianten in jedem Invariantensatz, um einen zweidimensionalen Scatterplot zu erzeugen. Die vorliegende Arbeit erweitert diesen Ansatz auf vollst\"andige Invariantens\"atze, indem eine dreidimensionale Darstellung erzeugt wird.
 
 Ein zu der vorliegenden Arbeit sehr \"ahnlicher Ansatz wurde von Raith et al. \cite{raith2019tensor} verfolgt. Dabei werden Tensorfelder in den Invariantenraum \"uberf\"uhrt, in dem Punkte an Koordinaten verschoben werden, die den Invarianten der Tensoren am jeweiligen Punkt entsprechen. Das Feld wird im Invarianten- und Ortsraum als Gitternetz dargestellt. Durch Interaktionen k\"onnen geometrische Objekte innerhalb des Invariantenraumes platziert werden. Wenn eine Seitenfl\"ache eines dieser Objekte eine Zelle des Gitternetzes im Invariantenraum schneidet, so wird der Verlauf des Schnitts im Ortsraum berechnet und angezeigt. Wenn die Schnittfl\"ache parallel zur xy-, xz- oder yz-Ebene war, so entspricht der Verlauf des Schnitts einer Isofl\"ache einer der drei Invarianten im Ortsraum. Die wesentlichen Unterschiede zur vorliegenden Arbeit besteht aus zwei Aspekten. Zum einen bringt die Darstellung des Feldes als Gitternetz Nachteile mit sich. Die Interpretation der Form des Feldes im dreidimensionalen Raum ist erschwert und Informationen \"uber innere Strukturen sind schwer oder teilweise gar nicht ablesbar. Zum anderen ben\"otigt die Interaktion bei Raith et al. bei manchen Datens\"atzen mehrere Sekunden, was explorative Analysen erschwert.
 
@@ -116,7 +119,7 @@ Ein zu der vorliegenden Arbeit sehr \"ahnlicher Ansatz wurde von Raith et al. \c
 \subsection{Mathematische Grundlagen}
 In diesem Teil der Arbeit werden mathematische Grundlagen zu Tensoren, Feldern und Invarianten erl\"autert. Insbesondere f\"ur die Definition von Tensoren sind Vorkenntnisse n\"otig, die ebenfalls erkl\"art werden. 
 
-Der Gro{\ss}teil der verwendeten Formeln und Definitionen stammt aus dem Buch `Introduction to vectors and tensors' von R. M. Bowen und C. C. Wang \cite{bowen2008introduction}.
+Der Gro{\ss}teil der verwendeten Formeln und Definitionen stammt aus der Arbeit von R. M. Bowen und C. C. Wang\cite{bowen2008introduction}.
 
 \subsubsection{Urbild und Bild einer Funktion}
 Zu jeder Funktion $f: A \rightarrow B$, die Objekten aus der Menge $A$ Objekte aus der Menge  $B$ zuordnet, l\"asst sich das Bild einer Menge $A' \subset A$ als
@@ -407,7 +410,7 @@ tr(U,V^{T}) = 0
 
 \subsubsection{Matrixinvarianten}
 \label{Matrixinvarianten}
-Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in Matrixdarstellung sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
+Als Invarianten werden zu mathematischen Objekten zugeordnete Gr\"o{\ss}en bezeichnet, die invariant gegen\"uber der Anwendung bestimmter Transformationen auf die Objekte sind. Invarianten eines Tensors in Matrixdarstellung, im folgenden kurz Invarianten genannt, sind beispielsweise Gr\"o{\ss}en, die sich unabh\"angig von der Wahl der Basis der Matrix nicht ver\"andern\cite{ennis2006orthogonal}. Eine Invariante ist somit eine Funktion $\Psi: M \rightarrow A$ die Objekten aus dem Vektorraum aller Matrizen $M$ Objekte aus der Menge $A$ zuordnet. In der Praxis wird f\"ur $A$ meistens $\mathbb{R}$ gew\"ahlt.
 
 Da sich die vorliegende Arbeit \"uberwiegend mit symmetrischen, dreidimensionalen Tensoren zweiten Grades und ausschlie{\ss}lich orthogonale Transformationen besch\"aftigt, beschr\"ankt sich auch die Betrachtung der Invarianten im folgenden auf diese Art von Tensoren. Dabei gilt f\"ur solche Tensoren insbesondere, dass die Invarianten eines Tensors $T$ durch seine Eigenwerte vollst\"andig charakterisiert werden. Invarianten sind in diesem Spezialfall also auch als Funktion $\Psi: \mathbb{R}^d \rightarrow \mathbb{R}$ der Form
 
@@ -428,7 +431,11 @@ darstellbar, wobei $\lambda_1, \lambda_2, \lambda_3$ die Eigenwerte von $T$ sind
 Mengen von Invarianten werden als Invariantens\"atze bezeichnet.
 Matrixinvarianten $\Psi_1$ und $\Psi_2$ werden als orthogonal zueinander bezeichnet, wenn ihre Gradienten f\"ur jede m\"ogliche Eingabematrix orthogonal sind. Die genauen Definitionen und Berechnungen dazu sind in den Arbeiten von Ennis, Kindlmann et al. \cite{ennis2006orthogonal} nachzulesen. Da Gradienten von skalarwertigen Funktionen auf Matrizen wiederum Matrizen sind \cite[S.~137]{ennis2006orthogonal}, gen\"ugt es zu zeigen, dass diese orthogonal zueinander sind. Invariantens\"atze, deren Elemente paarweise orthogonal sind, werden als orthogonale Invariantens\"atze bezeichnet.
 
-F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens drei Invarianten. In der Praxis spielt eine Vielzahl solcher Invariantens\"atze eine Rolle, von denen im Folgenden einige erl\"autert werden:
+F\"ur $3\times 3$ Matrizen enthalten alle orthogonalen Invariantens\"atze h\"ochstens drei Invarianten. In der Praxis spielt eine Vielzahl solcher Invariantens\"atze eine Rolle, von denen im Folgenden einige erl\"autert werden.
+
+Wenn die zu einem Invariantensatz geh\"orenden Invarianten einer Matrix $M$ berechnet wurden, so stellen diese eine Repr\"asentation der basisunabh\"angigen Eigenschaften von $M$ dar. In dieser Arbeit wurden ausschlie{\ss}lich symmetrischen $3\times3$ Matrizen visualisiert, die aus bis zu 6 nicht-doppelten Werten bestehen k\"onnen. Die Beschreibung dieser 6 Werte durch die 3 Invarianten ist nicht ohne Informationsverlust m\"oglich. Die verlorenen 3 Werte an Information sind jedoch ausschlie{\ss}lich Informationen \"uber die Richtung der Eigenvektoren, was in vielen Anwendungsf\"allen nicht von Interesse ist. Somit ist die Darstellung einer Matrix durch ihre Invarianten ein geeigneter Ansatz, um die in Herausforderung 3 der Einleitung genannten Probleme zu l\"osen.
+
+Welcher der Invariantens\"atze f\"ur einen bestimmten Datensatz verwendet wird, kann abh\"angig von der Dom\"ane ausgesucht werden, was in Hinblick auf Herausforderung 4 interessant ist. Die Wahl ist nat\"urlich abh\"angig von den schon genannten Interpretationen der Invarianten in den jeweiligen Dom\"anen.
 
 \paragraph{Die Eigenwerte}
 
@@ -634,21 +641,21 @@ Wenn in einem Objekt Spannung vorliegt, so verformt es sich proportional zur St\
 \section{Verwendete Verfahren und Technologien}
 \label{sec:Technologien}
 \subsection{FAnToM}
-FAnToM\cite{fantomWebsite}\cite{wiebel2009fantom} (`Field Analysis using Topological Methods') ist ein Programm, dessen Entwicklung im Jahre 1999 begann. Obwohl es zu Anfang noch als Hilfsmittel f\"ur die Analyse von Vektorfeldtopologien konzipiert war, entwickelte es sich \"uber die Jahre hinweg zu einer Plattform f\"ur diverse Visualisierungen.
+FAnToM\cite{fantomWebsite,wiebel2009fantom} (`Field Analysis using Topological Methods') ist ein Programm, dessen Entwicklung im Jahre 1999 begann. Obwohl es zu Anfang noch als Hilfsmittel f\"ur die Analyse von Vektorfeldtopologien konzipiert war, entwickelte es sich \"uber die Jahre hinweg zu einer Plattform f\"ur diverse Visualisierungen.
 
 Erweiterungen von FAnToM werden in Form von sogenannten Algorithms entwickelt. Dabei unterscheidet man zwei Arten: den `Data Algorithm' und den `Visualization Algorithm'. Data Algorithms sind Erweiterungen, die Daten verarbeiten. Beispiele daf\"ur sind `Load VTK', eine Erweiterung die Daten aus dem VTK Format einliest, oder `Combine Scalar to Vector', das mehrere Felder mit skalaren Werten zu einem einzigen Feld mit Vektorwerten kombiniert, wobei die Komponenten eines Vektors an einem Punkt den Skalaren der Eingabefelder am selben Punkt entsprechen.
-Visualization Algorithms dagegen dienen dazu, Visualisierungen zu erzeugen. Interaktionen mit den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
+Visualization Algorithms dagegen dienen dazu, Visualisierungen aus Daten zu erzeugen. Interaktionen mit den Visualisierungen k\"onnen entweder \"uber die Maus oder \"uber Optionen stattfinden.
 
-Ein wesentliches Feature von FAnToM besteht darin, Algorithms miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithms als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithms mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen mit wenig Aufwand aus bestehenden Algorithms komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithms als Knoten dargestellt sind, deren Aus- und Eingaben miteinander verbunden werden k\"onnen, was als Kante im Graph dargestellt wird.
+Ein wesentliches Feature von FAnToM besteht darin, Algorithms miteinander zu verkn\"upfen. Dies geschieht, indem Ausgabedaten von Algorithms als Eingabe f\"ur andere dienen k\"onnen. Da viele Algorithms mit Blick auf Wiederverwendbarkeit entwickelt wurden, k\"onnen mit wenig Aufwand aus bestehenden Algorithms komplett neue Visualisierungspipelines entwickelt werden. Dies geschieht mittels des sogenannten `Flow Graphs', in dem Algorithms als Knoten dargestellt sind, deren Aus- und Eingaben miteinander verbunden werden k\"onnen, was als Verbindung zwischen den jeweiligen Knoten im Flow Graph dargestellt wird.
 
-Die aktuelle FAnToM-Session, also die momentan genutzten Algorithms mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen als `Session' gespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
+Die aktuelle FAnToM-Session, also die momentan genutzten Algorithms mit ihren Optionen sowie jeweiligen Ein- und Ausgaben, k\"onnen abgespeichert und zu einem sp\"ateren Zeitpunkt wieder geladen werden.
 
-Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das effiziente und weit entwickelte Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von wiederverwendbaren Algorithms.
+Erweiterungen k\"onnen auf eine Vielzahl von m\"achtigen Werkzeugen zugreifen, die von FAnToM zur Verf\"ugung gestellt werden. Besonders wichtig f\"ur die vorliegende Arbeit waren dabei das effiziente und weit entwickelte Datenmodell, das viele Funktionen zum Verarbeiten von Feldern und Tensoren bietet, die bestehenden Schnittstellen f\"ur Qt und OpenGL sowie die gro{\ss}e Bibliothek von sehr generischen und damit leicht wiederverwendbaren Algorithms.
 \subsection{OpenGL}
 \label{sec:OpenGL}
-OpenGL\cite{openglWebsite} ist eine Spezifikation, die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Programmierern, die durch OpenGL unabh\"angig von der Hardware, auf der das Programm laufen soll, entwickeln k\"onnen. 
+OpenGL\cite{openglWebsite} ist eine Spezifikation, die das Verhalten eines rasterbasierten Renderingsystems beschreibt. Sie definiert eine Schnittstelle, gegen die von zwei Seiten entwickelt werden kann: Zum einen von Seiten der Hardwarehersteller, die Funktionen von OpenGL auf ihrer Hardware implementieren. Zum anderen von Anwendungsprogrammierern, die, unabh\"angig von der Hardware, auf der das Programm laufen soll, gegen die Spezifikation von OpenGL entwickeln k\"onnen. Da in der vorliegenden Arbeit OpenGL nur aus Sicht eines Anwendungsprogrammierers verwendet wurde, beschr\"ankt sich die folgende Beschreibung darauf.
 
-Die Verarbeitungsschritte von der \"Ubergabe von Daten zu OpenGL bis zum fertig gerenderten Bild wird als Renderpipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Nutzern von OpenGL erm\"oglichen, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
+Die Verarbeitungsschritte von der \"Ubergabe von Daten aus einer Anwendung zu OpenGL bis zum fertig gerenderten Bild werden als Renderpipeline bezeichnet. Seit Version 2.0 unterst\"utzt OpenGL sogenannte `Shader', kleine Programmst\"ucke, die es Nutzern von OpenGL erm\"oglichen, die Renderpipeline sehr stark zu ver\"andern. Shader bekommen drei Arten von Eingabedaten:
 
 \begin{enumerate}
 	\item Die Ausgabe des vorherigen Schrittes in der Renderpipeline
@@ -661,17 +668,17 @@ Ein wichtiger Spezialfall von Uniforms sind Texturen, die in dem OpenGL verwende
 F\"ur die vorliegende Arbeit wurden Vertex, Geometry und Fragment Shader entwickelt. Diese drei Typen sind im Folgenden kurz erkl\"art.
 
 \paragraph{Vertex Shader}
-Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist zum Beispiel \"ublich, um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
+Vertex Shader bekommen als Eingabe aus der Renderpipeline die Punkte eines zu zeichnenden Grafikprimitivs, beispielsweise die Punkte eines Liniensegmentes oder die Eckpunkte eines Dreiecks. Abh\"angig von den eingegebenen Uniforms k\"onnen die Koordinaten dieser Punkte dann durch den Shader ver\"andert werden. Dies ist zum Beispiel \"ublich, um die Sicht auf die Szene von der Position der Kamera aus zu berechnen. Vertex Shader werden einmal pro Punkt ausgef\"uhrt. Die Ausgabe des Vertex Shaders sind die neuen Koordinaten der Punkte der Primitive.
 
 \paragraph{Geometry Shader}
 Die Renderpipeline \"ubergibt dem Geometry Shader f\"ur jedes Primitiv eine Liste der zugeh\"origen Punkte, z.B. eine Liste von drei Punkten f\"ur ein Dreieck. Der Geometry Shader ist in der Lage, die Position und den Typ dieser Primitive beliebig zu ver\"andern und sogar neue Punkte zu erzeugen. So kann er bespielsweise aus einer Linie ein Dreieck erzeugen, sowie Uniforms pro Punkt definieren, welche an sp\"ater ausgef\"uhrte Shader (z.B. den Fragment Shader) weitergegeben werden. Pro Primitiv wird der Geometry Shader einmal ausgef\"uhrt.
 
 \paragraph{Fragment Shader}
-Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen. In der Regel wird pro Pixel mindestens ein Fragment berechnet. Wenn mehrere Fragmente pro Pixel berechnet, und deren Farbwerte kombiniert werden, bezeichnet man dies als Supersampling. Die Eingaben in den Fragment Shader sind die Mittelpunkte der Fragmente und die f\"ur diese Punkte interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch andere Werte berechnet und ausgegeben werden, z.B. ein Tiefenattribut, das die Entfernung des Fragments zur Kamera angibt und damit korrekte \"Uberlappung von Primitiven erm\"oglicht.
+Fragment Shader bestimmen die Farben der Fragmente. Fragmente sind St\"ucke der projizierten Primitve, deren Gr\"o{\ss}e von der Art der Rasterisierung abh\"angen. Aus den Fragmenten werden die Farben der Pixel des gerenderten Bildes bestimmt. In der Regel wird pro Pixel mindestens ein Fragment berechnet. Wenn mehrere Fragmente zu einem Pixel kombiniert werden bezeichnet man dies als Supersampling. Die Eingaben in den Fragment Shader sind die Mittelpunkte der Fragmente und die f\"ur diese Punkte interpolierten Attribute der Eckpunkte des Primitivs. Neben der Fragmentfarbe k\"onnen auch andere Werte berechnet und ausgegeben werden, z.B. ein Tiefenattribut, das die Entfernung des Fragments zur Kamera angibt und damit korrekte \"Uberlappung von Primitiven erm\"oglicht.
 
-Eine weitere im Folgenden verwendete Funktion von OpenGL ist `Blending', durch das Fragmente \"ubereinander gezeichnet und ihre Farbwerte gewichtet kombininert werden k\"onnen, was z.B. f\"ur transparente Objekte wichtig ist. Zudem existiert die M\"oglichkeit, gerenderte Bilder mithilfe von `Framebuffern' nicht anzuzeigen, sondern stattdessen in einer Textur zu speichern.
+Eine weitere im Folgenden verwendete Funktion von OpenGL ist die M\"oglichkeit, gerenderte Bilder mithilfe von `Framebuffern' nicht anzuzeigen, sondern stattdessen in einer Textur zu speichern. Diese abgelegten Bilder k\"onnen durch das sogenannte `Blending" mit den Ergebnissen sp\"aterer Renderings kombiniert werden. Dabei wird ein weiteres Bild auf dem bestehenden gezeichnet und die Farbwerte entsprechend von Wichtungsfunktionen kombiniert. Dies erm\"oglicht beispielsweise die Darstellung transparenter Objekte.
 
-Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader, erm\"oglicht es, OpenGL auch f\"ur andere rechenintensive, jedoch gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
+Die meisten Implementierungen von OpenGL machen intensiven Gebrauch von Grafikkarten und deren F\"ahigkeit zur extremen Parallelisierung von Aufgaben. Dies, verbunden mit der M\"oglichkeit Ausgaben der Renderpipeline zur\"uck in den Arbeitsspeicher zu laden und der Anpassbarkeit der Renderpipeline durch Shader, erm\"oglicht es, OpenGL generell f\"ur rechenintensive, gut parallelisierbare Aufgaben zu benutzen und so Berechnungen stark zu beschleunigen.
 
 \subsection{Qt}
 Qt\cite{qtWebsite} ist eine popul\"are, plattform\"ubergreifende Bibliothek f\"ur die Entwicklung von Programmoberfl\"achen. Die Popularit\"at von Qt beruht auf der Plattformunabh\"angigkeit und der gro{\ss}en Vielfalt leicht zu verwendender Funktionen. Darunter sind beliebte Oberfl\"achenelemente wie Kn\"opfe, Textfelder und Ankreuzk\"asten, wodurch die Gestaltung einer Nutzerschnittstelle sehr einfach wird.
@@ -696,13 +703,13 @@ FAnToM besitzt eine auf Qt basierende Oberfl\"ache, die aus Algorithms heraus um
 	\label{Scatterplots}
 \end{figure}
 
-Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in \cref{Scatterplots} abgebildet. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
+Scatterplotting ist ein weit verbreitetes Verfahren, um Attribute von Objekten relativ zueinander darzustellen. Es ist eine Funktion auf einer Menge von Objekten $M$ als $\tau: M \rightarrow \mathbb{R}^n,n\in\{1,2,3\}$, wobei das Bild eine Projektion auf einzelne oder zusammengesetzte Attribute der Objekte darstellt.  Dazu wird je Objekt ein Punkt in ein ein-, zwei- oder dreidimensionales Koordinatensystem eingetragen, dessen Koordinatenachsen Attributwerten entsprechen. Beispiele f\"ur Scatterplottings sind in \cref{Scatterplots} zu sehen. Das Bild von $\tau$ ist auf maximal drei Dimensionen beschr\"ankt, da h\"oherdimensionale Daten visuell nur schwer zu interpretieren sind.
 
-Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Cluster, Outlier und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
+Ein Vorteil von Scatterplottings ist die leichte Erkennbarkeit von Strukturen in den Datens\"atzen: Bereiche hoher Punktdichte (sogenannte Cluster), Punkte weit entfernt von allen anderen Punkten (sogenannte Outlier) und funktionale Zusammenh\"ange zwischen den verwendeten Attributen lassen sich gut identifizieren. 
 
-Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ die Projektion auf eine Teilmenge der Attribute notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen. 
+Scatterplotting hat jedoch zwei gravierende Nachteile. Zum einen macht die geringe Dimensionalit\"at des Bildes von $\tau$ oft die Projektion auf eine Teilmenge der Attribute der dargestellten Objekte notwendig, zum anderen kann Scatterplotting nur endlich viele Objekte gleichzeitig darstellen.
 
-Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ bei physikalischen Feldern. Dort sind an jedem der unendlich vielen Punkte Werte definiert. Ein Scatterplot dieser unendlich vielen Elemente ist nun weder in endlicher Laufzeit m\"oglich, noch w\"aren einzelne Punkte in der entstehenden Darstellung erkennbar. Eine Alternative besteht darin, nur den Scatterplot der Eckpunkte der Zellen zu erzeugen, doch damit gehen Informationen \"uber die Punkte innerhalb der Zellen verloren.
+Ein praktisches Beispiel eines Urbildes mit unendlich vielen Elementen ist $\mathbb{R}^n$ bei physikalischen Feldern. Dort sind an jedem der unendlich vielen Punkte im Raum Werte definiert. Ein Scatterplot dieser unendlich vielen Elemente ist nun weder in endlicher Laufzeit m\"oglich, noch w\"aren einzelne Punkte in der entstehenden Darstellung erkennbar, da in jedem Fall nur endlich viele Pixel zur Verf\"ugung stehen. Eine Alternative besteht darin, nur den Scatterplot der Eckpunkte der Zellen zu erzeugen, doch damit gehen Informationen \"uber das Innere der Zellen verloren.
 
 
 \subsubsection{Erkl\"arung des Continuous Scatterplottings}
@@ -720,7 +727,7 @@ Ein Beispiel f\"ur ein Urbild mit unendlich vielen Elementen ist $\mathbb{R}^n$ 
 	\caption{Darstellung der Dichteverteilung abh\"angig von $\tau$. (a) Die roten Punkte deuten die Dichte in den beiden Scatterplots an, die zwei Vierecke sind Teilmengen des Urbilds, die durch $\tau$ verformt werden. Zu erkennen ist, dass die Streckung des Vierecks zur Erh\"ohung der Entfernung zwischen den Punkten f\"uhrt, was einer Verringerung der Dichte im Viereck entspricht. (b) Der Continuous Scatterplot zweier Dreiecke. Der Grauwert gibt die Dichte an Punkten innerhalb der Dreiecke an.}
 	\label{ContinuousScatterplot}
 \end{figure}
-Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass statt nur einer endlichen Anzahl von Objekten auch kontinuierliche Mengen verarbeitet werden k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In \cref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
+Das Continuous Scatterplotting stellt eine Erweiterung des Scatterplottings dar, sodass als Urbild statt einer endlichen Anzahl von Objekten auch kontinuierliche Mengen dienen k\"onnen. Die von Bachthaler und Weiskopf\cite{bachthaler2008continuous} vorgestellte Definition wurde von Fritzsch\cite{fritzsch2016continuousScatterplot} um einige wichtige Punkte erweitert. Beim Continuous Scatterplotting wird ein Ansatz verwendet, der dem Verfahren bei der Herleitung der Kontinuumsmechanik aus Systemem mit diskreten Massepunkten \"ahnelt \cite[S.~1429]{bachthaler2008continuous}. Das Ziel des Continuous Scatterplottings ist es, eine Dichtefunktion $\sigma: \mathbb{R}^m \rightarrow \mathbb{R}$ zu finden, die den Punkten des Bildraums, abh\"angig von $\tau$, Dichtewerte zuordnet. $\sigma$ kann als Funktion aufgefasst werden, die jedem Pixel des Scatterplots einen skalaren Wert zuordnet, der z.B. als Farbe oder Opazit\"at dargestellt werden kann. In \cref{ContinuousScatterplot} ist der Effekt, den $\tau$ auf die Dichtefunktion hat, dargestellt. Um $\sigma$ berechnen zu k\"onnen, werden zwei Annahmen getroffen:
 
 Die erste Annahme ist, dass eine Dichtefunktion $s: \mathbb{R}^n \rightarrow \mathbb{R}$ existiert, die jedem Punkt des Urbilds von $\tau$ einen skalaren Wert, die Dichte an diesem Punkt, zuordnet. Der Einfachheit halber wird wird im Folgenden eine uniforme Dichte von $s(x) = 1$ angenommen. Aus der Dichte an den Punkten l\"asst sich die Gesamtdichte $M$, auch bezeichnet als Masse, einer Teilmenge $V\subset\mathbb{R}^n$ berechnen:
 
@@ -1199,7 +1206,7 @@ Der Vorteil der Cell Projection liegt in der sehr exakten Darstellung des Datens
 	\label{kernel}
 \end{figure}
 
-Splatting basiert auf einem von Westover entwickelten Algorithmus\cite{westover1989interactive}\cite{westover1990footprint}. Wie auch bei der Cell Projection werden f\"ur die Voxel in back-to-front Reihenfolge zweidimensionale Repr\"asentationen gebildet, die auf die Bildebene projeziert und dort mittels Blending kombiniert werden. Im Gegensatz zur Cell Projection wird jedoch nicht versucht den Datensatz so exakt wie m\"oglich darzustellen, sondern das urspr\"ungliche Feld aus den diskreten Werten der Voxel zu so gut wie m\"oglich zu rekonstruieren und darzustellen. 
+Splatting basiert auf einem von Westover entwickelten Algorithmus\cite{westover1990footprint,westover1989interactive}. Wie auch bei der Cell Projection werden f\"ur die Voxel in back-to-front Reihenfolge zweidimensionale Repr\"asentationen gebildet, die auf die Bildebene projeziert und dort mittels Blending kombiniert werden. Im Gegensatz zur Cell Projection wird jedoch nicht versucht den Datensatz so exakt wie m\"oglich darzustellen, sondern das urspr\"ungliche Feld aus den diskreten Werten der Voxel zu so gut wie m\"oglich zu rekonstruieren und darzustellen. 
 
 In der Signalverarbeitung ist die Rekonstruktion von kontinuierlichen Funktionen aus diskreten Funktionen ein zentrales Problem. Dazu wird meisten Faltung verwendet. 
 
@@ -1343,6 +1350,12 @@ Da die zylindrische Darstellung in Richtung der x-Achse sehr gro{\ss} werden kan
 Wie schon im \cref{sec:OpenGL} angesprochen, ist es m\"oglich, die Ausgabe der Renderpipeline in einer Textur zu speichern. Dazu wird ein Framebuffer verwendet, der Schichten der 3D Textur als Ausgabe der Pipeline bindet. Die Voxelisierung wird also f\"ur jede Schicht einzeln durchgef\"uhrt.
 
 Die Anzahl an Voxeln pro Dimension in der 3D Textur kann vom Nutzer selbst festgelegt werden. Falls in Richtung der x-Achse ein Wert \"uber 2048 gew\"ahlt wird, werden mehrere Texturen erzeugt. 2048 ist die in der von FAnToM verwendeten OpenGL Version die maximale Ausdehung einer 3D Textur in jede Richtung.
+
+Eine wichtige Eigenschaft der Voxelisierung liegt darin, dass die Komplexit\"at des Datensatzes auf ein vom Benutzer festgelegtes Ma{\ss} reduziert wird. Unabh\"angig davon, aus wie vielen Zellen der zu visualisierende Datensatz besteht, wird immer die vom Benutzer vorgegebene Anzahl von Voxeln erzeugt. Dies bringt Vor- und Nachteile mit sich.
+
+Zu den Vorteilen geh\"ort, dass die Voxelisierung nur ausgef\"uhrt werden muss, wenn neue Daten geladen werden oder sich Parameter der Voxelisierung selbst \"andern. Die Laufzeit des Raycastings ist ausschlie{\ss}lich abh\"angig von der Anzahl der einzuf\"arbenden Pixel und der Menge an Abtastpunkten pro Strahl. Durch diese beiden Eigenschaften ist es m\"oglich, auch sehr gro{\ss}e Datens\"atze explorativ zu analysieren, nachdem sie einmal voxelisiert wurden. Ebenso wird die Komplexit\"at der erzeugten Visualisiserung von der Menge an erzeugten Voxeln beeinflusst - desto mehr Voxel, desto detaillierter ist die erzeugte 3D Textur. Ein weiterer Aspekt, durch den die Voxelisierung die visuelle Komplexit\"at im Invariantenraum reduziert ist, dass Zellen mit \"ahnlichen Invarianten oft \"uberlappen und auf gleiche Voxel abgebildet werden, was durch h\"ohere Dichtewerte sichtbar wird. All diese Eigenschaften zusammen bearbeiten die in der Einleitung beschriebene Herausforderung 2. Ob die Herausforderung dadruch gel\"ost wird, muss sich jedoch noch in der Praxis zeigen.
+
+Ein Nachteil liegt darin, dass durch die Voxelisierung leicht Stufenartefakte entstehen. Dieser Effekt tritt im zweidimensionalen Fall h\"aufig auf und wird dort mit speziellen Verfahren abgemildert. Varianten dieser Verfahren im Dreidimensionalen k\"onnten m\"oglicherweise auch auf die 3D Texturen angewendet werden, dies ist jedoch im Verlauf der vorliegenden Arbeit noch nicht untersucht worden. Weitere Probleme treten auf, wenn Zellen sehr klein sind und dadurch nur auf wenige Voxel abgebildet werden. In diesem Fall gehen Informationen \"uber die Form der Zellen verloren.
 
 \paragraph{Vertex Shader}
 Der Vertex Shader bekommt als Eingabe die Eckpunkte der Tetraeder, codiert in Form von Liniensegmenten mit Nachbarschaft. Falls das Feld in mehrere Texturen voxelisiert werden soll, wird eine Verschiebung und Skalierung durchgef\"uhrt, um nur die korrekten Tetraeder zu voxelisieren. Dichten und Invarianten werden als Variablen an den n\"achsten Teil der Shaderpipeline weitergegeben.
@@ -1535,6 +1548,12 @@ Da in der Literatur kein f\"ur die gew\"unschten Interaktionen geeignetes Widget
 
 Beide Widgets kombinieren die Konzepte des Cutaways \cite[S.~406~f.]{preim2015interaktive}, einer Interaktion bei der Teile des Datensatzes ausgeblendet werden um das Innere des Datensatzes zu zeigen, mit den Interaktionen zur Positionierung von Schnittebenen, wie sie auch in \cref{sec:Slicing} beschrieben werden. 
 
+An die Interaktionen wurden zwei weitere Anforderungen gestellt. 
+
+Zum einen sollte die Art der Interaktion m\"oglist bei der Bearbeitung der in der Einleitung genannten Herausforderungen helfen. Dadurch, dass die Interaktionen Teile des Datensatzes ausblenden, helfen sie dabei, Herausforderung 2 zu l\"osen. Herausforderung 3, das intuitive Vermitteln von Informationen \"uber die Daten, ist eng verbunden mit dem 4. Kriterium von Leiner et al. und wird f\"ur beide Interaktionswidgets getrennt beschrieben.
+
+Zum anderen sollten die Interaktionen so implementiert werden, dass die Auswirkung einer Interaktion mit so kurzer Verz\"ogerung wie m\"oglich angezeigt wird. Die Implementierung der Auswirkungen der Interaktionen ist innerhalb des Raycastings umgesetzt, wodurch der zus\"atzliche Aufwand sehr gering ist. Tats\"achlich wird die Laufzeit durch Interaktion mit dem quadrische Interaktionswidget generell und durch Interaktion mit der ersten Invariante beim zylindrischen Interaktionswidget reduziert, da die Bounding Box kleiner wird.
+
 \subsubsection{Quadrisches Interaktionswidget}
 
 \begin{figure}
@@ -1633,7 +1652,7 @@ Die Labels am zylindrischen Interaktionswidget sind an den Handles eingezeichnet
 \subsection{Weitere Interaktionen}
 Es existieren noch eine Reihe weiterer Interaktionen, die auf der Visualisierung durchgef\"uhrt werden k\"onnen:
 \paragraph{Bewegung der Kameraposition}
-\"Ahnlich wie bei der Rotation der Szene, kann durch Dr\"ucken und Halten der rechten Maustaste die Kameraposition mittels Bewegung der Maus innerhalb der Szene verschoben werden.
+\"Ahnlich wie bei der Rotation der Szene, kann durch Dr\"ucken und Halten der rechten Maustaste die Kameraposition mittels Bewegung der Maus innerhalb der Szene verschoben werden. 
 \paragraph{Rotation des DVR}
 Indem die linke Maustaste gedr\"uckt und gehalten wird, kann durch die Bewegung der Maus die Visualisierung um das aktuelle Rotationszentrum gedreht werden. Die Rotation ist in Form eines sogenannten ``Trackballs'' implementiert. Preim et al. beschreiben den Trackball als das Objekt umschlie{\ss}ende Kugel, die durch Mausbewegung gedreht wird und diese Bewegung auf das dargestellte Objekt, in diesem Fall das DVR und die Interaktionswidgets, \"ubetr\"agt.
 \paragraph{Setzen des Rotationszentrums}
@@ -1642,6 +1661,8 @@ Das Rotationszentrum des Trackballs kann, wenn die zylindrischen Interaktionswid
 Durch Dr\"ucken der `c'-Taste wird die Kameraposition und die Rotation des Feldes zur\"uckgesetzt.
 \paragraph{Zur\"ucksetzen der Invariantenbereiche}
 Die Schranken des ausgew\"ahlten Invariantenbereichs k\"onnen durch Dr\"ucken der `r'-Taste zur\"uckgesetzt werden.
+\paragraph{Zoomen}
+Durch Drehen des Mausrads nach vorn wird die Kamera um eine Schrittl\"ange in Blickrichtung nach hinten bewegt, durch Drehen des Mausrads nach hinten eine Schrittl\"ange nach vorn. Jedes Mal wenn die Kamera auf diese Weise nach vorn bewegt wird, wird die Schrittl\"ange um einen Prozentsatz verringert, wenn die Kamera nach hinten bewegt wird um einen Prozentsatz erh\"oht. Durch diese Funktion wird eine Art von Zoomen realisiert. Die Geschwindigkeit des Zoomens reduziert sich, desto n\"aher herangezoomt wurde und beschleunigt sich, desto weiter herausgezoomt wurde. Dadurch ist es sowohl m\"oglich, auf einen bestimmten Punkt der Visualisierung heranzusoomen als auch herauzuzoomen und sich einen \"Uberblick \"uber die Visualisierung zu verschaffen.
 
 \subsection{Optionen des Algorithmus}
 \label{Options}
@@ -1718,6 +1739,11 @@ Die Visualisierung wurde auf eine Reihe von Testdatens\"atzen angewendet, um die
 
 Als Vergleichsdarstellung, und um eine Vorstellung \"uber die Struktur der Datens\"atze zu vermitteln, wurde f\"ur die ersten beiden Datens\"atze eine Visualisierung der Tensoren als Ellipsoidglyphen erzeugt. Die Glyphen werden abh\"angig von den Eigenwerten des jeweiligen Tensors unterschiedlich dargestellt. Die L\"ange der Achsen eines Ellipsoids entspricht den Eigenwerten und die l\"angste Achse zeigt in Richtung des dazugeh\"origen Eigenvektors.
 
+Die Ergebnisbilder wurden auf einem Rechner mit 8 GB Arbeitsspeicher, einem Intel i5-3570K Prozessor mit 4 Kernen und einer GeForce GTX 970 Grafikkarte in einer Aufl\"osung von 1920 $\times$ 1080 erzeugt.
+
+Das Raycasting wurde bei allen folgenden Ergebnissen mit 5000 Abtastpunkten pro Strahl durchgef\"uhrt. Die Unterschiede in der Laufzeit des Raycastings liegen damit haupts\"achlich an den unterschiedlichen Anzahl an Pixeln, von denen aus Strahlen durch die 3D Textur geschickt werden. Die Anzahl der Pixel entspricht der Gr\"o{\ss}e der auf die Bildebene projezierten Bounding Box um die 3D Textur. Diese \"andert sich abh\"angig von der Perspektive und dem 
+
+
 \subsection{Single Point Load}
 
 \begin{figure}
@@ -1750,7 +1776,7 @@ Ein DVR eines quaderf\"ormigen Ausschnitts des Halbraums in der N\"ahe des Einwi
 
 \cref{SinglePointEllipsoids} zeigt eine Darstellung der Tensoren als Ellipsoidglyphen. Deutlich erkennbar ist der Punkt an dem die Kraft einwirkt, dort sind die Glyphen am gr\"o{\ss}ten. Die Form der Ellipsoide ist l\"anglich und zeigt weg vom Einwirkungspunkt der Kraft.
 
-F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. \cref{SinglePointInvariantSpace} zeigt die Form des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe rot und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. Auch wurde die Darstellung durch Mausinteraktion um 90\textdegree im Uhrzeigersinn um die y-Achse rotiert, um die Form des DVR deutlicher sichtbar zu machen. Dadurch ist der Punkt mit den Koordinaten der unteren Schranken der drei Invariantenintervalle vorn links, markiert dadurch dass dort die drei farbigen Kanten des Interaktionswidgets zusammentreffen.
+F\"ur die Visualisierung wurde der I-Invariantensatz gew\"ahlt. \cref{SinglePointInvariantSpace} zeigt das DVR des Datensatzes im I-Invariantenraum. Die Transferunktion ordnet Bereichen hoher Dichte die Farbe gr\"un und hohe Opazit\"atswerte zu, Bereichen geringer Dichte die Farbe Weiss und geringe Opazit\"atswerte. Da der I-Invariantensatz keiner der Invariantens\"atze ist, die sich f\"ur die Darstellung in zylindrischen Koordinaten eignen, wurden ein kartesischen Koordinatensystem und das quadrische Interaktionswidget verwendet. Auch wurde die Darstellung durch Mausinteraktion um 90\textdegree im Uhrzeigersinn um die y-Achse rotiert, um die Form des DVR deutlicher sichtbar zu machen. Dadurch ist der Punkt mit den Koordinaten der unteren Schranken der drei Invariantenintervalle vorn links, markiert dadurch dass dort die drei farbigen Kanten des Interaktionswidgets zusammentreffen. 
 
 Durch die Normalisierungsfunktion wurden die Dimensionen des Invariantenraumes so skaliert, dass die Intervalle der drei Invarianten als gleich gro{\ss}e Strecken dargestellt werden.
 
@@ -1762,11 +1788,12 @@ In \cref{SinglePointInvariant1} wurde das Intervall von $I_1$ nur um etwa 1\% ve
 
 \cref{SinglePointInvariant2} zeigt eine Darstellung des Invariantenraumes, in dem die untere Schranke von $I_1$ um 10\% der Intervalll\"ange erh\"oht wurde. Dadurch ist die untere Spitze des DVR abgeschnitten. Die Wirkung auf die angezeigten Bereiche im DVR des Halbraums in \cref{SinglePointObject2} ist deutlich erkennbar, dieser ist im Vergleich zu \cref{SinglePointObject2} deutlich kleiner und wieder in der N\"ahe des Einwirkungspunktes der Kraft. 
 
-Das gleiche Verhalten ist auch in \cref{SinglePointInvariant3}, wo im Invariantenraum die unteren 50\% des Intervalls von $I_1$ ausgeblendet wurde und den zugeh\"origen Bereichen im Halbraum, dargestellt in \cref{SinglePointObject3}
+Das gleiche Verhalten ist auch in \cref{SinglePointInvariant3}, wo im Invariantenraum die unteren 50\% des Intervalls von $I_1$ ausgeblendet wurde und den zugeh\"origen Bereichen im Halbraum, dargestellt in \cref{SinglePointObject3}.
 
+Die Anzahl der erzeugten Voxel wird im Folgenden immer in der Reihenfolge x-Richtung $\times$ y-Richtung $\times$ z-Richtung angegeben.
+Im Falle des Single Point-Datensatzes betrug sie $400\times400\times400$ f\"ur das DVR im Invariantenraum und $400\times400\times200$ im Ortsraum. Die geringere Anzahl von Voxeln in z-Richtung des Ortsraums ist m\"oglich, da der Halbraumausschnitt in diese Richtung d\"unner ist. Dadurch wird die Gr\"o{\ss}e der 3D Textur reduziert und Speicherplatz gespart.
 
-
-
+Die Erzeugung 3D Texturen ben\"otigte f\"ur beide DVR zusammen etwa 3 Sekunden, das Raycasting etwa 0,02 Sekunden.
 
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
@@ -1896,6 +1923,10 @@ Aus den Darstellungen der Invariantenbereiche im Objekt lassen sich eine Reihe v
 
 Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nicht bietet. Aus der Kombination aus hohem $K_2$ und $K_3$ am inneren Rand beispielsweise folgt, dass dort hohe orthotrope Anisotropie vorliegt. Interessant sind auch die leicht unterschiedlichen Verteilungen von $K_1$ auf der Vorder- und R\"uckseite der Scheibe, dies ist wahrscheinlich auf die Temperaturunterschiede zur\"uckzuf\"uhren. 
 
+Die erzeugten 3D Texturen bestehen aus $400\times400\times400$ Voxeln im Invariantenraum und $600\times600\times100$ Voxeln im Ortsraum. Wie schon zuvor wurde die Anzahl der Voxel im Ortsraum an die Form des Objektes angepasst, um Speicher zu sparen.
+
+Die Rasterisierung in die 3D Texturen ben\"otigte insgesamt etwa 3,3 Sekunden, die ben\"otigte Rechenzeit f\"ur ein einzelnes Bild betrug im Durchschnitt ca. 0,1 Sekunden.
+
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
@@ -1963,7 +1994,7 @@ Zus\"atzlich lassen sich Informationen ablesen, die die Ellipsoiddarstellung nic
 \subsection{Biegebalken}
 Die letzten zwei Testdatens\"atze stammen aus der Arbeit von Raith et al. \cite{raith2019tensor}. Der erste der beiden beschreibt die Werte der Eigenwerte innerhalb eines sogenannten Biegebalkens. Raith et al. beschreiben den Biegebalken wie folgt\cite[S.~1128]{raith2019tensor}: 
 
-Der Datensatz ist die Simulation eines wagerechten Balkens, der an einer Seite befestigt ist, w\"ahrend auf die andere Seite eine Kraft einwirkt. Generiert wurde er durch die Simulationssoftware Abaqus\cite{abaqusWebsite}. Die Dimensionen des Balkens sind 30 mm $\times$ 30 mm $\times$ 100 mm. Die einwirkende Kraft betr\"agt 1000 N und wirkt in negatie y-Richtung. Der Balken besteht aus einem Metall mit einem Elastizit\"atsmodul von 210 GPa und einer Poissonszahl von 0.3. Die Zellen des Datensatzes sind Tetraeder.
+Der Datensatz ist die Simulation eines wagerechten Balkens, der an einer Seite befestigt ist, w\"ahrend auf die andere Seite eine Kraft einwirkt. Generiert wurde er durch die Simulationssoftware Abaqus\cite{abaqusWebsite}. Die Dimensionen des Balkens sind 30 mm $\times$ 30 mm $\times$ 100 mm. Die einwirkende Kraft betr\"agt 1000 N und wirkt in negatie y-Richtung. Der Balken besteht aus einem Metall mit einem Elastizit\"atsmodul von 210 GPa und einer Poissonszahl von 0.3. Der Datensatz besteht aus 4320 Tetraederzellen.
 
 Der Biegebalken wird im folgenden immer so dargestellt, dass das befestigte Ende auf den Bildern rechts liegt und die Kraft nach unten wirkt. Als Invarianten werden die Werte der drei Hauptspannungen verwendet, diese sind gleich den drei Eigenwerte der Tensoren, geordnet nach ihrem Betrag. Die erste Invariante ist also stets der h\"ochste, die zweite der mittlere oder die dritte der kleinste der drei Eigenwerte. Da die Tensoren symmetrisch sind und nur reelle Werte enthalten, existieren immer drei Eigenwerte.
 
@@ -1987,10 +2018,11 @@ Bei der zweite Visualisierung, dargestellt in \cref{BeamInvariant2}, wird die un
 
 \cref{BeamInvariant3} zeigt die Kombination beider zuvor erl\"auterter Intervalleinschr\"ankungen. Eine Einschr\"ankung in Richtung des mittleren Eigenwerts ist nicht notwendig, da wie schon erw\"ahnt das von Raith et al. implementierte Interaktionswidget die Darstellung des Biegebalkens im Invariantenraum in Richtung der y-Achse nicht schneidet. \cref{BeamObject3} zeigt die Wirkung auf das DVR des Objekts. Dabei wird deutlich, dass die ausgeblendeten Bereiche spiegelsymmetrisch gegen\"uber einer horizontalen Achse durch das Objekt sind. Auch dies stimmt mit den Ergebnissen von Raith et al. \"uberein.
 
-Durch die Form des DVR im Invariantenraum bietet sich der Biegebalken-Datensatz dazu an, den explorativen Anteil der Interaktionen zu demonstrieren. Dazu wurde in Abb \cref{BeamComic} im Anhang die obere Intervallgrenze schrittweise reduziert, so dass der Verlauf der Werte der ersten Invariante im DVR des Ortsraums sichtbar wird. In den ersten Schritten in \cref{BeamComic00,BeamComic05,BeamComic10,BeamComic15} vergr\"o{\ss}ert sich der im Biegebalken ausgeblendete Bereich nur langsam. Die Betr\"age der durch das Einwirken der Kraft erzeugten Spannunungen nehmen scheinbar mit gr\"o{\ss}erer Entfernung zum Einwirkungspunkt stark ab. Das Wachstum des ausgeblendeten Bereichs des Biegebalkens zwischen den Abbildungen nimmt \"uber \cref{BeamComic20,BeamComic25,BeamComic30,BeamComic35,BeamComic40,BeamComic45,BeamComic50,BeamComic55,BeamComic60,BeamComic65,} hinweg zu. Wenn sich die obere Schranke der ersten Invariante jedoch an den Wert 0 ann\"ahert, zu sehen in \cref{BeamComic70,BeamComic75,BeamComic80}, wird das Wachstum wieder langsamer. Somit hat scheinbar ein erheblicher Teil des Biegebalkens eine mittelgro{\ss}e erste Invariante. Zwischen \cref{BeamComic80,BeamComic85,BeamComic90, BeamComic95} sind deutliche Spr\"unge in der Ausdehhung der ausgeblendeten Bereiche des DVR im Ortsraum zu erkennen. Da, wie schon beschrieben, in einem gro{\ss}en Teil des Biegebalkens nur sehr kleine Kr\"afte wirken, ist dieses Verhalten zu erwarten.
+Durch die Form des DVR im Invariantenraum bietet sich der Biegebalken-Datensatz dazu an, den explorativen Anteil der Interaktionen zu demonstrieren. Dazu wurde in Abb \cref{BeamComic} in Anhang \ref{sec:Comic} die obere Intervallgrenze schrittweise reduziert, so dass der Verlauf der Werte der ersten Invariante im DVR des Ortsraums sichtbar wird. In den ersten Schritten in \cref{BeamComic00,BeamComic05,BeamComic10,BeamComic15} vergr\"o{\ss}ert sich der im Biegebalken ausgeblendete Bereich nur langsam. Die Betr\"age der durch das Einwirken der Kraft erzeugten Spannunungen nehmen scheinbar mit gr\"o{\ss}erer Entfernung zum Einwirkungspunkt stark ab. Das Wachstum des ausgeblendeten Bereichs des Biegebalkens zwischen den Abbildungen nimmt \"uber \cref{BeamComic20,BeamComic25,BeamComic30,BeamComic35,BeamComic40,BeamComic45,BeamComic50,BeamComic55,BeamComic60,BeamComic65,} hinweg zu. Wenn sich die obere Schranke der ersten Invariante jedoch an den Wert 0 ann\"ahert, zu sehen in \cref{BeamComic70,BeamComic75,BeamComic80}, wird das Wachstum wieder langsamer. Somit hat scheinbar ein erheblicher Teil des Biegebalkens eine mittelgro{\ss}e erste Invariante. Zwischen \cref{BeamComic80,BeamComic85,BeamComic90, BeamComic95} sind deutliche Spr\"unge in der Ausdehhung der ausgeblendeten Bereiche des DVR im Ortsraum zu erkennen. Da, wie schon beschrieben, in einem gro{\ss}en Teil des Biegebalkens nur sehr kleine Kr\"afte wirken, ist dieses Verhalten zu erwarten.
 
 Interessant ist besonders der nicht ausgeblendete Bereich in \cref{BeamComic95}. Die obere Schranke der ersten Invariante hat dort einen negativen Wert. Da die erste Invariante jedoch die h\"ochste Hauptspannung der Tensoren ist, bedeutet dies, dass dort alle drei Hauptspannungen negativ sein m\"ussen. Somit wird in einem kleinen Bereich am linken Rand des Balkens das Material aus allen Richtungen zusammengedr\"uckt.
 
+Die erzeugten 3D Texturen hatten eine Gr\"o{\ss}e von $400\times400\times400$ im Invariantenraum und $400\times400\times800$ im Ortsraum. Zum Erzeugen der 3D Texturen wurden etwa 3,1 Sekunden und die Rechenzeit f\"ur ein einzelnes Bild betrug etwa 0,05 Sekunden.
 
 \begin{figure}
 	\begin{subfigure}{0.4\textwidth}
@@ -2059,20 +2091,20 @@ Interessant ist besonders der nicht ausgeblendete Bereich in \cref{BeamComic95}.
 		\subcaption{}
 		\label{NodelInvariant}
 	\end{subfigure}
-	\caption{Darstellungen des Faserverst\"arkte Metallkomponenten-Datensatzes: (a) ein DVR des Datensatzes im Ortsraum, (b) die von Raith et al. erzeugten Visualisierungen und (c) ein DVR des Datensatzes im Invariantenraum.}
+	\caption{Darstellungen des Metallkomponenten-Datensatzes: (a) ein DVR des Datensatzes im Ortsraum, (b) die von Raith et al. erzeugten Visualisierungen und (c) ein DVR des Datensatzes im Invariantenraum.}
 	\label{Nodel}
 \end{figure}
 
-\subsubsection{Faserverst\"arkte Metallkomponente}
+\subsubsection{Metallkomponente}
 Der letzte Datensatz beschreibt ein Werkst\"uck, das aus mehreren Materialien zusammengesetzt ist. Wie auch der Biegebalken-Datensatz stammt er aus der Arbeit von Raith et al. Dort wird er wie folgt beschrieben \cite[S.~1129]{raith2019tensor}:
 
 Der Datensatz repr\"asentiert ein aus drei Komponenten zusammengesetztes Werkst\"ucks. Die erste Komponente ist ein Metalleinsatz, von dem drei Arme ausgehen. Der Metalleinsatz wird von der zweiten Komponente, einem Polymer, umschlossen. Das Polymer wiederum ist von Fasern durchzogen, die die dritte Komponente bilden. Der Datensatz ist eine Simulation, die mithilfe von Abaqus\cite{abaqusWebsite} und Helios\cite{heliosWebsite} erstellt wurde. Da das Werkst\"uck symmetrisch entlang einer Schnittfl\"ache parallel zur yz-Ebene ist, wurde nur die rechte H\"alfte simuliert. Entlang der Schnittfl\"ache wurden von der Simulation spezielle symmetrische Bedingungen simuliert. An der oberen und rechten Kante wird das Werkst\"uck als fixiert angenommen, w\"ahrend an der unteren Kante des Metalleinsatzes eine Kraft von 3000 N in negative y-Richtung einwirkt. Durch die Form und das Material der Komponenten sowie das spezielle Verhalten an der Schnittfl\"ache ist das Verhalten des Werkst\"ucks unter Krafteinwirkung erheblich komplexer und schwieriger zu verstehen als in den vorherigen Beispielen, was auch zu einer komplexeren Form des Datensatzes im Invariantenraum f\"uhrt. 
 
 Die verwendeten Invarianten sind, wie schon beim Biegebalken, die Werte der Hauptspannungen, geordnet nach ihrer Gr\"o{\ss}e.
 
-Dieser Datensatz wurde aus mehreren Gr\"unden ausgew\"ahlt. Erstens ist er deutlich komplexer als die bisher vorgestellten Datens\"atze. Diese Komplexit\"at stellt h\"ohere Anforderungen an die Visualisierung, wie sie auch bei realen Anwendungen auftreten w\"urden. Zweitens enth\"alt der Datensatz um ein vielfaches mehr Tetraeder als die beiden anderen
+Dieser Datensatz wurde aus mehreren Gr\"unden ausgew\"ahlt. Erstens ist er deutlich komplexer als die bisher vorgestellten Datens\"atze. Diese Komplexit\"at stellt h\"ohere Anforderungen an die Visualisierung, wie sie auch bei realen Anwendungen auftreten w\"urden. Zweitens enth\"alt der Datensatz mit 2541049 Tetraederzellen deutlich mehr Zellen als die anderen vorgestellten Datens\"atze.
 
-In \cref{Nodel} sind Visualisierungen des Faserverst\"arkte Metallkomponenten-Datensatzes abgebildet. \cref{NodelObject} zeigt ein DVR des Datensatzes im Ortsraum. Unten links ist die H\"alfte des Metalleinsatzes mit seinen drei Armen zu erkennen. \cref{NodelRaith} sind die von Raith et al. erzeugten Visualisierungen. Wie auch beim Biegebalken-Datensatz werden die Zellen durch ein Gitternetz dargestellt. Auf der rechten Seite ist die Gitternetzdarstellung im Invariantenraum zu sehen. Interessante dabei ist, dass das Koordinatensystem linksh\"andig ist, also x- und y-Achse vertauscht sind. Ein kleiner, quaderf\"ormiger Bereich des Invariantenraumes ausgew\"ahlt, dargestellt durch das rote, quaderf\"ormige Interaktionswidget. 
+In \cref{Nodel} sind Visualisierungen des Metallkomponenten-Datensatzes abgebildet. \cref{NodelObject} zeigt ein DVR des Datensatzes im Ortsraum. Unten links ist die H\"alfte des Metalleinsatzes mit seinen drei Armen zu erkennen. \cref{NodelRaith} sind die von Raith et al. erzeugten Visualisierungen. Wie auch beim Biegebalken-Datensatz werden die Zellen durch ein Gitternetz dargestellt. Auf der rechten Seite ist die Gitternetzdarstellung im Invariantenraum zu sehen. Interessante dabei ist, dass das Koordinatensystem linksh\"andig ist, also x- und y-Achse vertauscht sind. Ein kleiner, quaderf\"ormiger Bereich des Invariantenraumes ausgew\"ahlt, dargestellt durch das rote, quaderf\"ormige Interaktionswidget. 
 
 Im linken Teil von \cref{NodelRaith} ist das Gitternetz des Datensatzes im Ortsraum dargestellt. Die Schnittfl\"achen zwischen den Seitenfl\"achen des Quaders und den Zellen des Gitternetzes im Invariantenraum wurden zur\"uck in den Ortsraum transformiert und sind in rot eingezeichnet. Der dadurch markierte Bereich wird von Raith et al. als eine Region beschrieben, in der \"ublicherweise Besch\"adigungen im Material auftreten.
 
@@ -2080,36 +2112,25 @@ Im linken Teil von \cref{NodelRaith} ist das Gitternetz des Datensatzes im Ortsr
 
 Wegen der Komplexit\"at des Datensatzes ist es ohne gr\"undliche Kenntniss der physikalischen Prozesse schwierig, Informationen aus der Form des DVR im Invariantenraum oder aus den Formen der ein- und ausgeblendeten Teile des DVR im Ortsraum zu ziehen. Die vorliegende Arbeit beschr\"ankt sich daher darauf, die von Raith et al. erzeugten Visualisierungen zu reproduzieren und zu vergleichen.
 
+\cref{NodelInteractions} zeigt den Metallkomponenten-Datensatz, in dem die Intervalle aller drei Invarianten eingeschr\"ankt wurden. 
+Durch Interaktion mit dem quadrischen Interaktionswidget wurden die oberen und unteren Schranken aller Invariantenintervalle eingeschr\"ankt. Dies ist in \cref{NodelInvariant1} dargestellt. Der ausgew\"ahlte Bereich ist sehr \"ahnlich zu der Form und Position des Interaktionswidgets in der Visualisierung von Raith et al. in \cref{NodelRaith}. Der Bereich im Ortsraum, in dem Invarianten innerhalb des gew\"ahlten Intervalls auftreten, ist in \cref{NodelObject1} dargestellt: Ein kleiner Bereich am oberen Rand der Metallkomponente. Dieser entspricht in Form und Position den Ergebnissen von Raith et al., wie sie in \cref{NodelRaith} zu sehen sind.
+
 \begin{figure}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_InvariantSpace1.png}
 		\subcaption{}
-		\label{}
+		\label{NodelInvariant1}
 	\end{subfigure}
 	\hspace*{\fill}
 	\begin{subfigure}{0.49\textwidth}
 		\centering
 		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_Object1.png}
 		\subcaption{}
-		\label{}
+		\label{NodelObject1}
 	\end{subfigure}
-	\medskip
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=4.5cm]{pictures/results/Nodel/Nodel_InvariantSpace2.png}
-		\subcaption{}
-		\label{}
-	\end{subfigure}
-	\hspace*{\fill}
-	\begin{subfigure}{0.49\textwidth}
-		\centering
-		\includegraphics[height=8cm]{pictures/results/Nodel/Nodel_Object2.png}
-		\subcaption{}
-		\label{}
-	\end{subfigure}
-	\caption{Die Verformung des Metallscheiben-Datensatzes mit ausgew\"ahlten Invariantenbereichen. (a) und (b) zeigen Bereiche mit hohem $K_1$, (c) und (d) Bereiche mit niedrigem $K_2$, (e) und (f) Bereiche mit hohem $K_3$.}
-	\label{}
+	\caption{Der Metallkomponenten-Datensatz, eingschr\"ankt auf einen kleinen Bereich mit hohen Werten der ersten und zweiten Invariante: (a) Darstellung im Invariantenraum und (b) Darstellung im Ortsraum.}
+	\label{NodelInteractions}
 \end{figure}
 
 \subsection{Fazit}
@@ -2117,11 +2138,13 @@ Aus den genannten Beispieldatens\"atzen hat sich ergeben, dass das implementiert
 
 Durch die Voxelisierung ist es dem Benutzer m\"oglich, die Aufl\"osung der Darstellung selbst festzulegen. Das hat den Vorteil, dass ein Kompromiss zwischen Geschwindigkeit und Qualit\"at der Visualisierung gefunden werden kann, unabh\"angig von der Menge an Datenpunkten im Feld. 
 
-Im Gegensatz zu z.B. der Darstellung von Tensoren als Ellipsoide oder Superquadrics kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o{(\ss}enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
+Im Gegensatz zu z.B. der Darstellung von Tensoren als Glyphen kommt es nicht zu \"Uberdeckungen. Durch das DVR kann das Innere der Datens\"atze leicht betrachtet werden. Ausserdem k\"onnen die Werte der Tensoren sich um mehrere Gr\"o{(\ss}enordnungen unterscheiden, ohne dass die Qualit\"at der Darstellung sich verschlechtert.
 
 Die meisten im Kapitel \hyperref[sec:Verwandte]{2 Verwandte Arbeiten} erw\"ahnten klassischen Tensorfeldvisualisierungen verwenden die Eigenwerte und -vektoren um Tensoren darzustellen. Der Betrag eines einzelne Eigenwertes liefert ist jedoch oft nicht sehr aussagekr\"aftig, viel wichtiger ist das Verh\"altnis der Eigenwerte zueinander. Invarianten, wie sie vorgestellt wurden, liefern diese Informationen, weshalb sie in der Kontinuumsmechanik und der Untersuchung von Materialien verwendet werden.
 
-Durch die in Echtzeit vornehmbaren Interaktionen ist es zudem m\"oglich, Bereiche mit bestimmten Invariantenkombinationen hervorzuheben. Diese explorative Analyse unterscheidet die Visualisierung von den klassischen statischen Ans\"atzen und bietet die M\"oglichkeit, uninteressante Bereiche auszublenden. Auch Zusammeh\"ange zwischen den Verteilungen der Invarianten im Objekt k\"onnen durch die Interaktionen leicht gefunden werden. Selbst kleine Ver\"anderungen der Invarianten \"uber den Datensatz hinweg lassen sich verfolgen.
+Nur die die Laufzeit der initialen Rasterisierung h\"angt von der Anzahl an Tetraedern im Datensatz ab. Sobald diese einmal durchgef\"uhrt wurde, ist die Laufzeit der Visualisierung als DVR nur noch abh\"angig von der gew\"ahlten Aufl\"osung in Voxeln. Dadurch wird die explorative Analyse auch sehr gro{\ss}er Datens\"atze m\"oglich. Die explorative unterscheidet die in dieser Arbeit vorgestellte Visualisierung von den klassischen statischen Ans\"atzen und bietet die M\"oglichkeit, den komplexen Invariantenraum in leichter verst\"andliche St\"ucke zu unterteilen. Auch Zusammeh\"ange zwischen den Verteilungen der Invarianten im Objekt k\"onnen durch die Interaktionen leicht gefunden werden. Selbst kleine Ver\"anderungen der Invarianten \"uber den Datensatz hinweg lassen sich verfolgen.
+
+Die 3D Textur des Invariantenraumes besteht aus $400\times400\times200$ Voxeln, die des Ortsraums aus $600\times600\times100$ Voxeln. Die Berechnung der 3D Texturen ben\"otigte insgesamt ca. 30 Sekunden, was auf die sehr viel gr\"o{\ss}ere Anzahl an Tetreaedern in diesem Datensatz zur\"uckzuf\"uhren ist. Um ein einzelnes Bild zu erzeugen wurden durchschnittlich ca. 0,08 Sekunden ben\"otigt.
 
 \section{Ausblick}
 \label{sec:Ausblick}
@@ -2131,7 +2154,7 @@ Die Ergebnisse wurden Experten f\"ur Kontinuumsmechanik von der Technischen Univ
 
 Das Laden von Materialmodellen und Ausw\"ahlen der entsprechenden Bereiche k\"onnte eine lohnenswerte Erweiterung des Systems darstellen. Die Interpretation durch den Nutzer w\"urd erleichtert, da er die Bereiche nicht mehr per Hand einstellen m\"usste und daher weniger Kenntnisse \"uber die Invarianten und ihre Bedeutung notwendig w\"aren. Gleichzeitig w\"aren die Ergebnisse exakter und besser in der Praxis anwendbar. 
 
-Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"are sie ein guter Ansatzpunkt f\"ur Optimierungen. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen. Auch Probleme wie d\"unne, ebenenparallele Bereiche k\"onnten durch Verbesserungen der Rasterisierung behoben werden.
+Ein weiterer Ansatzpunkt f\"ur Verbesserungen w\"are das Voxelisierungsverfahren. Da die Voxelisierung f\"ur eine Gro{\ss}teil der Rechenzeit der Visualisierung verantwortlich ist, w\"urden Optimierungen dort die Gesamtlaufzeit deutlich reduzieren. Dadurch w\"are es auch m\"oglich, die Masseerhaltung durch Supersampling zu implementieren, ohne die ben\"otigte Zeit zu stark zu erh\"ohen. Auch Probleme wie d\"unne, ebenenparallele Bereiche k\"onnten durch Verbesserungen der Rasterisierung behoben werden, genauso wie Verfahren zur Reduktion der Treppeneffekte.
 
 Wie in den Vergleichen mit den Ergebnissen von Fritzsch erw\"ahnt ist die Implementierung einer Option zum Umschalten auf orthogonale Projektion im DVR eine m\"oglicherweise lohnenswerte Erweiterung. Dadurch w\"urde das Ablesen von Koordinaten aus der Visualisierung erleichtert werden. Auch Optionen zur Erstellung von R\"ontgenbildern, MIPs oder Isof\"achen sind vorstellbar.
 
@@ -2148,45 +2171,48 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 % Settings for the references (which are numbered in roman style)
 \label{LastPageBeforeRefs}
 \clearpage
-\ofoot{\vspace{-0.1cm}\textbf{\large\thepage}/\textbf{\large\getpagerefnumber{LastBibPage}}}
+\ofoot{\vspace{-0.1cm}\textbf{\large\thepage}/\textbf{\large\getpagerefnumber{LastAppendixPage}}}
 \pagenumbering{Roman}
 
 \printbibliography
 \label{LastBibPage}
+\clearpage
 \section{Anhang}
-\begin{figure}
+\subsection{Anhang A}
+\label{sec:Comic}
+\begin{figure}[!htb]
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_00.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_00.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_00.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_00.png}}
 		\subcaption{0\%}
 		\label{BeamComic00}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_05.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_05.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_05.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_05.png}}
 		\subcaption{5\%}
 		\label{BeamComic05}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_10.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_10.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_10.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_10.png}}
 		\subcaption{10\%}
 		\label{BeamComic10}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_15.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_15.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_15.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_15.png}}
 		\subcaption{15\%}
 		\label{BeamComic15}
 	\end{subfigure}
@@ -2199,36 +2225,36 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 	
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_20.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_20.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_20.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_20.png}}
 		\subcaption{20\%}
 		\label{BeamComic20}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_25.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_25.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_25.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_25.png}}
 		\subcaption{25\%}
 		\label{BeamComic25}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_30.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_30.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_30.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_30.png}}
 		\subcaption{30\%}
 		\label{BeamComic30}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_35.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_35.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_35.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_35.png}}
 		\subcaption{35\%}
 		\label{BeamComic35}
 	\end{subfigure}
@@ -2241,36 +2267,36 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_40.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_40.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_40.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_40.png}}
 		\subcaption{40\%}
 		\label{BeamComic40}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_45.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_45.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_45.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_45.png}}
 		\subcaption{45\%}
 		\label{BeamComic45}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_50.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_50.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_50.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_50.png}}
 		\subcaption{50\%}
 		\label{BeamComic50}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_55.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_55.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_55.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_55.png}}
 		\subcaption{55\%}
 		\label{BeamComic55}
 	\end{subfigure}
@@ -2283,36 +2309,36 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 	
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_60.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_60.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_60.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_60.png}}
 		\subcaption{60\%}
 		\label{BeamComic60}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_65.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_65.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_65.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_65.png}}
 		\subcaption{65\%}
 		\label{BeamComic65}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_70.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_70.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_70.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_70.png}}
 		\subcaption{70\%}
 		\label{BeamComic70}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_75.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_75.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_75.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_75.png}}
 		\subcaption{75\%}
 		\label{BeamComic75}
 	\end{subfigure}
@@ -2325,41 +2351,45 @@ Alles in allem stellt das implementierte Verfahren eine neue Variante der Tensor
 	
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_80.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_80.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_80.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_80.png}}
 		\subcaption{80\%}
 		\label{BeamComic80}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_85.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_85.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_85.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_85.png}}
 		\subcaption{85\%}
 		\label{BeamComic85}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_90.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_90.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_90.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_90.png}}
 		\subcaption{90\%}
 		\label{BeamComic90}
 	\end{subfigure}
 	\medskip
 	\begin{subfigure}{\textwidth}
 		\centering
-		\raisebox{-0.5\height}{\includegraphics[width=0.3\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_95.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.21\textwidth]{pictures/results/Beam/comic/Beam_InvariantSpace_95.png}}
 		\hspace{1cm}
-		\raisebox{-0.5\height}{\includegraphics[width=0.45\textwidth]{pictures/results/Beam/comic/Beam_Object_95.png}}
+		\raisebox{-0.5\height}{\includegraphics[width=0.32\textwidth]{pictures/results/Beam/comic/Beam_Object_95.png}}
 		\subcaption{95\%}
 		\label{BeamComic95}
 	\end{subfigure}
 	\caption{Darstellungen des Biegebalken Datensatzes. Die obere Schranke des gr\"o{\ss}ten Eigenwerts wurde jeweils um den angegebenen Prozentsatz der gesamten Intervalll\"ange verringert.}
 	\label{BeamComic}
 \end{figure}
+\clearpage
+\subsection{Glossar}
 
+
+\label{LastAppendixPage}
 \end{document}
